@@ -50,19 +50,31 @@
                   </div>
                 </FieldSet>
                 <div v-if="methods.length" class="grid gap-2 text-sm font-medium">
-                  <span>{{ messages.productCheckout.paymentMethod }}</span>
-                  <div class="grid grid-cols-2 gap-2" role="group" :aria-label="messages.productCheckout.paymentMethod">
-                    <Button
+                  <span class="text-xs font-semibold text-muted-foreground">{{ messages.productCheckout.paymentMethod }}</span>
+                  <div class="flex flex-col gap-2.5" role="group" :aria-label="messages.productCheckout.paymentMethod">
+                    <button
                       v-for="item in methods"
                       :key="item.key"
                       type="button"
-                      :variant="selectedMethod === item.key ? 'default' : 'outline'"
-                      class="h-auto min-h-10 justify-start whitespace-normal px-3 py-2 text-left text-sm leading-5"
+                      class="group relative flex items-center gap-3.5 rounded-xl border px-3.5 py-3 text-left transition-all duration-200 select-none cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
+                      :class="[
+                        selectedMethod === item.key
+                          ? 'border-primary ring-2 ring-primary/40 bg-primary/5 text-foreground shadow-xs dark:bg-primary/10'
+                          : 'border-border/70 bg-card hover:border-primary/40 hover:bg-muted/30 text-muted-foreground hover:text-foreground'
+                      ]"
                       :aria-pressed="selectedMethod === item.key"
                       @click="selectedMethod = item.key"
                     >
-                      {{ item.name }}{{ item.channel ? `（${channelLabel(item.channel)}）` : "" }}
-                    </Button>
+                      <PaymentMethodIcon
+                        :provider="item.provider"
+                        :channel="item.channel"
+                        :name="item.name"
+                        class="size-8 rounded-lg shadow-xs transition-transform duration-200 group-hover:scale-105"
+                      />
+                      <span class="text-sm font-semibold tracking-tight text-foreground">
+                        {{ formatPaymentName(item) }}
+                      </span>
+                    </button>
                   </div>
                 </div>
                 <div class="grid gap-2 text-sm font-medium"><span>{{ messages.productCheckout.discountCode }}</span><div class="flex gap-2"><Input v-model="discountCode" autocomplete="off" @keydown.enter.prevent="onApplyDiscount" /><Button type="button" variant="outline" :disabled="discountApplying || !discountCode.trim()" @click="onApplyDiscount">{{ discountApplying ? messages.productCheckout.applyingDiscount : messages.productCheckout.applyDiscount }}</Button></div></div>
@@ -110,6 +122,8 @@ import { XIcon } from "@lucide/vue";
 import { toast } from "vue-sonner";
 import { useData } from "vike-vue/useData";
 import { usePageContext } from "vike-vue/usePageContext";
+
+import PaymentMethodIcon from "@/components/PaymentMethodIcon.vue";
 
 import PublicNav from "@/components/storefront/PublicNav.vue";
 import StorefrontBrand from "@/components/storefront/StorefrontBrand.vue";
@@ -180,4 +194,19 @@ async function loadAddresses() { if (selectedSku.value.deliveryType !== "EXPRESS
 function addressSummary(address: SavedAddress) { return `${address.province}${address.city}${address.district}${address.addressLine}`; }
 onMounted(loadAddresses);
 function channelLabel(channel: string) { return ({ web: messages.value.productCheckout.paymentChannels.web, wap: messages.value.productCheckout.paymentChannels.wap, face_to_face: messages.value.productCheckout.paymentChannels.faceToFace, alipay: messages.value.productCheckout.paymentChannels.alipay, wxpay: messages.value.productCheckout.paymentChannels.wxpay } as Record<string, string>)[channel] ?? channel; }
+function formatPaymentName(item: { name?: string; provider?: string; channel?: string }) {
+  const raw = (item.name || "").trim();
+  const provider = (item.provider || "").toUpperCase();
+  const channel = (item.channel || "").toLowerCase();
+  if (channel === "alipay" || provider === "ALIPAY" || raw.includes("支付宝")) {
+    return "支付宝";
+  }
+  if (channel === "wxpay" || raw.includes("微信")) {
+    return "微信支付";
+  }
+  if (provider === "BEPUSDT" || provider === "HASHPAY" || raw.toLowerCase().includes("usdt")) {
+    return "USDT";
+  }
+  return raw.replace(/^快捷支付[（(]/, "").replace(/[）)]$/, "").trim() || raw;
+}
 </script>
