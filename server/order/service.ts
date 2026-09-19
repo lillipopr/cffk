@@ -110,7 +110,7 @@ export async function createOrder(database: D1Database, input: CreateOrderInput,
   const productId = positiveInteger(input.productId, "PRODUCT_ID");
   const requestedQuantity = positiveInteger(input.quantity, "QUANTITY");
   const contactValue = normalizeOrderContact(input.contactType, input.contactValue);
-  const [item] = await db.select().from(productV2).where(and(eq(productV2.id, productId), eq(productV2.status, "ACTIVE"))).limit(1);
+  const [item] = await db.select().from(productV2).where(and(eq(productV2.id, productId), inArray(productV2.status, ["ACTIVE", "UNLISTED"]))).limit(1);
   if (!item) fail("PRODUCT_NOT_AVAILABLE");
   const sku = await getProductSku(db, item.id, positiveInteger(input.productSkuId, "PRODUCT_SKU_ID"));
 

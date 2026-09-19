@@ -132,7 +132,7 @@ export const productV2 = sqliteTable(
     subtitle: text("subtitle"),
     description: text("description"),
     coverImage: text("coverImage"),
-    status: text("status", { enum: ["DRAFT", "ACTIVE", "INACTIVE"] }).notNull().default("DRAFT"),
+    status: text("status", { enum: ["DRAFT", "ACTIVE", "INACTIVE", "UNLISTED"] }).notNull().default("DRAFT"),
     manualDeliveryHint: text("manualDeliveryHint"),
     sort: integer("sort").notNull().default(0),
 

@@ -1,4 +1,4 @@
-import { and, eq } from "drizzle-orm";
+import { and, eq, inArray } from "drizzle-orm";
 import { createDrizzleDb } from "@/database/drizzle";
 import { appError } from "@/lib/app-error";
 import { formatCentsAsYuan } from "@/lib/payment-utils";
@@ -73,7 +73,7 @@ export async function previewDiscount(database: D1Database, input: { productId: 
   const productSkuId = positiveInteger(input.productSkuId, "PRODUCT_SKU_ID");
   const requestedQuantity = positiveInteger(input.quantity, "QUANTITY");
   const db = createDrizzleDb(database);
-  const [item] = await db.select({ id: productSku.productId, price: productSku.price, minBuy: productSku.minBuy, maxBuy: productSku.maxBuy }).from(productSku).innerJoin(productV2, eq(productSku.productId, productV2.id)).where(and(eq(productSku.id, productSkuId), eq(productSku.productId, productId), eq(productSku.status, "ACTIVE"), eq(productV2.status, "ACTIVE"))).limit(1);
+  const [item] = await db.select({ id: productSku.productId, price: productSku.price, minBuy: productSku.minBuy, maxBuy: productSku.maxBuy }).from(productSku).innerJoin(productV2, eq(productSku.productId, productV2.id)).where(and(eq(productSku.id, productSkuId), eq(productSku.productId, productId), eq(productSku.status, "ACTIVE"), inArray(productV2.status, ["ACTIVE", "UNLISTED"]))).limit(1);
   if (!item) appError("PRODUCT_NOT_AVAILABLE");
 
   const quantity = Math.max(item.minBuy, Math.min(item.maxBuy, requestedQuantity));

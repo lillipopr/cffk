@@ -68,7 +68,7 @@ export async function getPublicProductDetail(database: D1Database, slug: string)
     })
     .from(productV2)
     .leftJoin(category, and(eq(productV2.categoryId, category.id), eq(category.status, "ACTIVE")))
-    .where(and(eq(productV2.slug, normalizedSlug), eq(productV2.status, "ACTIVE"), eq(category.status, "ACTIVE")))
+    .where(and(eq(productV2.slug, normalizedSlug), inArray(productV2.status, ["ACTIVE", "UNLISTED"]), eq(category.status, "ACTIVE")))
     .limit(1);
   if (!item) return null;
 

@@ -5,7 +5,7 @@ import { slugify } from "@/lib/slugify";
 import type { onGetProductAdminDetail } from "@/server/catalog/admin.telefunc";
 
 export const deliveryTypes = ["CARD_AUTO", "FIXED_CARD", "MANUAL", "EXPRESS"] as const;
-export const productStatuses = ["DRAFT", "ACTIVE", "INACTIVE"] as const;
+export const productStatuses = ["DRAFT", "ACTIVE", "INACTIVE", "UNLISTED"] as const;
 
 export const productFormSchema = z.object({
   id: z.number().int().positive().optional(),

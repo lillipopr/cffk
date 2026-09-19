@@ -11,9 +11,9 @@ import { assertSupplierSkuPublishable } from "@/server/supplier/eligibility";
 
 
 type DeliveryType = "CARD_AUTO" | "FIXED_CARD" | "MANUAL" | "EXPRESS" | "SUPPLIER";
-type ProductStatus = "DRAFT" | "ACTIVE" | "INACTIVE";
+type ProductStatus = "DRAFT" | "ACTIVE" | "INACTIVE" | "UNLISTED";
 const deliveryTypeSet = new Set<DeliveryType>(["CARD_AUTO", "FIXED_CARD", "MANUAL", "EXPRESS", "SUPPLIER"]);
-const productStatusSet = new Set<ProductStatus>(["DRAFT", "ACTIVE", "INACTIVE"]);
+const productStatusSet = new Set<ProductStatus>(["DRAFT", "ACTIVE", "INACTIVE", "UNLISTED"]);
 
 function getAdminDb() {
   const { db } = requireAdmin();
@@ -327,7 +327,7 @@ async function internalOnSetProductStatus(input: { id: number; status: ProductSt
   if (!productStatusSet.has(input.status)) appError("PRODUCT_STATUS_INVALID");
   const [current] = await db.select().from(productV2).where(eq(productV2.id, input.id)).limit(1);
   if (!current) appError("PRODUCT_NOT_FOUND");
-  if (input.status === "ACTIVE") {
+  if (input.status === "ACTIVE" || input.status === "UNLISTED") {
     const skus = await db.select({ id: productSku.id, status: productSku.status, price: productSku.price, fulfillmentSource: productSku.fulfillmentSource, deliveryType: productSku.deliveryType, fixedDeliveryContent: productSku.fixedDeliveryContent, minBuy: productSku.minBuy, maxBuy: productSku.maxBuy }).from(productSku).where(eq(productSku.productId, current.id)).orderBy(asc(productSku.sort), asc(productSku.id));
     const isSupplierProduct = skus.length > 0 && skus.every((sku) => sku.fulfillmentSource === "SUPPLIER");
     const supplierBindingRows = isSupplierProduct
@@ -405,7 +405,7 @@ async function internalOnSaveSupplierProductPresentation(input: {
   const now = new Date();
   const enabledBindingRows = await db.select({ productSkuId: supplierBinding.productSkuId }).from(supplierBinding).where(and(inArray(supplierBinding.productSkuId, currentSkus.map((sku) => sku.id)), eq(supplierBinding.enabled, true)));
   const boundSkuIds = new Set(enabledBindingRows.map((row) => row.productSkuId));
-  if (input.status === "ACTIVE") {
+  if (input.status === "ACTIVE" || input.status === "UNLISTED") {
     // Older supplier imports created their bound SKUs as INACTIVE. A valid
     // enabled binding is the source of truth when publishing such products.
     const activeSkus = normalizedSkus.filter((sku) => boundSkuIds.has(sku.id));
@@ -413,7 +413,7 @@ async function internalOnSaveSupplierProductPresentation(input: {
     for (const sku of activeSkus) await assertSupplierSkuPublishable(db, sku.id);
   }
   for (const sku of normalizedSkus) {
-    const status = input.status === "ACTIVE" && boundSkuIds.has(sku.id) ? "ACTIVE" : sku.status;
+    const status = (input.status === "ACTIVE" || input.status === "UNLISTED") && boundSkuIds.has(sku.id) ? "ACTIVE" : sku.status;
     await db.update(productSku).set({ name: sku.name, price: sku.price, status, sort: sku.sort, updatedAt: now }).where(and(eq(productSku.id, sku.id), eq(productSku.productId, input.id)));
   }
   const [saved] = await db.update(productV2).set({ categoryId, name, slug: resolveSlug(input.slug, name), subtitle: optionalText(input.subtitle, 300, "PRODUCT_SUBTITLE_INVALID"), coverImage: resolveCoverImage(input.coverImage), description: sanitizeProductDescription(requiredText(input.description, "PRODUCT_DESCRIPTION_REQUIRED", 100_000, "PRODUCT_DESCRIPTION_TOO_LONG")) ?? (appError("PRODUCT_DESCRIPTION_REQUIRED"), null), purchaseNote: optionalText(input.purchaseNote, 2_000, "PRODUCT_PURCHASE_NOTE_INVALID"), status: input.status, sort: nonNegativeInteger(input.sort, "PRODUCT_SORT_INVALID"), updatedAt: now }).where(eq(productV2.id, input.id)).returning();

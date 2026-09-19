@@ -1,0 +1,950 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>使用指南与配置手册</title>
+    <style>
+        :root {
+            --bg-primary: #f5f5f7;
+            --bg-card: #ffffff;
+            --text-primary: #1d1d1f;
+            --text-secondary: #86868b;
+            --accent: #0071e3;
+            --accent-light: rgba(0, 113, 227, 0.08);
+            --border: rgba(0, 0, 0, 0.08);
+            --kbd-bg: #f2f2f5;
+            --kbd-border: #d1d1d6;
+            --kbd-shadow: rgba(0, 0, 0, 0.12);
+            --card-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+            --nav-bg: rgba(245, 245, 247, 0.85);
+        }
+
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --bg-primary: #161618;
+                --bg-card: #212124;
+                --text-primary: #f5f5f7;
+                --text-secondary: #a1a1a6;
+                --accent: #2997ff;
+                --accent-light: rgba(41, 151, 255, 0.15);
+                --border: rgba(255, 255, 255, 0.1);
+                --kbd-bg: #2c2c2e;
+                --kbd-border: #3a3a3c;
+                --kbd-shadow: rgba(0, 0, 0, 0.4);
+                --card-shadow: 0 4px 24px rgba(0, 0, 0, 0.3);
+                --nav-bg: rgba(22, 22, 24, 0.85);
+            }
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", Roboto, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.6;
+            padding-bottom: 60px;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* 顶部粘性 Tab 栏 */
+        .tab-nav-wrapper {
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            background-color: var(--nav-bg);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--border);
+            padding: 12px 16px;
+        }
+
+        .tab-nav {
+            max-width: 860px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+            gap: 8px;
+            overflow-x: auto;
+            scrollbar-width: none;
+            -ms-overflow-style: none;
+        }
+
+        .tab-nav::-webkit-scrollbar {
+            display: none;
+        }
+
+        .tab-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 8px 14px;
+            border-radius: 20px;
+            background: transparent;
+            color: var(--text-secondary);
+            border: 1px solid transparent;
+            font-size: 13px;
+            font-weight: 500;
+            cursor: pointer;
+            white-space: nowrap;
+            transition: all 0.15s ease;
+            user-select: none;
+        }
+
+        .tab-btn svg {
+            width: 16px;
+            height: 16px;
+            fill: currentColor;
+            flex-shrink: 0;
+        }
+
+        .tab-btn:hover {
+            color: var(--text-primary);
+            background: var(--border);
+        }
+
+        .tab-btn.active {
+            color: var(--text-primary);
+            background: var(--bg-card);
+            border-color: var(--border);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+            font-weight: 600;
+        }
+
+        /* 页面主体内容 */
+        .container {
+            max-width: 860px;
+            margin: 0 auto;
+            padding: 24px 20px 0;
+        }
+
+        .tab-pane {
+            display: none;
+            opacity: 0;
+            transition: opacity 0.2s ease;
+        }
+
+        .tab-pane.active {
+            display: block;
+            opacity: 1;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 32px;
+            padding-top: 12px;
+        }
+
+        .app-badge {
+            display: inline-block;
+            font-size: 12px;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+            padding: 4px 14px;
+            background: var(--accent-light);
+            color: var(--accent);
+            border-radius: 12px;
+            margin-bottom: 12px;
+        }
+
+        h1 {
+            font-size: 28px;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+            margin-bottom: 6px;
+        }
+
+        .subtitle {
+            font-size: 14px;
+            color: var(--text-secondary);
+        }
+
+        .section-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 16px;
+            margin-top: 32px;
+        }
+
+        .section-title {
+            font-size: 18px;
+            font-weight: 600;
+        }
+
+        /* Apple 风格卡片 */
+        .card {
+            background: var(--bg-card);
+            border-radius: 16px;
+            padding: 24px;
+            border: 1px solid var(--border);
+            box-shadow: var(--card-shadow);
+            margin-bottom: 20px;
+        }
+
+        .card-header {
+            margin-bottom: 14px;
+        }
+
+        .card-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 4px;
+        }
+
+        .card-desc {
+            font-size: 14px;
+            color: var(--text-secondary);
+        }
+
+        .card-body {
+            font-size: 14px;
+            color: var(--text-primary);
+        }
+
+        .card-body ol, .card-body ul {
+            padding-left: 20px;
+            margin: 10px 0;
+        }
+
+        .card-body li {
+            margin-bottom: 8px;
+        }
+
+        .card-body a {
+            color: var(--accent);
+            text-decoration: none;
+        }
+
+        .card-body a:hover {
+            text-decoration: underline;
+        }
+
+        /* 苹果系统设置列表 (Settings List) */
+        .settings-list {
+            background: var(--bg-primary);
+            border-radius: 12px;
+            overflow: hidden;
+            border: 1px solid var(--border);
+            margin-top: 14px;
+        }
+
+        .setting-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 13px 18px;
+            border-bottom: 1px solid var(--border);
+            gap: 16px;
+        }
+
+        .setting-item:last-child {
+            border-bottom: none;
+        }
+
+        .setting-label {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            flex-shrink: 0;
+            font-weight: 600;
+            font-size: 14px;
+            color: var(--text-primary);
+        }
+
+        .setting-arrow {
+            color: var(--text-secondary);
+            font-size: 12px;
+        }
+
+        .setting-desc {
+            font-size: 13px;
+            color: var(--text-secondary);
+            text-align: right;
+        }
+
+        @media (max-width: 680px) {
+            .setting-item {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 6px;
+            }
+            .setting-desc {
+                text-align: left;
+            }
+        }
+
+        kbd {
+            display: inline-block;
+            padding: 4px 8px;
+            font-size: 12px;
+            font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", sans-serif;
+            font-weight: 600;
+            line-height: 1;
+            color: var(--text-primary);
+            background-color: var(--kbd-bg);
+            border: 1px solid var(--kbd-border);
+            border-radius: 6px;
+            box-shadow: 0 2px 0 var(--kbd-shadow);
+        }
+
+        .code-box {
+            margin-top: 6px;
+            padding: 8px 12px;
+            background: var(--bg-primary);
+            border-radius: 8px;
+            font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+            font-size: 13px;
+            word-break: break-all;
+            border: 1px solid var(--border);
+        }
+
+        /* 排错网格 */
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 14px;
+        }
+
+        .feature-card {
+            background: var(--bg-card);
+            border-radius: 14px;
+            padding: 18px;
+            border: 1px solid var(--border);
+            box-shadow: var(--card-shadow);
+        }
+
+        .feature-title {
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 6px;
+            color: var(--accent);
+        }
+
+        .feature-desc {
+            font-size: 13px;
+            color: var(--text-secondary);
+            line-height: 1.5;
+        }
+
+        footer {
+            text-align: center;
+            margin-top: 48px;
+            padding-top: 20px;
+            border-top: 1px solid var(--border);
+            color: var(--text-secondary);
+            font-size: 13px;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- 顶部固定 Tab 栏 (带 SVG 矢量图，零 Emoji) -->
+    <div class="tab-nav-wrapper">
+        <div class="tab-nav">
+            <!-- Windows -->
+            <button class="tab-btn active" onclick="switchTab('windows')">
+                <svg viewBox="0 0 24 24"><path d="M0 3.449L9.75 2.1v9.451H0m10.949-9.602L24 0v11.4H10.949M0 12.6h9.75v9.451L0 20.699M10.949 12.6H24V24l-12.9-1.801"/></svg>
+                <span>Windows</span>
+            </button>
+            <!-- macOS -->
+            <button class="tab-btn" onclick="switchTab('macos')">
+                <svg viewBox="0 0 24 24"><path d="M20 18c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2H4c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2H0v2h24v-2h-4zM4 6h16v10H4V6z"/></svg>
+                <span>macOS</span>
+            </button>
+            <!-- Android -->
+            <button class="tab-btn" onclick="switchTab('android')">
+                <svg viewBox="0 0 24 24"><path d="M17.523 15.3414c-.5511 0-.9993-.4486-.9993-.9997s.4482-.9993.9993-.9993c.551 0 .9993.4482.9993.9993.0001.5511-.4482.9997-.9993.9997m-11.046 0c-.5511 0-.9993-.4486-.9993-.9997s.4482-.9993.9993-.9993c.5511 0 .9993.4482.9993.9993 0 .5511-.4482.9997-.9993.9997m11.4045-6.02l1.9973-3.4592a.416.416 0 00-.1521-.5676.416.416 0 00-.5676.1521l-2.0223 3.503C15.5902 8.4114 13.8533 8.1 12 8.1c-1.8533 0-3.5902.3114-5.1367.8497L4.841 5.4467a.4161.4161 0 00-.5677-.1521.4157.4157 0 00-.1521.5676l1.9973 3.4592C2.6889 11.1867.3432 14.6589 0 18.761h24c-.3432-4.1021-2.6889-7.5743-6.1185-9.4396"/></svg>
+                <span>Android</span>
+            </button>
+            <!-- iOS V2BOX -->
+            <button class="tab-btn" onclick="switchTab('ios-v2box')">
+                <svg viewBox="0 0 24 24"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.81-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M15.97 4.54c.64-.78 1.08-1.86.96-2.95-1 .04-2.14.65-2.81 1.43-.58.68-1.1 1.77-.96 2.85 1.12.09 2.18-.55 2.81-1.33z"/></svg>
+                <span>iOS · V2BOX</span>
+            </button>
+            <!-- iOS Shadowrocket -->
+            <button class="tab-btn" onclick="switchTab('ios-shadowrocket')">
+                <svg viewBox="0 0 24 24"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.81-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M15.97 4.54c.64-.78 1.08-1.86.96-2.95-1 .04-2.14.65-2.81 1.43-.58.68-1.1 1.77-.96 2.85 1.12.09 2.18-.55 2.81-1.33z"/></svg>
+                <span>iOS · Shadowrockets</span>
+            </button>
+
+        </div>
+    </div>
+
+    <div class="container">
+
+        <!-- ==================== 1. Windows (v2rayN) ==================== -->
+        <div id="windows" class="tab-pane active">
+            <header>
+                <div class="app-badge">V2RAY · WINDOWS CLIENT</div>
+                <h1>v2rayN 使用指南</h1>
+                <div class="subtitle">Windows 平台原生 V2Ray / Xray 核心客户端安装、配置导入与分流手册</div>
+            </header>
+
+            <div class="section-header"><div class="section-title">快速配置流程</div></div>
+
+            <div class="card">
+                <div class="card-header">
+                    <div class="card-title">1. 下载并运行客户端</div>
+                    <div class="card-desc">v2rayN 是 Windows 平台经典成熟的开源客户端，内置 Xray 内核与完整图形界面。</div>
+                </div>
+                <div class="card-body">
+                    <ul>
+                        <li><strong>官方开源发布页</strong>：访问 GitHub Releases 页面：<a href="https://github.com/2dust/v2rayN/releases" target="_blank" rel="noopener noreferrer">2dust/v2rayN Releases</a></li>
+                        <li><strong>下载推荐</strong>：建议下载包含核心的完整压缩包，如 <code>v2rayN-With-Core.zip</code> 或 <code>v2rayN-windows-64-desktop.zip</code>。</li>
+                        <li><strong>解压与运行</strong>：下载完成后右键“全部解压缩”至独立文件夹（建议非 C 盘根目录），双击 <code>v2rayN.exe</code> 启动。</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <div class="card-title">2. 获取与导入专属订阅</div>
+                    <div class="card-desc">按以下步骤先获取节点专属订阅链接，随后导入 v2rayN 以拉取可用服务节点：</div>
+                </div>
+                <div class="card-body">
+                    <ol>
+                        <li style="margin-bottom: 16px;">
+                            <strong>获取节点订阅链接（必选）</strong>：<br>
+                            前往 <a href="https://freeshop.lol/product/gao-su-zhuan-xian-us" target="_blank" rel="noopener noreferrer" style="font-weight: 600; text-decoration: underline;">购买高速专线节点 ↗</a>。支付成功后即可在 <strong>邮箱</strong> 中获取 <strong>专属订阅链接</strong>，格式如下：
+                            <div class="code-box">https://sub.freeshop.lol/sub/xxxxxxxxxx</div>
+                        </li>
+                        <li>
+                            <strong>启动客户端，导入订阅链接</strong>：
+                            <ul style="margin-top: 6px;">
+                                <li>启动 v2rayN 后，点击主界面顶部菜单栏的 <strong>“订阅分组”</strong> ➔ <strong>“订阅分组设置”</strong>。</li>
+                                <li>在弹出的窗口左下角点击 <strong>“添加”</strong>：
+                                    <ul>
+                                        <li><strong>别名</strong>：填写任意备注名称（如 <code>MyService</code>）。</li>
+                                        <li><strong>可选地址 (Url)</strong>：粘贴刚才拿到的专属订阅链接。</li>
+                                    </ul>
+                                </li>
+                                <li>点击右下角 <strong>“确定”</strong> 保存设置。</li>
+                                <li>回到主界面，点击顶部菜单 <strong>“订阅分组”</strong> ➔ <strong>“更新全部订阅(不通过代理)”</strong>，节点列表将自动呈现在窗口中。</li>
+                            </ul>
+                        </li>
+                    </ol>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <div class="card-title">3. 系统代理与分流模式设置</div>
+                    <div class="card-desc">在任务栏右下角托盘区，右键点击 v2rayN 图标确认以下关键设置：</div>
+                </div>
+                <div class="settings-list">
+                    <div class="setting-item">
+                        <div class="setting-label"><kbd>系统代理</kbd><span class="setting-arrow">➔</span><kbd style="color: var(--accent);">自动配置系统代理</kbd></div>
+                        <div class="setting-desc">图标变红，浏览器及绝大多数日常应用自动接入代理</div>
+                    </div>
+                    <div class="setting-item">
+                        <div class="setting-label"><kbd>路由规则</kbd><span class="setting-arrow">➔</span><kbd style="color: var(--accent);">绕过大陆 (Whitelist)</kbd></div>
+                        <div class="setting-desc">国内常用网站直连，海外网站走专线（最推荐）</div>
+                    </div>
+                    <div class="setting-item">
+                        <div class="setting-label"><kbd>开机自动启动</kbd><span class="setting-arrow">➔</span><kbd>勾选开启</kbd></div>
+                        <div class="setting-desc">登录 Windows 系统后自动在后台托盘静默运行</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <div class="card-title">4. 批量测速与切换连接</div>
+                    <div class="card-desc">选择网络连通性最佳的节点启动使用：</div>
+                </div>
+                <div class="card-body">
+                    <div style="margin-bottom: 12px; font-weight: 500;">
+                        快捷测速：在主界面节点列表按 <kbd>Ctrl</kbd> + <kbd>R</kbd>，立即测试所有节点真实延迟。
+                    </div>
+                    <ul>
+                        <li>测试完成后，列表中会显示真实延迟数值（绿色数值为优，如 <code>118ms</code>）。</li>
+                        <li>单击选中该节点，按键盘 <kbd>Enter</kbd> 回车键设为活动节点（左侧出现对勾即为生效）。</li>
+                        <li>打开浏览器访问海外站点测试，连接建立即表示配置成功。</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="section-header"><div class="section-title">常见问题与排错指引</div></div>
+            <div class="features-grid">
+                <div class="feature-card"><div class="feature-title">网页无法加载</div><div class="feature-desc">右键托盘图标确认“系统代理”是否已选为“自动配置系统代理”；检查节点延迟是否为正数。</div></div>
+                <div class="feature-card"><div class="feature-title">国内网站访问变慢</div><div class="feature-desc">检查托盘菜单“路由”是否被误设为全局。请务必选择“绕过大陆”以保证国内流量直连。</div></div>
+                <div class="feature-card"><div class="feature-title">订阅更新失败</div><div class="feature-desc">检查网络是否通畅；部分网络环境更新订阅时可尝试右键选中代理先开启后再更新。</div></div>
+                <div class="feature-card"><div class="feature-title">系统时间不同步</div><div class="feature-desc">现代加密传输要求本地系统时间误差不得超过 90 秒，若提示握手错误请在 Windows 设置中同步时间。</div></div>
+            </div>
+        </div>
+
+        <!-- ==================== 2. Android (v2rayNG) ==================== -->
+        <div id="android" class="tab-pane">
+            <header>
+                <div class="app-badge">V2RAY · ANDROID CLIENT</div>
+                <h1>v2rayNG 使用指南</h1>
+                <div class="subtitle">安卓平台轻量级 V2Ray / Xray 原生客户端安装、订阅拉取与分应用分流手册</div>
+            </header>
+
+            <div class="section-header"><div class="section-title">快速配置流程</div></div>
+
+            <div class="card">
+                <div class="card-header">
+                    <div class="card-title">1. 安装包下载与系统授权</div>
+                    <div class="card-desc">v2rayNG 是安卓平台装机量最大、兼容性最出色的 V2Ray 客户端。</div>
+                </div>
+                <div class="card-body">
+                    <ul>
+                        <li><strong>官方开源发布页</strong>：访问 GitHub Releases 页面：<a href="https://github.com/2dust/v2rayNG/releases" target="_blank" rel="noopener noreferrer">2dust/v2rayNG Releases</a></li>
+                        <li><strong>安装包选择</strong>：推荐下载主流 64 位包 <code>v2rayNG_x.x.x_arm64-v8a.apk</code> 或通用包 <code>universal.apk</code>。</li>
+                        <li>下载后在手机系统文件管理中打开，允许“从未知来源安装”并完成安装。</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <div class="card-title">2. 获取与导入专属订阅</div>
+                    <div class="card-desc">按以下步骤先获取专属订阅链接，随后填入 v2rayNG 以拉取可用节点：</div>
+                </div>
+                <div class="card-body">
+                    <ol>
+                        <li style="margin-bottom: 16px;">
+                            <strong>获取节点订阅链接（必选）</strong>：<br>
+                            前往 <a href="https://freeshop.lol/product/gao-su-zhuan-xian-us" target="_blank" rel="noopener noreferrer" style="font-weight: 600; text-decoration: underline;">购买高速专线节点 ↗</a>。支付成功后即可在 <strong>邮箱</strong> 中获取 <strong>专属订阅链接</strong>，格式如下：
+                            <div class="code-box">https://sub.freeshop.lol/sub/xxxxxxxxxx</div>
+                        </li>
+                        <li>
+                            <strong>启动客户端，导入订阅链接</strong>：
+                            <ul style="margin-top: 6px;">
+                                <li>打开 v2rayNG，点击左上角 <strong>“三”</strong>（侧边栏菜单），选择 <strong>“订阅分组设置”</strong>。</li>
+                                <li>点击右上角 <strong>“+”</strong> 号新建订阅分组：
+                                    <ul>
+                                        <li><strong>备注</strong>：输入任意便于辨别的名称。</li>
+                                        <li><strong>可选地址 (Url)</strong>：粘贴刚才拿到的专属订阅链接。</li>
+                                    </ul>
+                                </li>
+                                <li>点击右上角<strong>对勾图标</strong>保存。</li>
+                                <li>返回主界面，点击右上角 <strong>“三点”</strong> 菜单，选择 <strong>“更新订阅”</strong>，所有节点将自动加载呈现。</li>
+                            </ul>
+                        </li>
+                    </ol>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <div class="card-title">3. 核心分流与应用代理设置</div>
+                    <div class="card-desc">点击左侧抽屉菜单进入 <strong>“设置”</strong>，按以下规范调优：</div>
+                </div>
+                <div class="settings-list">
+                    <div class="setting-item">
+                        <div class="setting-label"><kbd>路由模式</kbd><span class="setting-arrow">➔</span><kbd style="color: var(--accent);">绕过局域网及大陆地址</kbd></div>
+                        <div class="setting-desc">微信、淘宝等国内流量直连，海外流量走代理（最推荐）</div>
+                    </div>
+                    <div class="setting-item">
+                        <div class="setting-label"><kbd>分应用代理</kbd><span class="setting-arrow">➔</span><kbd>按需开启</kbd></div>
+                        <div class="setting-desc">可自由勾选仅允许特定海外 App 走代理通道</div>
+                    </div>
+                    <div class="setting-item">
+                        <div class="setting-label"><kbd>开机自启</kbd><span class="setting-arrow">➔</span><kbd>建议开启</kbd></div>
+                        <div class="setting-desc">手机重启后在后台自动恢复连接，省去重复手动点击</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <div class="card-title">4. 批量测速与启动连接</div>
+                    <div class="card-desc">挑选延迟最佳的节点并建立连接：</div>
+                </div>
+                <div class="card-body">
+                    <ul>
+                        <li>点击右上角<strong>三点菜单</strong> ➔ 选择 <strong>“测试全部配置真连接延迟”</strong>。</li>
+                        <li>列表中节点右下角将呈现绿色延迟（如 <code>140ms</code>），轻触选中该节点（左侧边缘变高亮）。</li>
+                        <li>轻按右下角圆形的 <strong>“V” 字主开关</strong>。</li>
+                        <li>首次启动时，系统会弹出“网络连接请求 (VPN)”授权提示，点击<strong>“确定”</strong>。主开关变红即表示已正常连接。</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="section-header"><div class="section-title">常见问题与排错指引</div></div>
+            <div class="features-grid">
+                <div class="feature-card"><div class="feature-title">后台经常断连</div><div class="feature-desc">各大厂商系统（如小米澎湃、华为、OPPO）容易杀后台，请在系统设置中为 v2rayNG 关闭“电池优化”，并加入自启动白名单。</div></div>
+                <div class="feature-card"><div class="feature-title">国内应用加载慢</div><div class="feature-desc">请确认“设置”中的路由模式选为了<strong>绕过局域网及大陆地址</strong>，切勿设置为全局代理。</div></div>
+                <div class="feature-card"><div class="feature-title">测速全部显示 -1</div><div class="feature-desc">负数代表握手超时，可尝试切换 Wi-Fi / 数据网络，或检查订阅链接是否已过期。</div></div>
+                <div class="feature-card"><div class="feature-title">节点订阅导入报错</div><div class="feature-desc">粘贴订阅链接时请勿包含多余的前后空格或特殊转义字符，确认链接以 <code>https://</code> 开头。</div></div>
+            </div>
+        </div>
+
+        <!-- ==================== 3. iOS (V2BOX · 推荐) ==================== -->
+        <div id="ios-v2box" class="tab-pane">
+            <header>
+                <div class="app-badge">V2RAY · IOS CLIENT</div>
+                <h1>V2BOX 使用指南</h1>
+                <div class="subtitle">iPhone 与 iPad 平台原生轻量 V2Ray 客户端安装、订阅拉取与连接手册</div>
+            </header>
+
+            <div class="section-header"><div class="section-title">快速配置流程</div></div>
+
+            <div class="card">
+                <div class="card-header">
+                    <div class="card-title">1. App Store 下载与安装</div>
+                    <div class="card-desc">V2BOX 是专为 V2Ray / Xray 生态打造的 iOS 原生网络工具，界面简洁现代化。</div>
+                </div>
+                <div class="card-body">
+                    <ul>
+                        <li><strong>应用商店</strong>：在非国区（如美区、日区、港区等）App Store 登录海外 Apple ID。</li>
+                        <li><strong>搜索下载</strong>：在 App Store 搜索 <strong>V2BOX - V2ray Client</strong> 直接获取下载。</li>
+                        <li>安装完成后即可切回个人常用国区账号，不影响已安装应用的使用与本地配置。</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <div class="card-title">2. 获取与导入专属订阅</div>
+                    <div class="card-desc">按以下步骤先获取专属订阅链接，随后导入 V2BOX 以同步可用节点：</div>
+                </div>
+                <div class="card-body">
+                    <ol>
+                        <li style="margin-bottom: 16px;">
+                            <strong>获取节点订阅链接（必选）</strong>：<br>
+                            前往 <a href="https://freeshop.lol/product/gao-su-zhuan-xian-us" target="_blank" rel="noopener noreferrer" style="font-weight: 600; text-decoration: underline;">购买高速专线节点 ↗</a>。支付成功后即可在 <strong>邮箱</strong> 中获取 <strong>专属订阅链接</strong>，格式如下：
+                            <div class="code-box">https://sub.freeshop.lol/sub/xxxxxxxxxx</div>
+                        </li>
+                        <li>
+                            <strong>启动客户端，导入订阅链接</strong>：
+                            <ul style="margin-top: 6px;">
+                                <li>打开 V2BOX，点击底部导航栏第二个图标 <strong>“Configs”</strong>（节点配置）。</li>
+                                <li>点击右上角的 <strong>“+”</strong> 加号按钮。</li>
+                                <li>在弹出的菜单中选择 <strong>“Add Subscription”</strong>（添加订阅）。</li>
+                                <li>填写配置：
+                                    <ul>
+                                        <li><strong>Subscription Name</strong>：填入任意名称（如 <code>MyService</code>）。</li>
+                                        <li><strong>Subscription URL</strong>：粘贴刚才拿到的专属订阅链接。</li>
+                                    </ul>
+                                </li>
+                                <li>点击右上角 <strong>“Add”</strong> 保存，客户端将立即自动同步并展开节点列表。</li>
+                            </ul>
+                        </li>
+                    </ol>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <div class="card-title">3. 分流规则与常用设置</div>
+                    <div class="card-desc">点击底部导航栏 <strong>“Settings”</strong>（设置），建议按以下规范配置核心开关：</div>
+                </div>
+                <div class="settings-list">
+                    <div class="setting-item">
+                        <div class="setting-label"><kbd>Routing 路由规则</kbd><span class="setting-arrow">➔</span><kbd style="color: var(--accent);">Bypass Mainland</kbd></div>
+                        <div class="setting-desc">绕过大陆域名及 IP，国内直连不耗流量（最推荐）</div>
+                    </div>
+                    <div class="setting-item">
+                        <div class="setting-label"><kbd>Auto Update Subscriptions</kbd><span class="setting-arrow">➔</span><kbd>开启 (ON)</kbd></div>
+                        <div class="setting-desc">开启后每次启动应用自动拉取最新节点与可用列表</div>
+                    </div>
+                    <div class="setting-item">
+                        <div class="setting-label"><kbd>Sniffing 流量探测</kbd><span class="setting-arrow">➔</span><kbd>开启 (ON)</kbd></div>
+                        <div class="setting-desc">精准识别真实访问域名，防止本地 DNS 劫持与污染</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <div class="card-title">4. 测速与建立连接</div>
+                    <div class="card-desc">选择可用节点并开启 iOS 系统 VPN：</div>
+                </div>
+                <div class="card-body">
+                    <ul>
+                        <li>在 <strong>Configs</strong> 页面，点击右上角仪表盘或 <strong>“Ping All”</strong> 按钮批量测速。</li>
+                        <li>测速完成后点击选中延迟较低的节点（节点旁显示对勾或高亮）。</li>
+                        <li>点击底部第一个图标返回 <strong>“Home”</strong> 首页。</li>
+                        <li>点击中间醒目的 <strong>“Slide to Connect”</strong> 滑动条或连接按钮。</li>
+                        <li>初次连接时 iOS 会弹出“添加 VPN 配置”授权提示，点击<strong>“允许”</strong>并输入手机锁屏密码。状态变为 Connected 即连接成功。</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="section-header"><div class="section-title">常见问题与排错指引</div></div>
+            <div class="features-grid">
+                <div class="feature-card"><div class="feature-title">网络连接授权</div><div class="feature-desc">首次打开若弹出“是否允许使用无线局域网与蜂窝网络”，必须点击允许，否则客户端无法联网拉取订阅。</div></div>
+                <div class="feature-card"><div class="feature-title">连上后国内软件打不开</div><div class="feature-desc">请进入 Settings 确认 Routing 规则选为了 <strong>Bypass Mainland</strong>，避免国内服务走海外代理。</div></div>
+                <div class="feature-card"><div class="feature-title">Ping 测速全部超时</div><div class="feature-desc">可能是本地网络连接受阻，尝试关闭 Wi-Fi 使用 4G/5G 移动蜂窝数据测试，或刷新订阅。</div></div>
+                <div class="feature-card"><div class="feature-title">系统时间准确性</div><div class="feature-desc">iOS 设备通常自动对时，如曾手动调快时间可能导致连接失败，请在 iPhone 设置中开启“自动设置时间”。</div></div>
+            </div>
+        </div>
+
+        <!-- ==================== 4. iOS (Shadowrocket · 备选) ==================== -->
+        <div id="ios-shadowrocket" class="tab-pane">
+            <header>
+                <div class="app-badge">V2RAY · IOS CLIENT</div>
+                <h1>Shadowrocket (小火箭) 使用指南</h1>
+                <div class="subtitle">iPhone 与 iPad 平台老牌多协议代理客户端安装、订阅拉取与分流手册</div>
+            </header>
+
+            <div class="section-header"><div class="section-title">快速配置流程</div></div>
+
+            <div class="card">
+                <div class="card-header">
+                    <div class="card-title">1. App Store 下载与安装</div>
+                    <div class="card-desc">Shadowrocket 是 iOS 平台最广为人知的专业代理工具，协议兼容性极佳。</div>
+                </div>
+                <div class="card-body">
+                    <ul>
+                        <li>在 App Store 中退出当前账号，登录非国区（美区/港区等）Apple ID。</li>
+                        <li>在 App Store 搜索 <strong>Shadowrocket</strong>（认准白底蓝色小火箭图标）。</li>
+                        <li>完成下载安装后，可退出并换回个人主力国区账号。</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <div class="card-title">2. 获取与导入专属订阅</div>
+                    <div class="card-desc">按以下步骤先获取节点专属订阅链接，随后导入小火箭以同步节点列表：</div>
+                </div>
+                <div class="card-body">
+                    <ol>
+                        <li style="margin-bottom: 16px;">
+                            <strong>获取节点订阅链接（必选）</strong>：<br>
+                            前往 <a href="https://freeshop.lol/product/gao-su-zhuan-xian-us" target="_blank" rel="noopener noreferrer" style="font-weight: 600; text-decoration: underline;">购买高速专线节点 ↗</a>。支付成功后即可在 <strong>邮箱</strong> 中获取 <strong>专属订阅链接</strong>，格式如下：
+                            <div class="code-box">https://sub.freeshop.lol/sub/xxxxxxxxxx</div>
+                        </li>
+                        <li>
+                            <strong>启动客户端，导入订阅链接</strong>：
+                            <ul style="margin-top: 6px;">
+                                <li>打开 Shadowrocket，轻点右上角的 <strong>“+”</strong> 号。</li>
+                                <li>将<strong>“类型”</strong>项切换为 <strong>Subscribe</strong>（订阅）。</li>
+                                <li>在<strong>“URL”</strong>一栏粘贴刚才拿到的专属订阅链接；<strong>“备注”</strong>填入任意名称。</li>
+                                <li>点击右上角 <strong>“保存” (Save)</strong>，客户端将立即开始下载并呈现所有节点。</li>
+                            </ul>
+                        </li>
+                    </ol>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <div class="card-title">3. 全局路由策略设置</div>
+                    <div class="card-desc">在应用主界面中间及设置中，确认以下推荐配置：</div>
+                </div>
+                <div class="settings-list">
+                    <div class="setting-item">
+                        <div class="setting-label"><kbd>全局路由</kbd><span class="setting-arrow">➔</span><kbd style="color: var(--accent);">配置模式 (Config)</kbd></div>
+                        <div class="setting-desc">国内网站直连，海外流量智能分流走专线（最推荐）</div>
+                    </div>
+                    <div class="setting-item">
+                        <div class="setting-label"><kbd>代理模式 (Proxy)</kbd><span class="setting-arrow">➔</span><kbd>仅排错时启用</kbd></div>
+                        <div class="setting-desc">强制所有应用流量走海外节点，日常无需开启</div>
+                    </div>
+                    <div class="setting-item">
+                        <div class="setting-label"><kbd>打开时更新订阅</kbd><span class="setting-arrow">➔</span><kbd>开启 (ON)</kbd></div>
+                        <div class="setting-desc">在下方“设置” ➔ “订阅”中开启，自动拉取最新节点</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <div class="card-title">4. 连通性测试与启动</div>
+                    <div class="card-desc">选择可用节点并拨动连接开关：</div>
+                </div>
+                <div class="card-body">
+                    <ul>
+                        <li>在节点列表上方点击 <strong>“连通性测试”</strong>，数值显示为绿色（如 <code>125ms</code>）的节点代表网络可用。</li>
+                        <li>轻触选中目标节点（左侧出现橙色圆点标记）。</li>
+                        <li>拨动主界面最顶部的 <strong>“未连接”</strong> 开关至开启状态。</li>
+                        <li>系统弹出“添加 VPN 配置”弹窗时，点击<strong>“允许”</strong>并输入手机锁屏密码确认即可。</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="section-header"><div class="section-title">常见问题与排错指引</div></div>
+            <div class="features-grid">
+                <div class="feature-card"><div class="feature-title">首次启动网络受限</div><div class="feature-desc">首次打开提示“网络权限”时若误点了不允许，请前往 iOS“设置” -> “Shadowrocket”中重新开启“无线局域网与蜂窝数据”。</div></div>
+                <div class="feature-card"><div class="feature-title">微信/网银无法连接</div><div class="feature-desc">确认全局路由是否被误设为了“代理”。只有保持为“配置”模式，国内流量才会被安全分流直连。</div></div>
+                <div class="feature-card"><div class="feature-title">订阅更新超时</div><div class="feature-desc">可在节点上向左滑动选择“更新”，或长按订阅分组名称选择“更新”。</div></div>
+                <div class="feature-card"><div class="feature-title">证书或时间报错</div><div class="feature-desc">V2Ray 协议对时间敏感，若遇握手超时请在 iOS“设置” -> “通用” -> “日期与时间”中开启“自动设置”。</div></div>
+            </div>
+        </div>
+
+        <!-- ==================== 5. macOS (V2rayU) ==================== -->
+        <div id="macos" class="tab-pane">
+            <header>
+                <div class="app-badge">V2RAY · MACOS CLIENT</div>
+                <h1>V2rayU 使用指南</h1>
+                <div class="subtitle">macOS 平台原生菜单栏 V2Ray 客户端安装、配置导入与系统代理设置手册</div>
+            </header>
+
+            <div class="section-header"><div class="section-title">快速配置流程</div></div>
+
+            <div class="card">
+                <div class="card-header">
+                    <div class="card-title">1. 安装包下载与 Mac 权限授权</div>
+                    <div class="card-desc">V2rayU 专为 macOS 打造，常驻顶部菜单栏，极简轻巧。</div>
+                </div>
+                <div class="card-body">
+                    <ul>
+                        <li><strong>官方开源发布页</strong>：访问 GitHub Releases 页面：<a href="https://github.com/yanue/V2rayU/releases" target="_blank" rel="noopener noreferrer">yanue/V2rayU Releases</a></li>
+                        <li><strong>架构选择</strong>：Apple M 系列芯片机型请选择 <code>V2rayU-arm64.dmg</code>；Intel 芯片机型请选择 <code>V2rayU-64.dmg</code>。</li>
+                        <li>双击挂载 DMG，将 <code>V2rayU.app</code> 拖入 <strong>Applications</strong>（应用程序）文件夹。</li>
+                        <li>若首次启动弹出“无法打开，因为无法验证开发者”，前往 Mac <strong>系统设置</strong> -> <strong>隐私与安全性</strong>，在页面底部点击<strong>“仍要打开”</strong>即可。</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <div class="card-title">2. 获取与导入专属订阅</div>
+                    <div class="card-desc">按以下步骤先获取节点专属订阅链接，随后在 Mac 顶部菜单栏中添加以同步节点：</div>
+                </div>
+                <div class="card-body">
+                    <ol>
+                        <li style="margin-bottom: 16px;">
+                            <strong>获取节点订阅链接（必选）</strong>：<br>
+                            前往 <a href="https://freeshop.lol/product/gao-su-zhuan-xian-us" target="_blank" rel="noopener noreferrer" style="font-weight: 600; text-decoration: underline;">购买高速专线节点 ↗</a>。支付成功后即可在 <strong>邮箱</strong> 中获取 <strong>专属订阅链接</strong>，格式如下：
+                            <div class="code-box">https://sub.freeshop.lol/sub/xxxxxxxxxx</div>
+                        </li>
+                        <li>
+                            <strong>启动客户端，导入订阅链接</strong>：
+                            <ul style="margin-top: 6px;">
+                                <li>启动后，在 Mac 屏幕最上方菜单栏找到 <strong>“U”</strong> 字形小图标，点击它。</li>
+                                <li>在下拉菜单中选择 <strong>“订阅设置” (Subscribe Setting)</strong>。</li>
+                                <li>在弹出窗口中：
+                                    <ul>
+                                        <li><strong>地址 (Url)</strong>：粘贴刚才拿到的专属订阅链接。</li>
+                                        <li><strong>备注 (Remark)</strong>：输入任意便于辨别的名称。</li>
+                                    </ul>
+                                </li>
+                                <li>点击右侧 <strong>“添加” (Add)</strong>，随后点击 <strong>“更新” (Update)</strong>，节点将自动拉取呈现。</li>
+                            </ul>
+                        </li>
+                    </ol>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <div class="card-title">3. 模式切换与代理开关</div>
+                    <div class="card-desc">点击屏幕顶部菜单栏“U”字图标，建议确认以下设置：</div>
+                </div>
+                <div class="settings-list">
+                    <div class="setting-item">
+                        <div class="setting-label"><kbd>Turn v2ray-core On</kbd><span class="setting-arrow">➔</span><kbd style="color: var(--accent);">点击开启</kbd></div>
+                        <div class="setting-desc">启动内核服务并接管 Mac 系统代理（菜单显示 Off 时代表正在运行）</div>
+                    </div>
+                    <div class="setting-item">
+                        <div class="setting-label"><kbd>运行模式</kbd><span class="setting-arrow">➔</span><kbd style="color: var(--accent);">PAC Mode (PAC 模式)</kbd></div>
+                        <div class="setting-desc">智能分流模式，国内网站直连，海外网站走专线（最推荐）</div>
+                    </div>
+                    <div class="setting-item">
+                        <div class="setting-label"><kbd>开机自动启动</kbd><span class="setting-arrow">➔</span><kbd>勾选开启</kbd></div>
+                        <div class="setting-desc">登录 macOS 桌面后自动在顶部菜单栏常驻运行</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <div class="card-title">4. 节点测速与选择</div>
+                    <div class="card-desc">在菜单栏快速选择可用服务器：</div>
+                </div>
+                <div class="card-body">
+                    <ul>
+                        <li>点击菜单栏 <strong>“U”</strong> 图标 ➔ 点击 <strong>“Server”</strong>（服务器列表）。</li>
+                        <li>点击 <strong>“Ping all servers”</strong> 可检测各个节点的真实网络连通延迟。</li>
+                        <li>点击选中延迟为绿色的优质节点（勾选即生效）。</li>
+                        <li>确保菜单中显示为 <strong>“Turn v2ray-core Off”</strong>（代表当前处于开启状态，点击可关闭）。</li>
+                        <li>打开 Safari 浏览器访问目标站点进行连通验证。</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="section-header"><div class="section-title">常见问题与排错指引</div></div>
+            <div class="features-grid">
+                <div class="feature-card"><div class="feature-title">退出后 Mac 无法上网</div><div class="feature-desc">若异常强制退出导致系统代理未重置，请进入“系统设置” -> “网络” -> “Wi-Fi 详细信息” -> “代理”，取消勾选网页代理 (HTTP/HTTPS)。</div></div>
+                <div class="feature-card"><div class="feature-title">国内网站加载缓慢</div><div class="feature-desc">请确认运行模式为 <strong>PAC Mode</strong>，若误设为 Global Mode 会导致国内流量绕道海外。</div></div>
+                <div class="feature-card"><div class="feature-title">菜单栏图标不显示</div><div class="feature-desc">刘海屏 MacBook 可能会遮挡过多菜单栏图标，可通过“活动监视器”或第三方菜单栏管理工具查看。</div></div>
+                <div class="feature-card"><div class="feature-title">系统时钟校验错误</div><div class="feature-desc">macOS 通常默认自动同步苹果时间服务器，如曾手动调整时间导致偏差过大将无法握手，请保持时间自动同步。</div></div>
+            </div>
+        </div>
+
+        <!-- ==================== 6. 订单查询 ==================== -->
+        <div id="order-search" class="tab-pane">
+            <header>
+                <div class="app-badge">ORDERS & SUBSCRIPTIONS</div>
+                <h1>订单查询与卡密提取</h1>
+                <div class="subtitle">找回已购服务的专属订阅链接与发货凭证</div>
+            </header>
+
+            <div class="card">
+                <div class="card-header">
+                    <div class="card-title">自主找回已购订阅步骤</div>
+                    <div class="card-desc">如果您支付成功后关闭了页面，可凭下单联系方式随时调出专属订阅链接：</div>
+                </div>
+                <div class="card-body">
+                    <ol>
+                        <li>访问商城首页：<a href="https://freeshop.lol" target="_blank" rel="noopener noreferrer">https://freeshop.lol ↗</a></li>
+                        <li>点击商城顶部或底部的 <strong>“订单查询”</strong> 菜单。</li>
+                        <li>输入您下单时填写的<strong>邮箱或手机号</strong>（以及下单时设置的查询密码）。</li>
+                        <li>点击“立即查询”，系统将立即列出您的历史订单与专属<strong>订阅链接</strong>。</li>
+                    </ol>
+
+                    <div style="margin-top: 20px; text-align: center;">
+                        <a href="https://freeshop.lol" target="_blank" rel="noopener noreferrer" style="display: inline-block; padding: 10px 24px; background: var(--accent); color: #fff !important; border-radius: 20px; font-weight: 600; text-decoration: none !important;">
+                            前往商城订单查询 ↗
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <footer>
+            客户端使用指南与配置手册 &bull; 单页自包含系统
+        </footer>
+    </div>
+
+    <!-- 极简原生 JS 控制 Tab 切换，零外部依赖 -->
+    <script>
+        function switchTab(tabId) {
+            // 切换 Tab 按钮激活状态
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.classList.toggle('active', btn.getAttribute('onclick').includes(tabId));
+            });
+            // 切换对应的内容面板
+            document.querySelectorAll('.tab-pane').forEach(pane => {
+                pane.classList.toggle('active', pane.id === tabId);
+            });
+            // 平滑滚动回顶部
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // 页面初始化：根据 Hash 或 User-Agent 智能推荐默认 Tab
+        (function() {
+            var hash = window.location.hash.replace('#', '');
+            if (hash && document.getElementById(hash)) {
+                switchTab(hash);
+                return;
+            }
+            var ua = navigator.userAgent.toLowerCase();
+            if (/iphone|ipad|ipod/.test(ua)) {
+                switchTab('ios-v2box');
+            } else if (/android/.test(ua)) {
+                switchTab('android');
+            } else if (/macintosh|mac os x/.test(ua)) {
+                switchTab('macos');
+            } else {
+                switchTab('windows');
+            }
+        })();
+    </script>
+</body>
+</html>
