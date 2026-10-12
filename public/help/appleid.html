@@ -1,0 +1,1332 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>美区 Apple ID 注册与使用全流程指南</title>
+    <style>
+        :root {
+            --bg-primary: #f5f5f7;
+            --bg-card: #ffffff;
+            --bg-subtle: #f8f9fa;
+            --text-primary: #1d1d1f;
+            --text-secondary: #86868b;
+            --accent: #0071e3;
+            --accent-hover: #0077ed;
+            --accent-light: rgba(0, 113, 227, 0.08);
+            --border: rgba(0, 0, 0, 0.08);
+            --border-hover: rgba(0, 113, 227, 0.3);
+            --card-shadow: 0 4px 20px rgba(0, 0, 0, 0.04);
+            --nav-bg: rgba(255, 255, 255, 0.85);
+            --danger-bg: rgba(255, 59, 48, 0.08);
+            --danger-border: rgba(255, 59, 48, 0.25);
+            --danger-text: #d70015;
+            --warning-bg: rgba(255, 149, 0, 0.08);
+            --warning-border: rgba(255, 149, 0, 0.25);
+            --warning-text: #c97800;
+            --success-bg: rgba(52, 199, 89, 0.08);
+            --success-border: rgba(52, 199, 89, 0.25);
+            --success-text: #248a3d;
+            --radius-sm: 8px;
+            --radius-md: 12px;
+            --radius-lg: 18px;
+        }
+
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --bg-primary: #121214;
+                --bg-card: #1c1c1e;
+                --bg-subtle: #252528;
+                --text-primary: #f5f5f7;
+                --text-secondary: #a1a1a6;
+                --accent: #2997ff;
+                --accent-hover: #47a6ff;
+                --accent-light: rgba(41, 151, 255, 0.15);
+                --border: rgba(255, 255, 255, 0.1);
+                --border-hover: rgba(41, 151, 255, 0.4);
+                --card-shadow: 0 4px 24px rgba(0, 0, 0, 0.35);
+                --nav-bg: rgba(28, 28, 30, 0.85);
+                --danger-bg: rgba(255, 69, 58, 0.15);
+                --danger-border: rgba(255, 69, 58, 0.3);
+                --danger-text: #ff453a;
+                --warning-bg: rgba(255, 159, 10, 0.15);
+                --warning-border: rgba(255, 159, 10, 0.3);
+                --warning-text: #ff9f0a;
+                --success-bg: rgba(48, 209, 88, 0.15);
+                --success-border: rgba(48, 209, 88, 0.3);
+                --success-text: #30d158;
+            }
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "SF Pro Icons", "Helvetica Neue", Helvetica, Arial, sans-serif;
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.68;
+            letter-spacing: -0.01em;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        .container {
+            max-width: 920px;
+            margin: 0 auto;
+            padding: 40px 20px 80px;
+        }
+
+        /* 顶部粘性导航条 */
+        .sticky-nav {
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            background: var(--nav-bg);
+            border-bottom: 1px solid var(--border);
+            padding: 10px 0;
+            margin-bottom: 30px;
+        }
+
+        .nav-inner {
+            max-width: 920px;
+            margin: 0 auto;
+            padding: 0 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            overflow-x: auto;
+            white-space: nowrap;
+            gap: 12px;
+            scrollbar-width: none;
+        }
+
+        .nav-inner::-webkit-scrollbar {
+            display: none;
+        }
+
+        .nav-brand {
+            font-size: 14px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            color: var(--text-primary);
+            text-decoration: none;
+            flex-shrink: 0;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 6px;
+        }
+
+        .nav-link {
+            font-size: 13px;
+            padding: 6px 12px;
+            border-radius: var(--radius-sm);
+            color: var(--text-secondary);
+            text-decoration: none;
+            transition: all 0.2s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .nav-link:hover,
+        .nav-link.active {
+            color: var(--accent);
+            background: var(--accent-light);
+            font-weight: 500;
+        }
+
+        /* 头部介绍 */
+        .header {
+            text-align: center;
+            padding: 30px 0 40px;
+        }
+
+        .badge-pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 6px 14px;
+            border-radius: 999px;
+            background: var(--accent-light);
+            color: var(--accent);
+            font-size: 13px;
+            font-weight: 600;
+            margin-bottom: 16px;
+        }
+
+        h1 {
+            font-size: 38px;
+            font-weight: 700;
+            letter-spacing: -0.025em;
+            margin-bottom: 14px;
+        }
+
+        .subtitle {
+            font-size: 17px;
+            color: var(--text-secondary);
+            max-width: 660px;
+            margin: 0 auto 28px;
+        }
+
+        /* 金字塔塔尖核心摘要卡 */
+        .pyramid-summit {
+            background: linear-gradient(135deg, var(--bg-card) 0%, var(--bg-subtle) 100%);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-lg);
+            padding: 26px 28px;
+            box-shadow: var(--card-shadow);
+            margin-bottom: 40px;
+        }
+
+        .summit-core-line {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 20px;
+            padding-bottom: 16px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .core-tag {
+            font-size: 12px;
+            font-weight: 700;
+            text-transform: uppercase;
+            padding: 4px 10px;
+            border-radius: 6px;
+            background: var(--accent);
+            color: #fff;
+            flex-shrink: 0;
+        }
+
+        .core-text {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        /* 里程碑网格卡片 */
+        .milestones-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 14px;
+        }
+
+        @media (max-width: 768px) {
+            .milestones-grid {
+                grid-template-columns: 1fr;
+            }
+
+            h1 {
+                font-size: 28px;
+            }
+        }
+
+        .milestone-item {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-md);
+            padding: 16px;
+            text-decoration: none;
+            color: inherit;
+            transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            position: relative;
+        }
+
+        .milestone-item:hover {
+            transform: translateY(-2px);
+            border-color: var(--border-hover);
+            box-shadow: 0 6px 18px rgba(0, 113, 227, 0.1);
+        }
+
+        .step-index-badge {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            background: var(--accent-light);
+            color: var(--accent);
+            font-size: 12px;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .milestone-title {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .milestone-desc {
+            font-size: 12px;
+            color: var(--text-secondary);
+            line-height: 1.45;
+        }
+
+        /* 步骤内容卡片 */
+        .section-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-lg);
+            padding: 34px;
+            margin-bottom: 34px;
+            box-shadow: var(--card-shadow);
+            scroll-margin-top: 80px;
+        }
+
+        .section-header {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            margin-bottom: 22px;
+        }
+
+        .step-num-icon {
+            width: 44px;
+            height: 44px;
+            border-radius: 14px;
+            background: var(--accent);
+            color: #ffffff;
+            font-size: 18px;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            box-shadow: 0 4px 10px rgba(0, 113, 227, 0.3);
+        }
+
+        .section-title {
+            font-size: 22px;
+            font-weight: 700;
+            letter-spacing: -0.015em;
+        }
+
+        .section-subtitle {
+            font-size: 13px;
+            color: var(--text-secondary);
+            margin-top: 2px;
+        }
+
+        /* 信息提示框 */
+        .callout {
+            border-radius: var(--radius-md);
+            padding: 16px 18px;
+            margin: 18px 0;
+            display: flex;
+            gap: 14px;
+            align-items: flex-start;
+        }
+
+        .callout-icon {
+            flex-shrink: 0;
+            width: 20px;
+            height: 20px;
+            margin-top: 2px;
+        }
+
+        .callout-content {
+            font-size: 14px;
+            line-height: 1.6;
+        }
+
+        .callout-danger {
+            background: var(--danger-bg);
+            border: 1px solid var(--danger-border);
+            color: var(--danger-text);
+        }
+
+        .callout-warning {
+            background: var(--warning-bg);
+            border: 1px solid var(--warning-border);
+            color: var(--warning-text);
+        }
+
+        .callout-success {
+            background: var(--success-bg);
+            border: 1px solid var(--success-border);
+            color: var(--success-text);
+        }
+
+        .callout-info {
+            background: var(--accent-light);
+            border: 1px solid var(--border-hover);
+            color: var(--accent);
+        }
+
+        /* 关键要点列表 */
+        .check-list {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin: 18px 0;
+        }
+
+        .check-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            font-size: 14.5px;
+        }
+
+        .check-icon {
+            width: 18px;
+            height: 18px;
+            color: var(--accent);
+            flex-shrink: 0;
+            margin-top: 3px;
+        }
+
+        /* 操作步骤条 */
+        .ordered-flow {
+            margin: 20px 0;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .flow-step {
+            display: flex;
+            gap: 16px;
+            position: relative;
+        }
+
+        .flow-num {
+            width: 26px;
+            height: 26px;
+            border-radius: 50%;
+            background: var(--bg-subtle);
+            border: 1px solid var(--border);
+            color: var(--text-primary);
+            font-size: 13px;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            margin-top: 2px;
+        }
+
+        .flow-body {
+            flex: 1;
+        }
+
+        .flow-title {
+            font-size: 15px;
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+
+        .flow-desc {
+            font-size: 14px;
+            color: var(--text-secondary);
+        }
+
+        /* 地址映射表格与复制卡片 */
+        .address-box {
+            background: var(--bg-subtle);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-md);
+            padding: 20px;
+            margin: 20px 0;
+        }
+
+        .address-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 14px;
+        }
+
+        .address-tag {
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--accent);
+            background: var(--accent-light);
+            padding: 4px 10px;
+            border-radius: 6px;
+        }
+
+        .copy-all-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 13px;
+            font-weight: 600;
+            padding: 6px 14px;
+            border-radius: var(--radius-sm);
+            background: var(--accent);
+            color: #ffffff;
+            border: none;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .copy-all-btn:hover {
+            background: var(--accent-hover);
+        }
+
+        .field-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+        }
+
+        @media (max-width: 640px) {
+            .field-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .field-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-sm);
+            padding: 10px 14px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: pointer;
+            transition: border-color 0.2s;
+        }
+
+        .field-card:hover {
+            border-color: var(--accent);
+        }
+
+        .field-meta {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+        }
+
+        .field-label {
+            font-size: 11px;
+            color: var(--text-secondary);
+            font-weight: 500;
+        }
+
+        .field-val {
+            font-size: 13.5px;
+            font-weight: 600;
+            color: var(--text-primary);
+            font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+        }
+
+        .field-copy-icon {
+            width: 16px;
+            height: 16px;
+            color: var(--text-secondary);
+            opacity: 0.6;
+        }
+
+        /* 避坑 FAQ 区域 */
+        .faq-item {
+            border: 1px solid var(--border);
+            border-radius: var(--radius-md);
+            padding: 16px 20px;
+            margin-bottom: 12px;
+            background: var(--bg-subtle);
+        }
+
+        .faq-q {
+            font-size: 15px;
+            font-weight: 600;
+            color: var(--text-primary);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 8px;
+        }
+
+        .faq-q-icon {
+            width: 18px;
+            height: 18px;
+            color: var(--warning-text);
+            flex-shrink: 0;
+        }
+
+        .faq-a {
+            font-size: 14px;
+            color: var(--text-secondary);
+            line-height: 1.6;
+            padding-left: 28px;
+        }
+
+        /* 轻量 Toast 提示 */
+        .toast {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%) translateY(100px);
+            background: rgba(29, 29, 31, 0.95);
+            color: #ffffff;
+            padding: 10px 22px;
+            border-radius: 999px;
+            font-size: 14px;
+            font-weight: 500;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            opacity: 0;
+            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            pointer-events: none;
+        }
+
+        .toast.show {
+            transform: translateX(-50%) translateY(0);
+            opacity: 1;
+        }
+
+        /* 底部 */
+        .footer {
+            text-align: center;
+            padding-top: 40px;
+            font-size: 13px;
+            color: var(--text-secondary);
+            border-top: 1px solid var(--border);
+        }
+
+        a.text-link {
+            color: var(--accent);
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        a.text-link:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- 吸顶大纲导航条 -->
+    <nav class="sticky-nav">
+        <div class="nav-inner">
+            <a href="#top" class="nav-brand">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                    stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M12 2L2 7l10 5 10-5-10-5z"></path>
+                    <path d="M2 17l10 5 10-5"></path>
+                    <path d="M2 12l10 5 10-5"></path>
+                </svg>
+                <span>美区 Apple ID 指南</span>
+            </a>
+            <div class="nav-links">
+                <a href="#summit" class="nav-link">概览</a>
+                <a href="#step-1" class="nav-link">1. 材料准备</a>
+                <a href="#step-2" class="nav-link">2. 官网创建</a>
+                <a href="#step-3" class="nav-link">3. 地区变更</a>
+                <a href="#step-4" class="nav-link">4. 激活登录</a>
+                <a href="#step-5" class="nav-link">5. 应用下载</a>
+                <a href="#faq" class="nav-link">排查速查</a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container" id="top">
+        <!-- 头部导言 -->
+        <header class="header">
+            <div class="badge-pill">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+                    stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="12" cy="12" r="10"></circle>
+                    <polyline points="12 6 12 12 16 14"></polyline>
+                </svg>
+                <span>耗时约 10 分钟 · 国内普通网络直连可用</span>
+            </div>
+            <h1>美区 Apple ID 注册与使用指南</h1>
+            <p class="subtitle">无需海外信用卡，无需代理加速，使用国内正常邮箱与手机号即可轻松开通正版美区账号。</p>
+        </header>
+
+        <!-- 金字塔塔尖：全局总览与核心大纲 -->
+        <section class="pyramid-summit" id="summit">
+            <div class="summit-core-line">
+                <span class="core-tag">核心逻辑</span>
+                <span class="core-text">国内网络创建原生账号 ➔ 个人中心修改地区为美国（无卡+免税州地址） ➔ App Store 独立登录激活</span>
+            </div>
+            <div class="milestones-grid">
+                <a href="#step-1" class="milestone-item">
+                    <div class="step-index-badge">1</div>
+                    <div class="milestone-title">前置材料准备</div>
+                    <div class="milestone-desc">未绑定 Apple ID 的邮箱、正常接收短信的国内手机号及免税地址。</div>
+                </a>
+                <a href="#step-2" class="milestone-item">
+                    <div class="step-index-badge">2</div>
+                    <div class="milestone-title">官网注册账号</div>
+                    <div class="milestone-desc">国内网络直连访问苹果官网创建，完成邮箱与短信双重验证。</div>
+                </a>
+                <a href="#step-3" class="milestone-item">
+                    <div class="step-index-badge">3</div>
+                    <div class="milestone-title">更新地区为美国</div>
+                    <div class="milestone-desc">登录管理后台切换国家为美国，付款方式选择“无”，填入免税州账单。</div>
+                </a>
+                <a href="#step-4" class="milestone-item">
+                    <div class="step-index-badge">4</div>
+                    <div class="milestone-title">App Store 激活</div>
+                    <div class="milestone-desc">仅在 App Store 登录并完成首检协议同意，绝对不可在 iCloud 登录。</div>
+                </a>
+            </div>
+        </section>
+
+        <!-- 步骤一：材料准备 -->
+        <section class="section-card" id="step-1">
+            <div class="section-header">
+                <div class="step-num-icon">01</div>
+                <div>
+                    <h2 class="section-title">阶段一：前置材料准备</h2>
+                    <div class="section-subtitle">工欲善其事，必先利其器。准备齐全以下三项材料即可开始。</div>
+                </div>
+            </div>
+
+            <ul class="check-list">
+                <li class="check-item">
+                    <svg class="check-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+                        stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="20 6 9 17 4 12"></polyline>
+                    </svg>
+                    <div>
+                        <strong>全新邮箱（作为 Apple ID 账号）：</strong>
+                        推荐使用国际通行邮箱如 Outlook、Gmail，或者未注册过 Apple ID 的 163、QQ 邮箱均可。
+                    </div>
+                </li>
+                <li class="check-item">
+                    <svg class="check-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+                        stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="20 6 9 17 4 12"></polyline>
+                    </svg>
+                    <div>
+                        <strong>国内可用手机号（用于双重安全验证）：</strong>
+                        中国大陆 (+86) 手机号完全支持，一个手机号可绑定多个不同地区的 Apple ID，仅用于接收验证码。
+                    </div>
+                </li>
+                <li class="check-item">
+                    <svg class="check-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+                        stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="20 6 9 17 4 12"></polyline>
+                    </svg>
+                    <div>
+                        <strong>美国免税州账单地址信息：</strong>
+                        美国有 5 个免税州（俄勒冈 Oregon、特拉华 Delaware、蒙大拿 Montana、新罕布什尔 New Hampshire、阿拉斯加
+                        Alaska）。本指南在步骤三已为您提供在线地址生成工具与字段对照表，方便生成独属地址避免撞车。
+                    </div>
+                </li>
+            </ul>
+
+            <div class="callout callout-info">
+                <svg class="callout-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                    stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="12" cy="12" r="10"></circle>
+                    <line x1="12" y1="16" x2="12" y2="12"></line>
+                    <line x1="12" y1="8" x2="12.01" y2="8"></line>
+                </svg>
+                <div class="callout-content">
+                    <div style="font-weight: 600; margin-bottom: 4px;">关于网络环境与代理节点说明：</div>
+                    <div>常规环境下，使用国内家庭宽带或手机蜂窝网络即可直连注册。但在后续更改地区时，若<strong>付款选项中没有出现「无 (None)」</strong>，通常是由于当前本地 IP
+                        触发了苹果风控，此时需要切换到纯净的高速专线网络环境。</div>
+                    <div style="margin-top: 10px;">
+                        <a href="/help/vnode.html" target="_blank" class="text-link"
+                            style="display: inline-flex; align-items: center; gap: 6px; font-weight: 600; text-decoration: underline;">
+                            <span>查看网络节点配置与专线购买指引</span>
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
+                                <polyline points="15 3 21 3 21 9"></polyline>
+                                <line x1="10" y1="14" x2="21" y2="3"></line>
+                            </svg>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 步骤二：官网注册账号 -->
+        <section class="section-card" id="step-2">
+            <div class="section-header">
+                <div class="step-num-icon">02</div>
+                <div>
+                    <h2 class="section-title">阶段二：苹果官网创建账号</h2>
+                    <div class="section-subtitle">国内网络直连创建原生 Apple 账号，最大程度降低风控风险。</div>
+                </div>
+            </div>
+
+            <div class="ordered-flow">
+                <div class="flow-step">
+                    <div class="flow-num">1</div>
+                    <div class="flow-body">
+                        <div class="flow-title">访问苹果官方注册门户</div>
+                        <div class="flow-desc">
+                            使用浏览器打开苹果官方 Apple ID 创建页面：<a href="https://appleid.apple.com" target="_blank"
+                                rel="noopener noreferrer" class="text-link">appleid.apple.com</a>，点击页面右上角或底部的「创建您的 Apple
+                            ID」。
+                        </div>
+                    </div>
+                </div>
+
+                <div class="flow-step">
+                    <div class="flow-num">2</div>
+                    <div class="flow-body">
+                        <div class="flow-title">填写个人基础信息</div>
+                        <div class="flow-desc">
+                            姓名可随意填写英文拼音；<strong>出生日期务必设置为大于 18 岁</strong>（例如
+                            1995-05-15），避免被识别为儿童账号受到功能限制。国家/地区默认选择「中国大陆」。
+                        </div>
+                    </div>
+                </div>
+
+                <div class="flow-step">
+                    <div class="flow-num">3</div>
+                    <div class="flow-body">
+                        <div class="flow-title">填写邮箱与手机号并设置密码</div>
+                        <div class="flow-desc">
+                            输入准备好的全新邮箱与常用国内手机号，设置符合强度要求的密码（需包含大小写字母及数字）。
+                        </div>
+                    </div>
+                </div>
+
+                <div class="flow-step">
+                    <div class="flow-num">4</div>
+                    <div class="flow-body">
+                        <div class="flow-title">双重验证码确认</div>
+                        <div class="flow-desc">
+                            苹果会先后发送 6 位数验证码到你的邮箱以及手机短信，依次正确输入并提交，即可成功完成初步注册并自动登录个人中心。
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 步骤三：修改地区为美国 -->
+        <section class="section-card" id="step-3">
+            <div class="section-header">
+                <div class="step-num-icon">03</div>
+                <div>
+                    <h2 class="section-title">阶段三：编辑国家地区为美国（核心关键步）</h2>
+                    <div class="section-subtitle">无需外币信用卡，在个人中心变更地区为美国，付款方式勾选“无”。</div>
+                </div>
+            </div>
+
+            <div class="ordered-flow">
+                <div class="flow-step">
+                    <div class="flow-num">1</div>
+                    <div class="flow-body">
+                        <div class="flow-title">进入个人信息管理</div>
+                        <div class="flow-desc">
+                            在 Apple ID 账号管理页（<a href="https://appleid.apple.com" target="_blank"
+                                rel="noopener noreferrer" class="text-link">appleid.apple.com</a>）登录状态下，点击左侧或导航中的「个人信息
+                            (Personal Information)」。
+                        </div>
+                    </div>
+                </div>
+
+                <div class="flow-step">
+                    <div class="flow-num">2</div>
+                    <div class="flow-body">
+                        <div class="flow-title">更改国家或地区</div>
+                        <div class="flow-desc">
+                            找到「国家或地区 (Country/Region)」，点击右侧的「更改国家或地区」。在下拉列表中选择 <strong>“美国 (United States)”</strong>。
+                        </div>
+                    </div>
+                </div>
+
+                <div class="flow-step">
+                    <div class="flow-num">3</div>
+                    <div class="flow-body">
+                        <div class="flow-title">付款方式勾选「无 (None)」</div>
+                        <div class="flow-desc">
+                            在弹出的付款与寄送地址表单中，<strong>付款方式（Payment Method）必须勾选「无 (None)」</strong>。此选项允许你在没有美国信用卡的情况下完成转区。
+                        </div>
+                    </div>
+                </div>
+
+                <div class="flow-step">
+                    <div class="flow-num">4</div>
+                    <div class="flow-body">
+                        <div class="flow-title">填写免税州账单寄送地址</div>
+                        <div class="flow-desc">
+                            为避免多人共用同一套地址导致苹果风控拦截，<strong>强烈建议使用地址生成器生成自己专属的真实账单地址</strong>。首选 <strong>俄勒冈州 (Oregon,
+                                OR)</strong> 或 <strong>特拉华州 (Delaware, DE)</strong> 等免税州，后续在商店购买付费应用可免除额外消费税。
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 免税州地址生成器与字段映射面板 -->
+            <div class="address-box">
+                <div class="address-header" style="flex-wrap: wrap; gap: 12px;">
+                    <div>
+                        <div style="display: flex; align-items: center; gap: 8px;">
+                            <span class="address-tag">强烈推荐 · 自主生成独属地址</span>
+                            <span style="font-size: 14px; font-weight: 600;">美国免税州地址在线生成器</span>
+                        </div>
+                        <div style="font-size: 12px; color: var(--text-secondary); margin-top: 4px;">
+                            建议点击下方按钮打开生成器 ➔ 州选择 <strong>Oregon (俄勒冈)</strong> 或 <strong>Delaware (特拉华)</strong> ➔
+                            生成独属住宅地址，避免多人共用同一门牌号导致风控。
+                        </div>
+                    </div>
+                    <a href="https://www.meiguodizhi.com/" target="_blank" rel="noopener noreferrer"
+                        class="copy-all-btn" style="text-decoration: none;">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
+                            <polyline points="15 3 21 3 21 9"></polyline>
+                            <line x1="10" y1="14" x2="21" y2="3"></line>
+                        </svg>
+                        <span>打开美国地址生成器 (meiguodizhi.com)</span>
+                    </a>
+                </div>
+
+                <!-- 1:1 字段映射速查表 -->
+                <div
+                    style="margin-top: 14px; margin-bottom: 10px; font-size: 12px; font-weight: 600; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.05em;">
+                    地址字段 1:1 映射填法速查（下方展示格式参考，点击可复制示例数据）
+                </div>
+
+                <div class="field-grid">
+                    <div class="field-card" onclick="copyText('123 SW 3rd Ave', '街道地址 1')">
+                        <div class="field-meta">
+                            <span class="field-label">生成器「Street」 ➔ 街道地址 (Street)</span>
+                            <span class="field-val">123 SW 3rd Ave</span>
+                        </div>
+                        <svg class="field-copy-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2">
+                            <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                            <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                        </svg>
+                    </div>
+
+                    <div class="field-card" onclick="copyText('Apt 4B', '楼号/单元')">
+                        <div class="field-meta">
+                            <span class="field-label">生成器「Apt/Suite」 ➔ 楼号/单元 (选填)</span>
+                            <span class="field-val">Apt 4B</span>
+                        </div>
+                        <svg class="field-copy-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2">
+                            <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                            <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                        </svg>
+                    </div>
+
+                    <div class="field-card" onclick="copyText('Portland', '城市')">
+                        <div class="field-meta">
+                            <span class="field-label">生成器「City」 ➔ 城市 (City)</span>
+                            <span class="field-val">Portland</span>
+                        </div>
+                        <svg class="field-copy-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2">
+                            <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                            <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                        </svg>
+                    </div>
+
+                    <div class="field-card" onclick="copyText('Oregon', '州')">
+                        <div class="field-meta">
+                            <span class="field-label">生成器「State」 ➔ 省/州 (State)</span>
+                            <span class="field-val">Oregon (OR)</span>
+                        </div>
+                        <svg class="field-copy-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2">
+                            <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                            <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                        </svg>
+                    </div>
+
+                    <div class="field-card" onclick="copyText('97204', '邮编')">
+                        <div class="field-meta">
+                            <span class="field-label">生成器「Zip Code」 ➔ 邮政编码 (ZIP)</span>
+                            <span class="field-val">97204</span>
+                        </div>
+                        <svg class="field-copy-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2">
+                            <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                            <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                        </svg>
+                    </div>
+
+                    <div class="field-card" onclick="copyText('5035550188', '电话号码')">
+                        <div class="field-meta">
+                            <span class="field-label">生成器「Phone」 ➔ 电话号码 (10位)</span>
+                            <span class="field-val">503 555-0188</span>
+                        </div>
+                        <svg class="field-copy-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2">
+                            <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                            <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                        </svg>
+                    </div>
+                </div>
+
+                <div style="margin-top: 14px; text-align: right;">
+                    <button class="copy-all-btn" onclick="copyFullAddress()"
+                        style="background: var(--bg-card); color: var(--text-primary); border: 1px solid var(--border);">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                            <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                            <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                        </svg>
+                        <span>复制上方备用示例整套地址</span>
+                    </button>
+                </div>
+            </div>
+
+            <div class="callout callout-warning">
+                <svg class="callout-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                    stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z">
+                    </path>
+                    <line x1="12" y1="9" x2="12" y2="13"></line>
+                    <line x1="12" y1="17" x2="12.01" y2="17"></line>
+                </svg>
+                <div class="callout-content">
+                    <strong>重要提示：</strong>填写完毕后点击「更新 (Update)」。此时网页版 Apple ID 已成功变更为美国地区账号，无需绑定信用卡。
+                </div>
+            </div>
+        </section>
+
+        <!-- 步骤四：App Store 登录与首次检查 (Review) -->
+        <section class="section-card" id="step-4">
+            <div class="section-header">
+                <div class="step-num-icon">04</div>
+                <div>
+                    <h2 class="section-title">阶段四：App Store 登录与首次检查激活</h2>
+                    <div class="section-subtitle">严格在应用商店内独立登录，触发并完成首检协议。</div>
+                </div>
+            </div>
+
+            <!-- 绝对安全红线警告 -->
+            <div class="callout callout-danger">
+                <svg class="callout-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+                    stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="12" cy="12" r="10"></circle>
+                    <line x1="15" y1="9" x2="9" y2="15"></line>
+                    <line x1="9" y1="9" x2="15" y2="15"></line>
+                </svg>
+                <div class="callout-content">
+                    <strong>绝对安全红线：严禁在 iOS 系统【设置 ➔ iCloud】中登录！</strong><br>
+                    注册的美区账号仅可用于 <strong>【App Store (应用商店)】</strong> 下载软件。在系统 iCloud
+                    中登录不仅会导致通讯录、相册等隐私云端同步冲突，一旦账号发生风控更可能导致设备被远程锁定！
+                </div>
+            </div>
+
+            <div class="ordered-flow">
+                <div class="flow-step">
+                    <div class="flow-num">1</div>
+                    <div class="flow-body">
+                        <div class="flow-title">打开 App Store 退出原账号</div>
+                        <div class="flow-desc">
+                            在 iPhone / iPad 打开 App Store，点击右上角「个人头像」，滑动到底部点击「退出登录 (Sign Out)」。
+                        </div>
+                    </div>
+                </div>
+
+                <div class="flow-step">
+                    <div class="flow-num">2</div>
+                    <div class="flow-body">
+                        <div class="flow-title">登录新注册的美区 Apple ID</div>
+                        <div class="flow-desc">
+                            滑回顶部，输入刚刚转区成功的美区 Apple ID 账号与密码，点击「登录」。如提示输入双重短信验证码，正常接收国内短信并输入。
+                        </div>
+                    </div>
+                </div>
+
+                <div class="flow-step">
+                    <div class="flow-num">3</div>
+                    <div class="flow-body">
+                        <div class="flow-title">触发首次检查弹窗 (Review)</div>
+                        <div class="flow-desc">
+                            新账号首次登录 App Store 会弹出提示：“此 Apple ID 尚未在 iTunes Store 使用过”，点击 <strong>「检查 (Review)」</strong>。
+                        </div>
+                    </div>
+                </div>
+
+                <div class="flow-step">
+                    <div class="flow-num">4</div>
+                    <div class="flow-body">
+                        <div class="flow-title">同意条款完成激活</div>
+                        <div class="flow-desc">
+                            在检查页面打开「同意条款与条件 (Agree to Terms and Conditions)」开关，点击右上角「下一页
+                            (Next)」。核对账单地址（已自动同步刚才填写的免税州地址），确认付款方式依然为「无」，直接点击「下一页」完成。
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="callout callout-success">
+                <svg class="callout-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                    stroke-linecap="round" stroke-linejoin="round">
+                    <polyline points="20 6 9 17 4 12"></polyline>
+                </svg>
+                <div class="callout-content">
+                    屏幕提示 <strong>“Apple ID 已完成 (Apple ID Completed)”</strong>，代表账号已完全激活！此时 App Store 界面会自动切换为全英文美区商店。
+                </div>
+            </div>
+        </section>
+
+        <!-- 步骤五：应用下载与 Shadowrocket 充值 -->
+        <section class="section-card" id="step-5">
+            <div class="section-header">
+                <div class="step-num-icon">05</div>
+                <div>
+                    <h2 class="section-title">阶段五：应用下载与 Shadowrocket 充值指南</h2>
+                    <div class="section-subtitle">验证美区生态下载，正规获取付费海外应用。</div>
+                </div>
+            </div>
+
+            <div class="ordered-flow">
+                <div class="flow-step">
+                    <div class="flow-num">1</div>
+                    <div class="flow-body">
+                        <div class="flow-title">免费应用直接下载</div>
+                        <div class="flow-desc">
+                            在美区 App Store 搜索 <strong>TikTok</strong>、<strong>YouTube</strong>
+                            等国内商店未上架的应用，点击「GET」即可直接免费下载使用。
+                        </div>
+                    </div>
+                </div>
+
+                <div class="flow-step">
+                    <div class="flow-num">2</div>
+                    <div class="flow-body">
+                        <div class="flow-title">付费应用（如 Shadowrocket 小火箭）购买方法</div>
+                        <div class="flow-desc">
+                            Shadowrocket 为美区付费工具（当前售价 <strong>$2.99</strong>）。由于没有美国信用卡，推荐通过官方 <strong>Apple Gift
+                                Card（苹果礼品卡）</strong> 充值购买。
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 充值操作指引 -->
+            <div class="address-box" style="margin-top: 10px;">
+                <div
+                    style="font-weight: 600; font-size: 14px; margin-bottom: 12px; display: flex; align-items: center; gap: 8px;">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M20 12V8H6a2 2 0 0 1-2-2c0-1.1.9-2 2-2h12v4"></path>
+                        <path d="M4 6v12c0 1.1.9 2 2 2h14v-4"></path>
+                        <path d="M18 12a2 2 0 0 0-2 2c0 1.1.9 2 2 2h4v-4h-4z"></path>
+                    </svg>
+                    <span>苹果礼品卡 (Apple Gift Card) 购买与兑换流程</span>
+                </div>
+                <ul class="check-list" style="margin: 0;">
+                    <li class="check-item">
+                        <svg class="check-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <circle cx="12" cy="12" r="10"></circle>
+                            <polyline points="12 6 12 12 16 14"></polyline>
+                        </svg>
+                        <div><strong>正规渠道购买：</strong>可在苹果官网（apple.com/shop/buy-giftcard）或通过支付宝（出境/大牌礼品卡）购买面额为 $3 ~ $10
+                            的美区 Apple Gift Card。</div>
+                    </li>
+                    <li class="check-item">
+                        <svg class="check-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <polyline points="20 6 9 17 4 12"></polyline>
+                        </svg>
+                        <div><strong>兑换到余额：</strong>收到邮件中的 16 位卡密后，在 App Store 右上角头像处点击「Redeem Gift Card or Code
+                            (兑换充值卡或代码)」，输入卡密即可充值到美区账户。</div>
+                    </li>
+                    <li class="check-item">
+                        <svg class="check-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <polyline points="20 6 9 17 4 12"></polyline>
+                        </svg>
+                        <div><strong>购买应用：</strong>搜索「Shadowrocket」，确认开发者为 Pan建立 (Shadowrocket)，点击价格直接使用账户余额扣费安装。</div>
+                    </li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- 避坑与常见问题 FAQ -->
+        <section class="section-card" id="faq">
+            <div class="section-header">
+                <div class="step-num-icon" style="background: var(--warning-text);">?</div>
+                <div>
+                    <h2 class="section-title">高频避坑与排查速查箱</h2>
+                    <div class="section-subtitle">整理新手在转区及首次激活中最容易遇到的问题与解决策略。</div>
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <div class="faq-q">
+                    <svg class="faq-q-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="12" cy="12" r="10"></circle>
+                        <line x1="12" y1="8" x2="12" y2="12"></line>
+                        <line x1="12" y1="16" x2="12.01" y2="16"></line>
+                    </svg>
+                    <span>修改地区时付款方式为什么没有「无 (None)」选项？</span>
+                </div>
+                <div class="faq-a">
+                    这是最常见的坑。核心原因有两点：<br>
+                    ① <strong>操作入口错误</strong>：误在 iPhone 系统【设置 ➔ Apple ID ➔ 媒体与购买项目】中操作。必须在<strong>电脑或手机浏览器中访问网页端
+                        appleid.apple.com</strong> 进行修改。<br>
+                    ② <strong>当前网络 IP 被苹果风控</strong>：苹果识别到当前连接的 IP 存在异常或多人注册风控标记，强制要求绑定外币信用卡。此时需要切换到纯净干净的专线网络环境。<br>
+                    <div style="margin-top: 10px;">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"
+                            style="vertical-align: middle; margin-right: 4px;">
+                            <line x1="5" y1="12" x2="19" y2="12"></line>
+                            <polyline points="12 5 19 12 12 19"></polyline>
+                        </svg>建议参考我们的 <a href="/help/vnode.html" target="_blank" class="text-link"
+                            style="font-weight: 600; text-decoration: underline;">网络使用指南与高速专线节点购买
+                            (/help/vnode.html)</a>，配置客户端并连接专属纯净网络后再刷新网页重试。
+                    </div>
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <div class="faq-q">
+                    <svg class="faq-q-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="12" cy="12" r="10"></circle>
+                        <line x1="12" y1="8" x2="12" y2="12"></line>
+                        <line x1="12" y1="16" x2="12.01" y2="16"></line>
+                    </svg>
+                    <span>点击提交时提示“此时无法完成您的请求”或“遇到问题”？</span>
+                </div>
+                <div class="faq-a">
+                    这通常是因为账单地址中的<strong>邮编 (ZIP Code) 与所选省/州 (State) 不匹配</strong>，或者电话号码格式不符合北美标准（如必须为 10
+                    位纯数字）。请使用上方经过验证的俄勒冈州地址（州：Oregon，邮编：97204，电话区号：503）。
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <div class="faq-q">
+                    <svg class="faq-q-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="12" cy="12" r="10"></circle>
+                        <line x1="12" y1="8" x2="12" y2="12"></line>
+                        <line x1="12" y1="16" x2="12.01" y2="16"></line>
+                    </svg>
+                    <span>在 App Store 登录后界面依然是中文/国区商店？</span>
+                </div>
+                <div class="faq-a">
+                    在 App Store 首次登录或转区完成后，由于 iOS 存在缓存，商店首页可能未即时刷新。可在 App Store 右上角头像拉到底部退出登录，后台上划强制关闭 App
+                    Store，然后重新打开登录，系统便会自动识别并彻底切换至美区英文商城。
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <div class="faq-q">
+                    <svg class="faq-q-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="12" cy="12" r="10"></circle>
+                        <line x1="12" y1="8" x2="12" y2="12"></line>
+                        <line x1="12" y1="16" x2="12.01" y2="16"></line>
+                    </svg>
+                    <span>换回国区账号后，美区下载的 App 还能正常使用吗？</span>
+                </div>
+                <div class="faq-a">
+                    完全可以！iOS 支持多个 Apple ID 的应用共存。只要应用已经安装在设备上，即使你在 App Store 切换回国区 Apple ID，下载的海外应用（如
+                    TikTok、Shadowrocket）依然可以正常打开运行。只有在后续需要更新该应用时，App Store 才会提示输入美区账号的密码进行验证。
+                </div>
+            </div>
+        </section>
+
+        <!-- 页脚 -->
+        <footer class="footer">
+            <p>美区 Apple ID 使用指南 · 基于苹果官方规范与纯净矢量设计</p>
+            <p style="margin-top: 6px; font-size: 12px;">建议收藏保存，下载应用时注意遵守当地法律法规。</p>
+        </footer>
+    </div>
+
+    <!-- 轻量 Toast 浮层 -->
+    <div id="toast" class="toast">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#34c759" stroke-width="3"
+            stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="20 6 9 17 4 12"></polyline>
+        </svg>
+        <span id="toast-text">已成功复制到剪贴板</span>
+    </div>
+
+    <script>
+        // 轻量 Toast 提示
+        let toastTimer = null;
+        function showToast(msg) {
+            const toast = document.getElementById('toast');
+            const toastText = document.getElementById('toast-text');
+            toastText.textContent = msg;
+            toast.classList.add('show');
+            if (toastTimer) clearTimeout(toastTimer);
+            toastTimer = setTimeout(() => {
+                toast.classList.remove('show');
+            }, 2000);
+        }
+
+        // 单字段复制
+        function copyText(text, label) {
+            navigator.clipboard.writeText(text).then(() => {
+                showToast(`已复制${label}：${text}`);
+            }).catch(() => {
+                const ta = document.createElement('textarea');
+                ta.value = text;
+                document.body.appendChild(ta);
+                ta.select();
+                document.execCommand('copy');
+                document.body.removeChild(ta);
+                showToast(`已复制${label}：${text}`);
+            });
+        }
+
+        // 整套地址复制
+        function copyFullAddress() {
+            const fullAddress =
+                `Street: 123 SW 3rd Ave
+Apt: Apt 4B
+City: Portland
+State: Oregon (OR)
+ZIP Code: 97204
+Phone: 5035550188`;
+            navigator.clipboard.writeText(fullAddress).then(() => {
+                showToast('已复制完整免税州账单地址！');
+            }).catch(() => {
+                const ta = document.createElement('textarea');
+                ta.value = fullAddress;
+                document.body.appendChild(ta);
+                ta.select();
+                document.execCommand('copy');
+                document.body.removeChild(ta);
+                showToast('已复制完整免税州账单地址！');
+            });
+        }
+
+        // 导航滚动高亮 (ScrollSpy)
+        window.addEventListener('DOMContentLoaded', () => {
+            const sections = document.querySelectorAll('section[id]');
+            const navLinks = document.querySelectorAll('.nav-links .nav-link');
+
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        const id = entry.target.getAttribute('id');
+                        navLinks.forEach(link => {
+                            if (link.getAttribute('href') === `#${id}`) {
+                                link.classList.add('active');
+                            } else {
+                                link.classList.remove('active');
+                            }
+                        });
+                    }
+                });
+            }, {
+                rootMargin: '-20% 0px -70% 0px'
+            });
+
+            sections.forEach(sec => observer.observe(sec));
+        });
+    </script>
+</body>
+
+</html>

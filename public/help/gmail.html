@@ -1,0 +1,1052 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gmail 账号注册与使用指南</title>
+    <style>
+        :root {
+            --bg-primary: #f5f5f7;
+            --bg-card: #ffffff;
+            --text-primary: #1d1d1f;
+            --text-secondary: #86868b;
+            --accent: #0071e3;
+            --accent-light: rgba(0, 113, 227, 0.08);
+            --border: rgba(0, 0, 0, 0.08);
+            --kbd-bg: #f2f2f5;
+            --kbd-border: #d1d1d6;
+            --kbd-shadow: rgba(0, 0, 0, 0.12);
+            --card-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+            --nav-bg: rgba(245, 245, 247, 0.85);
+            --warning-bg: rgba(255, 149, 0, 0.08);
+            --warning-border: rgba(255, 149, 0, 0.25);
+            --warning-text: #c97800;
+            --success-bg: rgba(52, 199, 89, 0.08);
+            --success-border: rgba(52, 199, 89, 0.25);
+            --success-text: #248a3d;
+        }
+
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --bg-primary: #161618;
+                --bg-card: #212124;
+                --text-primary: #f5f5f7;
+                --text-secondary: #a1a1a6;
+                --accent: #2997ff;
+                --accent-light: rgba(41, 151, 255, 0.15);
+                --border: rgba(255, 255, 255, 0.1);
+                --kbd-bg: #2c2c2e;
+                --kbd-border: #3a3a3c;
+                --kbd-shadow: rgba(0, 0, 0, 0.4);
+                --card-shadow: 0 4px 24px rgba(0, 0, 0, 0.3);
+                --nav-bg: rgba(22, 22, 24, 0.85);
+                --warning-bg: rgba(255, 159, 10, 0.15);
+                --warning-border: rgba(255, 159, 10, 0.3);
+                --warning-text: #ff9f0a;
+                --success-bg: rgba(48, 209, 88, 0.15);
+                --success-border: rgba(48, 209, 88, 0.3);
+                --success-text: #30d158;
+            }
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", Roboto, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.6;
+            padding-bottom: 60px;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        .tab-nav-wrapper {
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            background-color: var(--nav-bg);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--border);
+            padding: 12px 16px;
+        }
+
+        .tab-nav {
+            max-width: 860px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+            gap: 8px;
+            overflow-x: auto;
+            scrollbar-width: none;
+            -ms-overflow-style: none;
+        }
+
+        .tab-nav::-webkit-scrollbar {
+            display: none;
+        }
+
+        .tab-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 16px;
+            border-radius: 20px;
+            background: transparent;
+            color: var(--text-secondary);
+            border: 1px solid transparent;
+            font-size: 13px;
+            font-weight: 500;
+            cursor: pointer;
+            white-space: nowrap;
+            transition: all 0.15s ease;
+            user-select: none;
+        }
+
+        .tab-btn svg {
+            width: 16px;
+            height: 16px;
+            fill: currentColor;
+            flex-shrink: 0;
+        }
+
+        .tab-btn:hover {
+            color: var(--text-primary);
+            background: var(--border);
+        }
+
+        .tab-btn.active {
+            color: var(--text-primary);
+            background: var(--bg-card);
+            border-color: var(--border);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+            font-weight: 600;
+        }
+
+        .container {
+            max-width: 860px;
+            margin: 0 auto;
+            padding: 24px 20px 0;
+        }
+
+        .tab-pane {
+            display: none;
+            opacity: 0;
+            transition: opacity 0.2s ease;
+        }
+
+        .tab-pane.active {
+            display: block;
+            opacity: 1;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 32px;
+            padding-top: 12px;
+        }
+
+        .app-badge {
+            display: inline-block;
+            font-size: 12px;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+            padding: 4px 14px;
+            background: var(--accent-light);
+            color: var(--accent);
+            border-radius: 12px;
+            margin-bottom: 12px;
+        }
+
+        h1 {
+            font-size: 28px;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+            margin-bottom: 6px;
+        }
+
+        .subtitle {
+            font-size: 14px;
+            color: var(--text-secondary);
+        }
+
+        .section-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 16px;
+            margin-top: 32px;
+        }
+
+        .section-title {
+            font-size: 18px;
+            font-weight: 600;
+        }
+
+        .card {
+            background: var(--bg-card);
+            border-radius: 16px;
+            padding: 24px;
+            border: 1px solid var(--border);
+            box-shadow: var(--card-shadow);
+            margin-bottom: 20px;
+        }
+
+        .card-header {
+            margin-bottom: 14px;
+        }
+
+        .card-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 4px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .card-title svg {
+            width: 18px;
+            height: 18px;
+            fill: var(--accent);
+            flex-shrink: 0;
+        }
+
+        .card-desc {
+            font-size: 14px;
+            color: var(--text-secondary);
+        }
+
+        .card-body {
+            font-size: 14px;
+            color: var(--text-primary);
+        }
+
+        .card-body ol,
+        .card-body ul {
+            padding-left: 20px;
+            margin: 10px 0;
+        }
+
+        .card-body li {
+            margin-bottom: 10px;
+        }
+
+        .card-body a {
+            color: var(--accent);
+            text-decoration: none;
+        }
+
+        .card-body a:hover {
+            text-decoration: underline;
+        }
+
+        .callout {
+            border-radius: 12px;
+            padding: 14px 16px;
+            margin: 16px 0;
+            display: flex;
+            gap: 12px;
+            align-items: flex-start;
+        }
+
+        .callout-warning {
+            background: var(--warning-bg);
+            border: 1px solid var(--warning-border);
+            color: var(--warning-text);
+        }
+
+        .callout-success {
+            background: var(--success-bg);
+            border: 1px solid var(--success-border);
+            color: var(--success-text);
+        }
+
+        .callout svg {
+            width: 18px;
+            height: 18px;
+            fill: currentColor;
+            flex-shrink: 0;
+            margin-top: 2px;
+        }
+
+        .callout-content {
+            font-size: 13.5px;
+            line-height: 1.6;
+            color: var(--text-primary);
+            flex: 1;
+        }
+
+        .callout-content strong {
+            display: block;
+            margin-bottom: 5px;
+            font-size: 14px;
+        }
+
+        .callout-content a {
+            color: var(--accent);
+            text-decoration: underline;
+            text-underline-offset: 2px;
+        }
+
+        .settings-list {
+            background: var(--bg-primary);
+            border-radius: 12px;
+            overflow: hidden;
+            border: 1px solid var(--border);
+            margin-top: 14px;
+        }
+
+        .setting-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 13px 18px;
+            border-bottom: 1px solid var(--border);
+            gap: 16px;
+        }
+
+        .setting-item:last-child {
+            border-bottom: none;
+        }
+
+        .setting-label {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            flex-shrink: 0;
+            font-weight: 600;
+            font-size: 14px;
+            color: var(--text-primary);
+        }
+
+        .setting-arrow {
+            color: var(--text-secondary);
+            font-size: 12px;
+        }
+
+        .setting-desc {
+            font-size: 13px;
+            color: var(--text-secondary);
+            text-align: right;
+        }
+
+        @media (max-width: 680px) {
+            .setting-item {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 6px;
+            }
+
+            .setting-desc {
+                text-align: left;
+            }
+        }
+
+        kbd {
+            display: inline-block;
+            padding: 3px 8px;
+            font-size: 12px;
+            font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", sans-serif;
+            font-weight: 600;
+            line-height: 1.2;
+            color: var(--text-primary);
+            background-color: var(--kbd-bg);
+            border: 1px solid var(--kbd-border);
+            border-radius: 6px;
+            box-shadow: 0 2px 0 var(--kbd-shadow);
+        }
+
+        .code-box {
+            margin-top: 6px;
+            padding: 10px 14px;
+            background: var(--bg-primary);
+            border-radius: 8px;
+            font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+            font-size: 13px;
+            word-break: break-all;
+            border: 1px solid var(--border);
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 14px;
+        }
+
+        .feature-card {
+            background: var(--bg-card);
+            border-radius: 14px;
+            padding: 18px;
+            border: 1px solid var(--border);
+            box-shadow: var(--card-shadow);
+        }
+
+        .feature-title {
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 6px;
+            color: var(--accent);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .feature-title svg {
+            width: 16px;
+            height: 16px;
+            fill: currentColor;
+        }
+
+        .feature-desc {
+            font-size: 13px;
+            color: var(--text-secondary);
+            line-height: 1.5;
+        }
+
+        .vpn-banner {
+            background: linear-gradient(135deg, rgba(0, 113, 227, 0.08) 0%, rgba(88, 86, 214, 0.08) 100%);
+            border: 1px solid rgba(0, 113, 227, 0.2);
+            border-radius: 16px;
+            padding: 16px 20px;
+            margin-bottom: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 16px;
+            flex-wrap: wrap;
+        }
+
+        @media (prefers-color-scheme: dark) {
+            .vpn-banner {
+                background: linear-gradient(135deg, rgba(41, 151, 255, 0.12) 0%, rgba(94, 92, 230, 0.12) 100%);
+                border-color: rgba(41, 151, 255, 0.3);
+            }
+        }
+
+        .vpn-banner-info {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            flex: 1;
+            min-width: 260px;
+        }
+
+        .vpn-banner-icon {
+            width: 38px;
+            height: 38px;
+            border-radius: 10px;
+            background: var(--accent);
+            color: #ffffff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .vpn-banner-icon svg {
+            width: 20px;
+            height: 20px;
+            fill: #ffffff;
+        }
+
+        .vpn-banner-text h3 {
+            font-size: 14.5px;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 2px;
+        }
+
+        .vpn-banner-text p {
+            font-size: 13px;
+            color: var(--text-secondary);
+            line-height: 1.4;
+        }
+
+        .vpn-banner-action {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 9px 18px;
+            border-radius: 20px;
+            background: var(--accent);
+            color: #ffffff !important;
+            font-size: 13px;
+            font-weight: 600;
+            text-decoration: none !important;
+            white-space: nowrap;
+            transition: opacity 0.15s ease, transform 0.15s ease;
+        }
+
+        .vpn-banner-action:hover {
+            opacity: 0.92;
+            transform: translateY(-1px);
+        }
+
+        .vpn-banner-action svg {
+            width: 14px;
+            height: 14px;
+            fill: #ffffff;
+        }
+
+        footer {
+            text-align: center;
+            margin-top: 48px;
+            padding-top: 20px;
+            border-top: 1px solid var(--border);
+            color: var(--text-secondary);
+            font-size: 13px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- 顶部固定 Tab 栏 (全 SVG 矢量图，零 Emoji) -->
+    <div class="tab-nav-wrapper">
+        <div class="tab-nav">
+            <!-- iOS 端注册 -->
+            <button class="tab-btn active" onclick="switchTab('ios')">
+                <svg viewBox="0 0 24 24">
+                    <path
+                        d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.81-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M15.97 4.54c.64-.78 1.08-1.86.96-2.95-1 .04-2.14.65-2.81 1.43-.58.68-1.1 1.77-.96 2.85 1.12.09 2.18-.55 2.81-1.33z" />
+                </svg>
+                <span>iOS 端注册（推荐）</span>
+            </button>
+            <!-- 安卓端注册 -->
+            <button class="tab-btn" onclick="switchTab('android')">
+                <svg viewBox="0 0 24 24">
+                    <path
+                        d="M17.523 15.3414c-.5511 0-.9993-.4486-.9993-.9997s.4482-.9993.9993-.9993c.551 0 .9993.4482.9993.9993.0001.5511-.4482.9997-.9993.9997m-11.046 0c-.5511 0-.9993-.4486-.9993-.9997s.4482-.9993.9993-.9993c.5511 0 .9993.4482.9993.9993 0 .5511-.4482.9997-.9993.9997m11.4045-6.02l1.9973-3.4592a.416.416 0 00-.1521-.5676.416.416 0 00-.5676.1521l-2.0223 3.503C15.5902 8.4114 13.8533 8.1 12 8.1c-1.8533 0-3.5902.3114-5.1367.8497L4.841 5.4467a.4161.4161 0 00-.5677-.1521.4157.4157 0 00-.1521.5676l1.9973 3.4592C2.6889 11.1867.3432 14.6589 0 18.761h24c-.3432-4.1021-2.6889-7.5743-6.1185-9.4396" />
+                </svg>
+                <span>安卓端注册</span>
+            </button>
+            <!-- 电脑网页端注册法 -->
+            <button class="tab-btn" onclick="switchTab('desktop')">
+                <svg viewBox="0 0 24 24">
+                    <path
+                        d="M20 18c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2H4c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2H0v2h24v-2h-4zM4 6h16v10H4V6z" />
+                </svg>
+                <span>电脑浏览器注册</span>
+            </button>
+            <!-- 疑难排错与避坑 -->
+            <button class="tab-btn" onclick="switchTab('troubleshooting')">
+                <svg viewBox="0 0 24 24">
+                    <path
+                        d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm-1 6h2v2h-2V7zm0 4h2v6h-2v-6z" />
+                </svg>
+                <span>避坑与号码验证指南</span>
+            </button>
+        </div>
+    </div>
+
+    <div class="container">
+
+        <!-- 全局科学上网前置提示横幅 (引导跳转 vnode.html) -->
+        <div class="vpn-banner">
+            <div class="vpn-banner-info">
+                <div class="vpn-banner-icon">
+                    <svg viewBox="0 0 24 24">
+                        <path
+                            d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z" />
+                    </svg>
+                </div>
+                <div class="vpn-banner-text">
+                    <h3>注册 Google 账号前置网络要求</h3>
+                    <p>注册全程需要通畅的境外网络代理环境。如尚未配置节点或当前无法打开 Google 页面，请先配置节点。</p>
+                </div>
+            </div>
+            <a href="./vnode.html" class="vpn-banner-action" target="_blank">
+                <span>前往网络节点配置教程</span>
+                <svg viewBox="0 0 24 24">
+                    <path d="M5 13h11.86l-5.43 5.43 1.42 1.42L21.14 12l-8.29-8.29-1.42 1.42L16.86 11H5v2z" />
+                </svg>
+            </a>
+        </div>
+
+        <!-- ==================== 1. iOS 端注册法 ==================== -->
+        <div id="ios" class="tab-pane active">
+            <header>
+                <div class="app-badge">APPLE · iOS ECOSYSTEM</div>
+                <h1>Gmail iOS 端注册指南</h1>
+                <div class="subtitle">业内成功率最高的注册通道，有效规避“此号码无法用于验证”风控</div>
+            </header>
+
+            <div class="callout callout-success">
+                <svg viewBox="0 0 24 24">
+                    <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z" />
+                </svg>
+                <div class="callout-content">
+                    <strong>为什么首选 iOS 系统自带设置通道，而不是用手机浏览器输入网址？</strong>
+                    <b>1. 硬件级信任签名：</b>iOS 系统设置内置 Apple 原生认证链（Device Attestation），Google
+                    判定其为真实合法设备，风控级别最低，中国大陆手机号（+86）能极大概率顺利接码或直接支持跳过；<br>
+                    <b>2. 手机浏览器风控极严：</b>若直接在手机 Safari 等浏览器输入网址，Google 仅能读取 Web 网页请求，受限于共享代理 IP 风控，极易拦截并报出“此电话号码无法用于验证”。
+                </div>
+            </div>
+
+            <div class="section-header">
+                <div class="section-title">iOS 分步注册流程</div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <div class="card-title">
+                        <svg viewBox="0 0 24 24">
+                            <path
+                                d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.81-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M15.97 4.54c.64-.78 1.08-1.86.96-2.95-1 .04-2.14.65-2.81 1.43-.58.68-1.1 1.77-.96 2.85 1.12.09 2.18-.55 2.81-1.33z" />
+                        </svg>
+                        途径一：系统自带“邮件”设置注册（极力推荐）
+                    </div>
+                    <div class="card-desc">无需从 App Store 额外下载海外应用，直接使用 iOS 官方内置系统通道创建。</div>
+                </div>
+                <div class="card-body">
+                    <ol>
+                        <li><strong>保持网络代理连接</strong>：确保手机已连接稳定境外代理节点（尚未配置？可先参考 <a href="./vnode.html"
+                                target="_blank">节点与代理配置手册</a>）。</li>
+                        <li><strong>进入系统设置路径</strong>：
+                            <div class="settings-list">
+                                <div class="setting-item">
+                                    <div class="setting-label"><kbd>设置</kbd><span
+                                            class="setting-arrow">➔</span><kbd>邮件</kbd><span
+                                            class="setting-arrow">➔</span><kbd>账户</kbd></div>
+                                    <div class="setting-desc">iOS 14 及以上为「设置」➔「邮件」➔「账户」；iOS 18 部分版本可在「设置」➔「App」➔「邮件」
+                                    </div>
+                                </div>
+                                <div class="setting-item">
+                                    <div class="setting-label"><kbd>添加账户</kbd><span class="setting-arrow">➔</span><kbd
+                                            style="color: var(--accent);">Google</kbd></div>
+                                    <div class="setting-desc">系统弹出 Google 授权弹窗，点击「继续」</div>
+                                </div>
+                            </div>
+                        </li>
+                        <li style="margin-top: 12px;"><strong>创建账号</strong>：在 Google 登录页面左下角点击 <strong>“创建账号”</strong> ➔
+                            选择 <strong>“个人用途”</strong>。</li>
+                        <li><strong>填写真实基本信息</strong>：
+                            <ul>
+                                <li><strong>姓名</strong>：可填写英文拼音或真实中文姓名。</li>
+                                <li><strong>出生日期</strong>：务必设置出生年份大于 18 周岁（例如 2000 年，避免触发未成年人家长监护限制）。</li>
+                                <li><strong>选择用户名</strong>：系统推荐的邮箱前缀或自定义输入纯英文字符前缀。</li>
+                                <li><strong>密码</strong>：设置包含大小写字母、数字及特殊符号的高强度密码。</li>
+                            </ul>
+                        </li>
+                        <li><strong>验证手机号或跳过</strong>：
+                            <ul>
+                                <li>如果界面底部出现 <strong>“跳过 (Skip)”</strong> 按钮，建议直接点击跳过。</li>
+                                <li>如需输入手机号，国家地区下拉列表选择 <strong>中国 (+86)</strong>，填写真实手机号接收短信验证码。</li>
+                            </ul>
+                        </li>
+                    </ol>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <div class="card-title">
+                        <svg viewBox="0 0 24 24">
+                            <path
+                                d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z" />
+                        </svg>
+                        途径二：官方 Gmail App 或网易邮箱大师注册
+                    </div>
+                    <div class="card-desc">如在系统设置中无法正常拉起弹窗，可采用客户端内置 OAuth 通道。</div>
+                </div>
+                <div class="card-body">
+                    <ul>
+                        <li><strong>官方 Gmail App</strong>：在 App Store 下载 Gmail 客户端，打开后点击右上角头像 ➔ 「添加其他账号」 ➔ 「Google」 ➔
+                            「创建账号」。</li>
+                        <li><strong>网易邮箱大师 / Outlook App</strong>：打开网易邮箱大师或 Outlook，添加邮箱协议选择 <strong>Gmail</strong>，在弹出的
+                            Google Webview 授权页面点击「创建账号」。内置安全浏览器指纹纯净，接码成功率极高。</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <div class="card-title">
+                        <svg viewBox="0 0 24 24">
+                            <path
+                                d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z" />
+                        </svg>
+                        途径三：Safari 手机浏览器访问网址注册（备选通道）
+                    </div>
+                    <div class="card-desc">适合系统设置弹不出 Google 选项时的备用选择，需严格遵守防风控指引。</div>
+                </div>
+                <div class="card-body">
+                    <ol>
+                        <li><strong>开启 Safari 无痕浏览</strong>：打开 Safari 浏览器，轻点右下角标签页按钮 ➔ 选择 <strong>“无痕浏览
+                                (Private)”</strong>，避免旧 Cookie 干扰。</li>
+                        <li><strong>直达注册网址</strong>：在地址栏输入并访问官方注册页：<br>
+                            <a href="https://accounts.google.com/signup" target="_blank"
+                                rel="noopener noreferrer">https://accounts.google.com/signup</a>
+                        </li>
+                        <li><strong>切换显示语言</strong>：如果打开后显示简体中文，建议滑到网页最底部，将语言切换为 <strong>English (United
+                                States)</strong> 或 <strong>繁体中文</strong>，能有效降低风控标记。</li>
+                        <li><strong>接码提示</strong>：若提交 +86 手机号提示“此电话号码无法用于进行验证”，说明当前代理 IP 被 Web
+                            端列入高危名单，建议立刻切回<strong>途径一（系统自带设置）</strong>完成注册。</li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+
+        <!-- ==================== 2. 安卓端注册法 ==================== -->
+        <div id="android" class="tab-pane">
+            <header>
+                <div class="app-badge">ANDROID · GOOGLE ECOSYSTEM</div>
+                <h1>Gmail 安卓端注册指南</h1>
+                <div class="subtitle">国行机型与海外安卓全流程：系统底层通道、GMS 基础服务与免框架方案</div>
+            </header>
+
+            <div class="callout callout-success">
+                <svg viewBox="0 0 24 24">
+                    <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z" />
+                </svg>
+                <div class="callout-content">
+                    <strong>为什么首选安卓系统设置通道，而不是用手机浏览器输入网址？</strong>
+                    <b>硬件级信任签名：</b>国行安卓机型（小米/OPPO/vivo等）在系统开启「谷歌基础服务」后，由系统底层直接发起注册，自带 Google Play Integrity 硬件认证，Google
+                    判定为合法实体设备，风控级别最低，中国大陆手机号（+86）能顺利接收验证短信；若直接用手机浏览器访问网页，Google 仅能读取 Web 端指纹，易因共享代理 IP 直接拦截报错。
+                </div>
+            </div>
+
+            <div class="callout callout-warning">
+                <svg viewBox="0 0 24 24">
+                    <path d="M1 21h22L12 2 1 21zm12-3h-2v-2h2v2zm0-4h-2v-4h2v4z" />
+                </svg>
+                <div class="callout-content">
+                    <strong>避坑提示：如何避免“正在核对信息...”无限转圈？</strong>
+                    安卓设备使用系统通道时，部分代理工具默认未代理底层系统进程。请在代理客户端（Clash Meta、v2rayNG、sing-box 等）中开启<b>「全局代理」</b>或分流规则确保包含
+                    <b>Google Play 服务 (GMS)</b> 与 <b>下载管理器</b>（若尚未配置境外节点，可先参考 <a href="./vnode.html"
+                        target="_blank">节点与代理配置手册</a>）。
+                </div>
+            </div>
+
+            <div class="section-header">
+                <div class="section-title">安卓核心注册通道</div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <div class="card-title">
+                        <svg viewBox="0 0 24 24">
+                            <path
+                                d="M17.523 15.3414c-.5511 0-.9993-.4486-.9993-.9997s.4482-.9993.9993-.9993c.551 0 .9993.4482.9993.9993.0001.5511-.4482.9997-.9993.9997m-11.046 0c-.5511 0-.9993-.4486-.9993-.9997s.4482-.9993.9993-.9993c.5511 0 .9993.4482.9993.9993 0 .5511-.4482.9997-.9993.9997m11.4045-6.02l1.9973-3.4592a.416.416 0 00-.1521-.5676.416.416 0 00-.5676.1521l-2.0223 3.503C15.5902 8.4114 13.8533 8.1 12 8.1c-1.8533 0-3.5902.3114-5.1367.8497L4.841 5.4467a.4161.4161 0 00-.5677-.1521.4157.4157 0 00-.1521.5676l1.9973 3.4592C2.6889 11.1867.3432 14.6589 0 18.761h24c-.3432-4.1021-2.6889-7.5743-6.1185-9.4396" />
+                        </svg>
+                        途径一：国行系统「开启谷歌基础服务」➔ 系统设置注册（成功率最高，极力推荐）
+                    </div>
+                    <div class="card-desc">国内主流安卓定制 ROM 均内置了谷歌移动服务框架开关，无需 Root 或刷机。</div>
+                </div>
+                <div class="card-body">
+                    <p style="margin-bottom: 12px;"><strong>第一步：在系统设置中开启谷歌服务开关</strong>（根据手机品牌选择对应路径）：</p>
+                    <div class="settings-list">
+                        <div class="setting-item">
+                            <div class="setting-label"><kbd>小米 / Redmi (HyperOS / MIUI)</kbd></div>
+                            <div class="setting-desc">进入「设置」➔「账号与同步」➔ 找到并开启「谷歌基础服务」</div>
+                        </div>
+                        <div class="setting-item">
+                            <div class="setting-label"><kbd>OPPO / 一加 / realme (ColorOS)</kbd></div>
+                            <div class="setting-desc">进入「设置」➔「系统/其他设置」或「用户与账号」➔ 开启「Google 移动服务」</div>
+                        </div>
+                        <div class="setting-item">
+                            <div class="setting-label"><kbd>vivo / iQOO (OriginOS)</kbd></div>
+                            <div class="setting-desc">进入「设置」➔「账号与同步」➔ 开启「Google 基础服务」</div>
+                        </div>
+                        <div class="setting-item">
+                            <div class="setting-label"><kbd>华为 / 荣耀 (HarmonyOS / MagicOS)</kbd></div>
+                            <div class="setting-desc">可通过系统应用市场或安装 microG 核心套件实现 Google 服务环境支持</div>
+                        </div>
+                    </div>
+
+                    <p style="margin: 16px 0 10px;"><strong>第二步：通过系统账号中心发起注册</strong>：</p>
+                    <ol>
+                        <li>连接稳定境外代理，确保 Google 域名走海外路由。</li>
+                        <li>打开手机 <strong>「设置」➔「账号与同步」（或「用户与账号」）➔ 点击「添加账号」➔ 选择「Google」</strong>。</li>
+                        <li>在弹出的 Google 登录页面左下角点击 <strong>“创建账号”</strong> ➔ 选择 <strong>“个人用途”</strong>。</li>
+                        <li>填写姓名、出生日期（建议大于 18 周岁，如 2000 年）以及自定义账号名与密码。</li>
+                        <li>绑定手机号码验证：国家选择 <strong>中国 (+86)</strong>，填写真实国内手机号获取短信验证码。由于系统底层通信自带原生安卓硬件沙盒指纹，国内号码验证成功率极高。
+                        </li>
+                    </ol>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <div class="card-title">
+                        <svg viewBox="0 0 24 24">
+                            <path
+                                d="M4 8h4V4H4v4zm6 12h4v-4h-4v4zm-6 0h4v-4H4v4zm0-6h4v-4H4v4zm6 0h4v-4h-4v4zm6-10v4h4V4h-4zm-6 4h4V4h-4v4zm6 6h4v-4h-4v4zm0 6h4v-4h-4v4z" />
+                        </svg>
+                        途径二：官方 Gmail App / Google Play 商店注册
+                    </div>
+                    <div class="card-desc">适用于已安装海外套件或系统已自带 Google Play 商店的安卓机型。</div>
+                </div>
+                <div class="card-body">
+                    <ol>
+                        <li>在 Google Play 商店或正规应用商店安装 <strong>Gmail 官方客户端</strong>。</li>
+                        <li>打开 Gmail 客户端，点击右上角头像 ➔ 选择 <strong>「添加其他账号」</strong> ➔ 选择 <strong>「Google」</strong>。</li>
+                        <li>点击 <strong>“创建账号”</strong>，跟随引导填写资料并完成短信接码。通过官方 Gmail 客户端直接注册的账号具备原生认证标记。</li>
+                    </ol>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <div class="card-title">
+                        <svg viewBox="0 0 24 24">
+                            <path
+                                d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z" />
+                        </svg>
+                        途径三：无 GMS 设备备用方案（网易邮箱大师 / Outlook 纯净 Webview 通道）
+                    </div>
+                    <div class="card-desc">适合部分因机型限制无法开启谷歌服务、或 GMS 环境异常的安卓手机。</div>
+                </div>
+                <div class="card-body">
+                    <ol>
+                        <li>在安卓国内应用商店搜索下载 <strong>网易邮箱大师</strong> 或 <strong>Microsoft Outlook</strong>。</li>
+                        <li>打开应用，在添加邮箱协议列表中选择 <strong>Gmail</strong>。</li>
+                        <li>应用会拉起 Google 官方移动端授权页面。在页面左下角点击 <strong>“创建账号”</strong>。</li>
+                        <li>利用内置独立 Webview 提交注册，避开桌面浏览器的防批量注册检测，手机验证码接收成功率显著优于电脑浏览器。</li>
+                    </ol>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <div class="card-title">
+                        <svg viewBox="0 0 24 24">
+                            <path
+                                d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z" />
+                        </svg>
+                        途径四：手机 Chrome / 浏览器访问网页注册（备选通道）
+                    </div>
+                    <div class="card-desc">在安卓手机浏览器中直接输入官方网址注册，需开启无痕模式降低风控。</div>
+                </div>
+                <div class="card-body">
+                    <ol>
+                        <li><strong>打开浏览器无痕模式</strong>：使用手机 Chrome、Edge 或自带浏览器，新建 <strong>“无痕标签页 (Incognito)”</strong>。
+                        </li>
+                        <li><strong>直达注册入口</strong>：输入并访问官方网址：<br>
+                            <a href="https://accounts.google.com/signup" target="_blank"
+                                rel="noopener noreferrer">https://accounts.google.com/signup</a>
+                        </li>
+                        <li><strong>界面语言设为英文</strong>：若默认加载为中文界面，滑动至底部切换为 <strong>English (United States)</strong> 或
+                            <strong>繁体中文</strong>。
+                        </li>
+                        <li><strong>号码验证避坑</strong>：Web 网页端直接注册极度依赖代理 IP 质量。若在填写 +86
+                            手机号后遭遇“此电话号码无法用于进行验证”，说明该节点被标记为高风险，请果断切回<strong>途径一（系统设置开启谷歌基础服务）</strong>完成接码。</li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+
+        <!-- ==================== 2. 电脑网页端注册法 ==================== -->
+        <div id="desktop" class="tab-pane">
+            <header>
+                <div class="app-badge">DESKTOP · BROWSER</div>
+                <h1>电脑浏览器端注册指南</h1>
+                <div class="subtitle">使用 Windows 或 macOS 桌面浏览器完成注册的标准全流程</div>
+            </header>
+
+            <div class="callout callout-warning">
+                <svg viewBox="0 0 24 24">
+                    <path d="M1 21h22L12 2 1 21zm12-3h-2v-2h2v2zm0-4h-2v-4h2v4z" />
+                </svg>
+                <div class="callout-content">
+                    <strong>桌面端注册前置关键准则</strong>
+                    网页端风控机制严格。建议<b>使用 Chrome 或 Edge 浏览器的“无痕/隐身模式”</b>打开，并在代理软件中开启<b>“全局模式”</b>，避免本地旧
+                    Cookie 和国内网络环境干扰注册判断。
+                </div>
+            </div>
+
+            <div class="section-header">
+                <div class="section-title">分步注册教程</div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <div class="card-title">第一步：配置网络与浏览器环境</div>
+                </div>
+                <div class="card-body">
+                    <ul>
+                        <li><strong>网络代理环境准备</strong>：确保电脑客户端已开启境外全局代理（尚未配置？可先查阅 <a href="./vnode.html"
+                                target="_blank">节点与代理配置手册</a>）。</li>
+                        <li><strong>开启无痕窗口</strong>：按快捷键 <kbd>Ctrl + Shift + N</kbd> (Windows) 或 <kbd>Cmd + Shift +
+                                N</kbd> (Mac) 打开无痕窗口。</li>
+                        <li><strong>访问官方入口</strong>：在地址栏输入并访问官方地址：<br>
+                            <a href="https://accounts.google.com/signup" target="_blank"
+                                rel="noopener noreferrer">https://accounts.google.com/signup</a>
+                        </li>
+                        <li><strong>语言调整技巧</strong>：如果默认打开是中文，可滑动到底部将界面语言切换为 <strong>English (United States)</strong> 或
+                            <strong>繁体中文</strong>，能显著提升中国手机号的接码兼容性。
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <div class="card-title">第二步：填写基本账号信息</div>
+                </div>
+                <div class="card-body">
+                    <ol>
+                        <li><strong>输入姓名</strong>：输入名字 (First name) 和姓氏 (Last name)。</li>
+                        <li><strong>设置生日和性别</strong>：
+                            <ul>
+                                <li>月份、日期、年份（<strong>务必让年龄大于 18 岁</strong>，例如 2000 年）。</li>
+                                <li>性别可按真实情况或选择不透露。</li>
+                            </ul>
+                        </li>
+                        <li><strong>选择 Gmail 地址</strong>：
+                            <ul>
+                                <li>系统会提供几个备选邮箱地址。</li>
+                                <li>也可以选择“创建您自己的 Gmail 地址”，输入自定义的英文字母与数字组合。</li>
+                            </ul>
+                        </li>
+                        <li><strong>创建高强度密码</strong>：包含大小写英文字母、数字和符号，避免使用简单顺序字符。</li>
+                    </ol>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <div class="card-title">第三步：号码验证与安全补充</div>
+                </div>
+                <div class="card-body">
+                    <ol>
+                        <li><strong>手机号验证</strong>：在国家代码旗帜下拉列表中找到 <strong>China (+86)</strong>，输入手机号码并点击下一步接收 6 位验证码短信。
+                        </li>
+                        <li><strong>设置辅助邮箱（强烈推荐）</strong>：输入您平时常用的国内邮箱（如 QQ 邮箱、163 邮箱或 Outlook），这在后续找回密码或新设备登录时至关重要。
+                        </li>
+                        <li><strong>确认隐私政策</strong>：滑到底部点击 <strong>“我同意 (I agree)”</strong>，即完成账号注册。</li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+
+        <!-- ==================== 3. 疑难排错与避坑 ==================== -->
+        <div id="troubleshooting" class="tab-pane">
+            <header>
+                <div class="app-badge">SECURITY & TROUBLESHOOTING</div>
+                <h1>避坑与风控解决指南</h1>
+                <div class="subtitle">全面解决“此电话号码无法用于进行验证”及日常安全防封策略</div>
+            </header>
+
+            <div class="section-header">
+                <div class="section-title">核心痛点深度解决</div>
+            </div>
+
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-title">
+                        <svg viewBox="0 0 24 24">
+                            <path
+                                d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z" />
+                        </svg>
+                        问题：此电话号码无法用于验证
+                    </div>
+                    <div class="feature-desc">
+                        <strong>原因分析</strong>：网页端识别到当前 IP 节点有较多恶意批量注册记录，或者浏览器语言环境暴露了高风控特征。<br><br>
+                        <strong>最优解法</strong>：<br>
+                        1. <strong>改用手机系统通道</strong>：切回 iPhone「设置」-「邮件」-「添加账户」或手机 Gmail App，成功率提升至 90% 以上。<br>
+                        2. <strong>修改浏览器语言</strong>：将浏览器默认首选语言置为 <code>English (United States)</code>，清除缓存后重试。<br>
+                        3. <strong>更换干净节点</strong>：尝试切换到专线中延迟较低、使用人数较少的非热门节点。
+                    </div>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-title">
+                        <svg viewBox="0 0 24 24">
+                            <path
+                                d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z" />
+                        </svg>
+                        问题：手机始终收不到验证短信
+                    </div>
+                    <div class="feature-desc">
+                        <strong>原因分析</strong>：运营商拦截国际短信号码段，或短时间内请求短信频次过高。<br><br>
+                        <strong>解决步骤</strong>：<br>
+                        1. 检查手机短信拦截黑名单，确认未拦截以 <code>106</code>、<code>+1</code> 等开头的国际验证码。<br>
+                        2. 避免连续多次狂点“重新发送”，如失败请间隔 2 小时以上重试。<br>
+                        3. 尝试选择“通过语音电话验证”，接听 Google 发起的中文验证码口播电话。
+                    </div>
+                </div>
+            </div>
+
+            <div class="section-header">
+                <div class="section-title">账号长期安全使用守则</div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <div class="card-title">
+                        <svg viewBox="0 0 24 24">
+                            <path
+                                d="M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zm-6 9c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm3.1-9H8.9V6c0-1.71 1.39-3.1 3.1-3.1 1.71 0 3.1 1.39 3.1 3.1v2z" />
+                        </svg>
+                        避免被风控封号的黄金法则
+                    </div>
+                    <div class="card-desc">新注册账号处于为期 7-14 天的新号保护期，需注意以下行为：</div>
+                </div>
+                <div class="card-body">
+                    <div class="settings-list">
+                        <div class="setting-item">
+                            <div class="setting-label"><kbd>两步验证 (2FA)</kbd></div>
+                            <div class="setting-desc">注册成功后立即前往 Google 账号中心开启两步验证，并下载保存备用验证码 (Backup Codes)。</div>
+                        </div>
+                        <div class="setting-item">
+                            <div class="setting-label"><kbd>节点稳定性</kbd></div>
+                            <div class="setting-desc">初期尽量固定使用同一个国家或地区的专线节点，切忌短时间内在多个国家 IP 之间来回跳跃。</div>
+                        </div>
+                        <div class="setting-item">
+                            <div class="setting-label"><kbd>辅助联系方式</kbd></div>
+                            <div class="setting-desc">务必绑定一个常用有效的辅助邮箱（QQ/网易均可），以便在新设备异地登录时能接收确认邮件。</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <footer>
+            Google &amp; Gmail 账号注册保姆级指南 &bull; 单页自包含系统
+        </footer>
+    </div>
+
+    <!-- 原生极简交互脚本 -->
+    <script>
+        function switchTab(tabId) {
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.classList.toggle('active', btn.getAttribute('onclick').includes("'" + tabId + "'"));
+            });
+            document.querySelectorAll('.tab-pane').forEach(pane => {
+                pane.classList.toggle('active', pane.id === tabId);
+            });
+            if (history.replaceState) {
+                history.replaceState(null, null, '#' + tabId);
+            }
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        (function () {
+            var hash = window.location.hash.replace('#', '');
+            if (hash && document.getElementById(hash)) {
+                switchTab(hash);
+                return;
+            }
+            var ua = navigator.userAgent.toLowerCase();
+            if (/iphone|ipad|ipod/.test(ua)) {
+                switchTab('ios');
+            } else if (/android/.test(ua)) {
+                switchTab('android');
+            } else {
+                switchTab('desktop');
+            }
+        })();
+    </script>
+</body>
+
+</html>

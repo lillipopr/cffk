@@ -1,0 +1,983 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ChatGPT 桌面端安装与配置指南</title>
+    <style>
+        :root {
+            --bg-primary: #f5f5f7;
+            --bg-card: #ffffff;
+            --text-primary: #1d1d1f;
+            --text-secondary: #86868b;
+            --accent: #10a37f;
+            --accent-light: rgba(16, 163, 127, 0.1);
+            --border: rgba(0, 0, 0, 0.08);
+            --kbd-bg: #f2f2f5;
+            --kbd-border: #d1d1d6;
+            --kbd-shadow: rgba(0, 0, 0, 0.12);
+            --card-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+            --nav-bg: rgba(245, 245, 247, 0.85);
+            --warning-bg: rgba(255, 149, 0, 0.08);
+            --warning-border: rgba(255, 149, 0, 0.25);
+            --warning-text: #c97800;
+            --success-bg: rgba(52, 199, 89, 0.08);
+            --success-border: rgba(52, 199, 89, 0.25);
+            --success-text: #248a3d;
+        }
+
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --bg-primary: #161618;
+                --bg-card: #212124;
+                --text-primary: #f5f5f7;
+                --text-secondary: #a1a1a6;
+                --accent: #10a37f;
+                --accent-light: rgba(16, 163, 127, 0.2);
+                --border: rgba(255, 255, 255, 0.1);
+                --kbd-bg: #2c2c2e;
+                --kbd-border: #3a3a3c;
+                --kbd-shadow: rgba(0, 0, 0, 0.4);
+                --card-shadow: 0 4px 24px rgba(0, 0, 0, 0.3);
+                --nav-bg: rgba(22, 22, 24, 0.85);
+                --warning-bg: rgba(255, 159, 10, 0.15);
+                --warning-border: rgba(255, 159, 10, 0.3);
+                --warning-text: #ff9f0a;
+                --success-bg: rgba(48, 209, 88, 0.15);
+                --success-border: rgba(48, 209, 88, 0.3);
+                --success-text: #30d158;
+            }
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", Roboto, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.6;
+            padding-bottom: 60px;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        .tab-nav-wrapper {
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            background-color: var(--nav-bg);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--border);
+            padding: 12px 16px;
+        }
+
+        .tab-nav {
+            max-width: 860px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+            gap: 8px;
+            overflow-x: auto;
+            scrollbar-width: none;
+            -ms-overflow-style: none;
+        }
+
+        .tab-nav::-webkit-scrollbar {
+            display: none;
+        }
+
+        .tab-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 16px;
+            border-radius: 20px;
+            background: transparent;
+            color: var(--text-secondary);
+            border: 1px solid transparent;
+            font-size: 13px;
+            font-weight: 500;
+            cursor: pointer;
+            white-space: nowrap;
+            transition: all 0.15s ease;
+            user-select: none;
+        }
+
+        .tab-btn svg {
+            width: 16px;
+            height: 16px;
+            fill: currentColor;
+            flex-shrink: 0;
+        }
+
+        .tab-btn:hover {
+            color: var(--text-primary);
+            background: var(--border);
+        }
+
+        .tab-btn.active {
+            color: var(--text-primary);
+            background: var(--bg-card);
+            border-color: var(--border);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+            font-weight: 600;
+        }
+
+        .container {
+            max-width: 860px;
+            margin: 0 auto;
+            padding: 24px 20px 0;
+        }
+
+        .tab-pane {
+            display: none;
+            opacity: 0;
+            transition: opacity 0.2s ease;
+        }
+
+        .tab-pane.active {
+            display: block;
+            opacity: 1;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 32px;
+            padding-top: 12px;
+        }
+
+        .app-badge {
+            display: inline-block;
+            font-size: 12px;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+            padding: 4px 14px;
+            background: var(--accent-light);
+            color: var(--accent);
+            border-radius: 12px;
+            margin-bottom: 12px;
+        }
+
+        h1 {
+            font-size: 28px;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+            margin-bottom: 6px;
+        }
+
+        .subtitle {
+            font-size: 14px;
+            color: var(--text-secondary);
+        }
+
+        .section-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 16px;
+            margin-top: 32px;
+        }
+
+        .section-title {
+            font-size: 18px;
+            font-weight: 600;
+        }
+
+        .card {
+            background: var(--bg-card);
+            border-radius: 16px;
+            padding: 24px;
+            border: 1px solid var(--border);
+            box-shadow: var(--card-shadow);
+            margin-bottom: 20px;
+        }
+
+        .card-header {
+            margin-bottom: 14px;
+        }
+
+        .card-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 4px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .card-title svg {
+            width: 18px;
+            height: 18px;
+            fill: var(--accent);
+            flex-shrink: 0;
+        }
+
+        .card-desc {
+            font-size: 14px;
+            color: var(--text-secondary);
+        }
+
+        .card-body {
+            font-size: 14px;
+            color: var(--text-primary);
+        }
+
+        .card-body ol,
+        .card-body ul {
+            padding-left: 20px;
+            margin: 10px 0;
+        }
+
+        .card-body li {
+            margin-bottom: 10px;
+        }
+
+        .card-body a {
+            color: var(--accent);
+            text-decoration: underline;
+            text-underline-offset: 2px;
+        }
+
+        .callout {
+            border-radius: 12px;
+            padding: 14px 16px;
+            margin: 16px 0;
+            display: flex;
+            gap: 12px;
+            align-items: flex-start;
+        }
+
+        .callout-warning {
+            background: var(--warning-bg);
+            border: 1px solid var(--warning-border);
+            color: var(--warning-text);
+        }
+
+        .callout-success {
+            background: var(--success-bg);
+            border: 1px solid var(--success-border);
+            color: var(--success-text);
+        }
+
+        .callout svg {
+            width: 18px;
+            height: 18px;
+            fill: currentColor;
+            flex-shrink: 0;
+            margin-top: 2px;
+        }
+
+        .callout-content {
+            font-size: 13.5px;
+            line-height: 1.6;
+            color: var(--text-primary);
+            flex: 1;
+        }
+
+        .callout-content strong {
+            display: block;
+            margin-bottom: 5px;
+            font-size: 14px;
+        }
+
+        .callout-content a {
+            color: var(--accent);
+            text-decoration: underline;
+            text-underline-offset: 2px;
+        }
+
+        .settings-list {
+            background: var(--bg-primary);
+            border-radius: 12px;
+            overflow: hidden;
+            border: 1px solid var(--border);
+            margin-top: 14px;
+        }
+
+        .setting-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 12px 16px;
+            border-bottom: 1px solid var(--border);
+            gap: 12px;
+        }
+
+        .setting-item:last-child {
+            border-bottom: none;
+        }
+
+        .setting-label {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 13.5px;
+            font-weight: 500;
+            flex-shrink: 0;
+        }
+
+        .setting-desc {
+            font-size: 13px;
+            color: var(--text-secondary);
+            text-align: right;
+        }
+
+        .setting-arrow {
+            color: var(--text-secondary);
+            font-size: 12px;
+        }
+
+        kbd {
+            display: inline-block;
+            padding: 2px 7px;
+            font-size: 12px;
+            font-family: inherit;
+            font-weight: 500;
+            line-height: 1.4;
+            color: var(--text-primary);
+            background-color: var(--kbd-bg);
+            border: 1px solid var(--kbd-border);
+            border-radius: 6px;
+            box-shadow: 0 1px 0 var(--kbd-shadow);
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 16px;
+            margin-top: 16px;
+        }
+
+        .feature-card {
+            background: var(--bg-card);
+            border-radius: 14px;
+            padding: 18px;
+            border: 1px solid var(--border);
+            box-shadow: var(--card-shadow);
+        }
+
+        .feature-title {
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 6px;
+            color: var(--accent);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .feature-title svg {
+            width: 16px;
+            height: 16px;
+            fill: currentColor;
+        }
+
+        .feature-desc {
+            font-size: 13px;
+            color: var(--text-secondary);
+            line-height: 1.5;
+        }
+
+        .vpn-banner {
+            background: linear-gradient(135deg, rgba(16, 163, 127, 0.08) 0%, rgba(0, 113, 227, 0.08) 100%);
+            border: 1px solid rgba(16, 163, 127, 0.25);
+            border-radius: 16px;
+            padding: 16px 20px;
+            margin-bottom: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 16px;
+            flex-wrap: wrap;
+        }
+
+        @media (prefers-color-scheme: dark) {
+            .vpn-banner {
+                background: linear-gradient(135deg, rgba(16, 163, 127, 0.15) 0%, rgba(41, 151, 255, 0.12) 100%);
+                border-color: rgba(16, 163, 127, 0.35);
+            }
+        }
+
+        .vpn-banner-info {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            flex: 1;
+            min-width: 260px;
+        }
+
+        .vpn-banner-icon {
+            width: 38px;
+            height: 38px;
+            border-radius: 10px;
+            background: var(--accent);
+            color: #ffffff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .vpn-banner-icon svg {
+            width: 20px;
+            height: 20px;
+            fill: #ffffff;
+        }
+
+        .vpn-banner-text h3 {
+            font-size: 14.5px;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 2px;
+        }
+
+        .vpn-banner-text p {
+            font-size: 13px;
+            color: var(--text-secondary);
+            line-height: 1.4;
+        }
+
+        .vpn-banner-action {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 9px 18px;
+            border-radius: 20px;
+            background: var(--accent);
+            color: #ffffff !important;
+            font-size: 13px;
+            font-weight: 600;
+            text-decoration: none !important;
+            white-space: nowrap;
+            transition: opacity 0.15s ease, transform 0.15s ease;
+        }
+
+        .vpn-banner-action:hover {
+            opacity: 0.92;
+            transform: translateY(-1px);
+        }
+
+        .vpn-banner-action svg {
+            width: 14px;
+            height: 14px;
+            fill: #ffffff;
+        }
+
+        footer {
+            text-align: center;
+            margin-top: 48px;
+            padding-top: 20px;
+            border-top: 1px solid var(--border);
+            color: var(--text-secondary);
+            font-size: 13px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- 顶部固定 Tab 栏 (全 SVG 矢量图，零 Emoji) -->
+    <div class="tab-nav-wrapper">
+        <div class="tab-nav">
+            <!-- Windows 桌面版 -->
+            <button class="tab-btn active" onclick="switchTab('windows')">
+                <svg viewBox="0 0 24 24">
+                    <path
+                        d="M0 3.449L9.75 2.1v9.451H0m10.949-9.602L24 0v11.4H10.949M0 12.6h9.75v9.451L0 20.699M10.949 12.6H24V24l-12.9-1.801" />
+                </svg>
+                <span>Windows 桌面版</span>
+            </button>
+            <!-- Mac 桌面版 -->
+            <button class="tab-btn" onclick="switchTab('mac')">
+                <svg viewBox="0 0 24 24">
+                    <path
+                        d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.81-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M15.97 4.54c.64-.78 1.08-1.86.96-2.95-1 .04-2.14.65-2.81 1.43-.58.68-1.1 1.77-.96 2.85 1.12.09 2.18-.55 2.81-1.33z" />
+                </svg>
+                <span>Mac 桌面版</span>
+            </button>
+            <!-- 疑难排错与避坑 -->
+            <button class="tab-btn" onclick="switchTab('troubleshooting')">
+                <svg viewBox="0 0 24 24">
+                    <path
+                        d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm-1 6h2v2h-2V7zm0 4h2v6h-2v-6z" />
+                </svg>
+                <span>客户端排错与避坑</span>
+            </button>
+        </div>
+    </div>
+
+    <div class="container">
+
+        <!-- 全局科学上网前置提示横幅 -->
+        <div class="vpn-banner">
+            <div class="vpn-banner-info">
+                <div class="vpn-banner-icon">
+                    <svg viewBox="0 0 24 24">
+                        <path
+                            d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z" />
+                    </svg>
+                </div>
+                <div class="vpn-banner-text">
+                    <h3>核心准则：OpenAI 严格屏蔽中国大陆及中国香港 IP</h3>
+                    <p>客户端运行与登录必须使用<strong>美国、日本、新加坡</strong>等专线节点。若尚未配置境外代理节点，请先配置网络。</p>
+                </div>
+            </div>
+            <a href="./vnode.html" class="vpn-banner-action" target="_blank">
+                <span>前往网络节点配置教程</span>
+                <svg viewBox="0 0 24 24">
+                    <path d="M5 13h11.86l-5.43 5.43 1.42 1.42L21.14 12l-8.29-8.29-1.42 1.42L16.86 11H5v2z" />
+                </svg>
+            </a>
+        </div>
+
+        <!-- ==================== 1. Windows 桌面版 ==================== -->
+        <div id="windows" class="tab-pane active">
+            <header>
+                <div class="app-badge">WINDOWS · DESKTOP FIRST</div>
+                <h1>ChatGPT Windows 桌面端指南</h1>
+                <div class="subtitle">办公与生产力首选：全局快捷键瞬时呼出、随叫随到、融入日常工作流</div>
+            </header>
+
+            <div class="section-header">
+                <div class="section-title">分步安装与配置流程</div>
+            </div>
+
+            <!-- 第一步：网络准备 -->
+            <div class="card">
+                <div class="card-header">
+                    <div class="card-title">
+                        <svg viewBox="0 0 24 24">
+                            <path
+                                d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z" />
+                        </svg>
+                        第一步：网络代理就绪（客户端通信基石）
+                    </div>
+                    <div class="card-desc">桌面端是独立系统程序，需确保代理软件接管了系统流量。</div>
+                </div>
+                <div class="card-body">
+                    <ol>
+                        <li><strong>节点地区确认</strong>：打开代理客户端（v2rayN 或
+                            Clash），选择<strong>美国、日本、新加坡</strong>专线（切勿使用中国香港或大陆节点）。尚未配置？请先查阅 <a href="./vnode.html"
+                                target="_blank">节点与代理客户端配置手册</a>。</li>
+                        <li><strong>确保开启系统代理</strong>：
+                            <div class="settings-list">
+                                <div class="setting-item">
+                                    <div class="setting-label"><kbd>v2rayN 用户</kbd></div>
+                                    <div class="setting-desc">右键右下角托盘图标 ➔「系统代理」➔ 选择「自动配置系统代理」（图标变红）</div>
+                                </div>
+                                <div class="setting-item">
+                                    <div class="setting-label"><kbd>Clash / Verge 用户</kbd></div>
+                                    <div class="setting-desc">开启主界面「System Proxy (系统代理)」开关，推荐同时开启「TUN Mode」</div>
+                                </div>
+                            </div>
+                        </li>
+                    </ol>
+                </div>
+            </div>
+
+            <!-- 第二步：下载安装 -->
+            <div class="card">
+                <div class="card-header">
+                    <div class="card-title">
+                        <svg viewBox="0 0 24 24">
+                            <path
+                                d="M19.35 10.04C18.67 6.59 15.64 4 12 4 9.11 4 6.6 5.64 5.35 8.04 2.34 8.36 0 10.91 0 14c0 3.31 2.69 6 6 6h13c2.76 0 5-2.24 5-5 0-2.64-2.05-4.78-4.65-4.96zM17 13l-5 5-5-5h3V9h4v4h3z" />
+                        </svg>
+                        第二步：通过官网下载安装客户端
+                    </div>
+                    <div class="card-desc">系统要求：Windows 10 (x64) 17763.0 以上或 Windows 11。</div>
+                </div>
+                <div class="card-body">
+                    <ol>
+                        <li><strong>访问官方下载入口</strong>：在浏览器打开 OpenAI 官方下载中心：<br>
+                            <a href="https://openai.com/chatgpt/download/" target="_blank"
+                                rel="noopener noreferrer">https://openai.com/chatgpt/download/</a>
+                        </li>
+                        <li><strong>点击下载并安装</strong>：点击页面中的 <strong>“Download for Windows”</strong> 按钮，根据页面提示完成客户端安装。
+                        </li>
+                    </ol>
+                    <div class="callout callout-warning" style="margin-top: 14px;">
+                        <svg viewBox="0 0 24 24">
+                            <path d="M1 21h22L12 2 1 21zm12-3h-2v-2h2v2zm0-4h-2v-4h2v4z" />
+                        </svg>
+                        <div class="callout-content">
+                            <strong>避坑提示：若跳转商店提示“此应用在您所在的区域不可用”</strong>
+                            这是因为 Windows 系统区域设为了中国大陆。只需打开电脑「设置」➔「时间和语言」➔「语言和区域」➔ 将「国家或地区」修改为 <b>“美国”</b>，重新点击即可正常下载。
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 第三步：准备 Chrome 浏览器与登录谷歌账号 -->
+            <div class="card">
+                <div class="card-header">
+                    <div class="card-title">
+                        <svg viewBox="0 0 24 24">
+                            <path
+                                d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z" />
+                        </svg>
+                        第三步：配置 Chrome 浏览器并登录谷歌账号（关键前置）
+                    </div>
+                    <div class="card-desc">避免第三方套壳浏览器拦截登录弹窗与协议回跳，确保握手 100% 成功。</div>
+                </div>
+                <div class="card-body">
+                    <ol>
+                        <li><strong>下载安装 Google Chrome</strong>：在电脑上下载并安装官方纯净版 Chrome 浏览器：<br>
+                            <a href="https://www.google.cn/chrome/" target="_blank"
+                                rel="noopener noreferrer">https://www.google.cn/chrome/</a>
+                        </li>
+                        <li><strong>登录个人谷歌账号</strong>：打开 Chrome 浏览器，点击右上角头像登录您的 Google 账号（尚未拥有谷歌账号？请先查阅 <a href="./gmail.html" target="_blank">Gmail 账号注册指南</a>）。</li>
+                        <li><strong>将 Chrome 设为默认浏览器</strong>：
+                            <div class="settings-list">
+                                <div class="setting-item">
+                                    <div class="setting-label"><kbd>设置步骤</kbd></div>
+                                    <div class="setting-desc">打开 Chrome「设置」➔ 左侧点击「默认浏览器」➔ 点击「设为默认值」</div>
+                                </div>
+                            </div>
+                        </li>
+                    </ol>
+                </div>
+            </div>
+
+            <!-- 第四步：客户端登录与极速授权 -->
+            <div class="card">
+                <div class="card-header">
+                    <div class="card-title">
+                        <svg viewBox="0 0 24 24">
+                            <path
+                                d="M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zm-6 9c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm3.1-9H8.9V6c0-1.71 1.39-3.1 3.1-3.1 1.71 0 3.1 1.39 3.1 3.1v2z" />
+                        </svg>
+                        第四步：客户端登录与一键授权（通关完成）
+                    </div>
+                    <div class="card-desc">客户端联动默认的 Chrome 浏览器快速完成安全握手。</div>
+                </div>
+                <div class="card-body">
+                    <ol>
+                        <li><strong>启动客户端并点击登录</strong>：从桌面或开始菜单打开 ChatGPT 客户端，点击主界面醒目的 <strong>“Log in”</strong> 按钮。</li>
+                        <li><strong>Chrome 自动拉起授权页</strong>：系统将自动唤起已设为默认的 Chrome 浏览器打开官方授权登录页面。</li>
+                        <li><strong>点击 Google 一键直登</strong>：直接点击 <strong>“Continue with Google”</strong>。由于 Chrome 中已提前登录好账号，无需输入密码与短信接码，一键瞬间通过。</li>
+                        <li><strong>授权回跳客户端</strong>：
+                            <ul>
+                                <li>登录成功后，Chrome 顶部将弹窗提示：<code>“要在 ChatGPT 中打开该链接吗？”</code>。</li>
+                                <li>勾选 <strong>“始终允许”</strong> 并点击 <strong>“打开”</strong>，页面即可平滑回跳至 ChatGPT 桌面端，正式开启使用！</li>
+                            </ul>
+                        </li>
+                    </ol>
+
+                    <div class="callout callout-warning" style="margin-top: 16px;">
+                        <svg viewBox="0 0 24 24">
+                            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z" />
+                        </svg>
+                        <div class="callout-content">
+                            <strong>异常排错：登录被要求手机短信验证码？</strong>
+                            部分新账号在授权时可能会触发 OpenAI 的二次安全核验，要求输入海外手机号接收验证码（国内大陆手机号无法使用）。若没有可用的境外手机号，可使用海外手机接码验证服务完成验证：<br>
+                            <a href="https://aiprice.in/products/chatgpt/verify-openai" target="_blank" rel="noopener noreferrer" style="display: inline-flex; align-items: center; gap: 4px; font-weight: 600; margin-top: 4px;">
+                                <span>前往获取海外接码验证服务</span>
+                                <svg viewBox="0 0 24 24" style="width: 13px; height: 13px; fill: currentColor; margin: 0;"><path d="M5 13h11.86l-5.43 5.43 1.42 1.42L21.14 12l-8.29-8.29-1.42 1.42L16.86 11H5v2z"/></svg>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 第五步：ChatGPT Plus 会员订阅与代充 -->
+            <div class="card">
+                <div class="card-header">
+                    <div class="card-title">
+                        <svg viewBox="0 0 24 24">
+                            <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+                        </svg>
+                        第五步：ChatGPT Plus 会员订阅与充值（进阶升级）
+                    </div>
+                    <div class="card-desc">解锁 GPT-4o 深度思考能力、DALL·E 绘图、高级语音及更高使用额度。</div>
+                </div>
+                <div class="card-body">
+                    <p style="margin-bottom: 12px;"><strong>会员充值门槛</strong>：OpenAI 官方订阅（Plus 会员）仅支持特定的海外信用卡，国内发行的普通银联卡、Visa 或万事达双币信用卡会被系统直接拒付拦截。</p>
+                    <p style="margin-bottom: 14px;"><strong>官方正规代充通道</strong>：若没有海外实体信用卡，可直接使用正规合规的 ChatGPT Plus 官方会员代充服务，无需提供账号密码，一键快速开通：</p>
+                    <a href="https://aiprice.in/products/chatgpt/chatgpt-plus?delivery=recharge" class="vpn-banner-action" target="_blank" rel="noopener noreferrer">
+                        <span>前往办理 ChatGPT Plus 会员代充服务</span>
+                        <svg viewBox="0 0 24 24"><path d="M5 13h11.86l-5.43 5.43 1.42 1.42L21.14 12l-8.29-8.29-1.42 1.42L16.86 11H5v2z"/></svg>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- ==================== 2. Mac 桌面版 ==================== -->
+        <div id="mac" class="tab-pane">
+            <header>
+                <div class="app-badge">macOS · APPLE SILICON</div>
+                <h1>ChatGPT Mac 桌面端指南</h1>
+                <div class="subtitle">苹果电脑专属沉浸体验：Option + Space 瞬时唤起、深度融入日常工作流</div>
+            </header>
+
+            <div class="section-header">
+                <div class="section-title">分步安装与配置流程</div>
+            </div>
+
+            <!-- 第一步：网络准备 -->
+            <div class="card">
+                <div class="card-header">
+                    <div class="card-title">
+                        <svg viewBox="0 0 24 24">
+                            <path
+                                d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z" />
+                        </svg>
+                        第一步：网络环境就绪（确保全局/系统代理）
+                    </div>
+                    <div class="card-desc">客户端需保持顺畅的境外专线连接。</div>
+                </div>
+                <div class="card-body">
+                    <ol>
+                        <li>打开 Mac 代理软件（如 Clash Verge Rev、Surge 或 Sing-box），连接<strong>美国、日本、新加坡</strong>优质专线。尚未配置？请先查阅
+                            <a href="./vnode.html" target="_blank">节点与代理客户端配置手册</a>。
+                        </li>
+                        <li>确保开启 <strong>「System Proxy (系统代理)」</strong> 开关；建议开启 <strong>「TUN Mode (虚拟网卡)」</strong>，确保
+                            macOS 独立客户端完全走代理分流。</li>
+                    </ol>
+                </div>
+            </div>
+
+            <!-- 第二步：下载与安装 -->
+            <div class="card">
+                <div class="card-header">
+                    <div class="card-title">
+                        <svg viewBox="0 0 24 24">
+                            <path
+                                d="M19.35 10.04C18.67 6.59 15.64 4 12 4 9.11 4 6.6 5.64 5.35 8.04 2.34 8.36 0 10.91 0 14c0 3.31 2.69 6 6 6h13c2.76 0 5-2.24 5-5 0-2.64-2.05-4.78-4.65-4.96zM17 13l-5 5-5-5h3V9h4v4h3z" />
+                        </svg>
+                        第二步：通过官网下载安装客户端
+                    </div>
+                    <div class="card-desc">官方原生 Mac 应用安装包。</div>
+                </div>
+                <div class="card-body">
+                    <ol>
+                        <li><strong>访问官方下载入口</strong>：在浏览器打开 OpenAI 官方下载中心：<br>
+                            <a href="https://openai.com/chatgpt/download/" target="_blank"
+                                rel="noopener noreferrer">https://openai.com/chatgpt/download/</a>
+                        </li>
+                        <li><strong>点击下载安装包</strong>：点击页面中央的 <strong>“Download for Mac”</strong> 按钮，下载官方
+                            <code>ChatGPT.dmg</code> 镜像文件。
+                        </li>
+                        <li><strong>拖拽完成安装</strong>：双击打开下载好的镜像文件，将 <strong>ChatGPT</strong> 图标长按拖入 <strong>Applications
+                                (应用程序)</strong> 文件夹即可。</li>
+                    </ol>
+                </div>
+            </div>
+
+            <!-- 第三步：准备 Chrome 浏览器与登录谷歌账号 -->
+            <div class="card">
+                <div class="card-header">
+                    <div class="card-title">
+                        <svg viewBox="0 0 24 24">
+                            <path
+                                d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z" />
+                        </svg>
+                        第三步：配置 Chrome 浏览器并登录谷歌账号（关键前置）
+                    </div>
+                    <div class="card-desc">建立纯净认证环境，避免非标准浏览器阻断授权弹窗与协议回跳。</div>
+                </div>
+                <div class="card-body">
+                    <ol>
+                        <li><strong>下载安装 Mac 版 Chrome</strong>：访问 Google 官方网站下载安装 Chrome 浏览器：<br>
+                            <a href="https://www.google.cn/chrome/" target="_blank"
+                                rel="noopener noreferrer">https://www.google.cn/chrome/</a>
+                        </li>
+                        <li><strong>登录个人谷歌账号</strong>：打开 Chrome 浏览器，点击右上角头像登录您的 Google 账号（尚未拥有谷歌账号？请先查阅 <a href="./gmail.html" target="_blank">Gmail 账号注册指南</a>）。</li>
+                        <li><strong>将 Chrome 设为默认浏览器</strong>：
+                            <div class="settings-list">
+                                <div class="setting-item">
+                                    <div class="setting-label"><kbd>设置步骤</kbd></div>
+                                    <div class="setting-desc">打开 Chrome「设置」➔ 左侧「默认浏览器」➔ 点击「设为默认值」</div>
+                                </div>
+                            </div>
+                        </li>
+                    </ol>
+                </div>
+            </div>
+
+            <!-- 第四步：客户端登录与一键授权 -->
+            <div class="card">
+                <div class="card-header">
+                    <div class="card-title">
+                        <svg viewBox="0 0 24 24">
+                            <path
+                                d="M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zm-6 9c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm3.1-9H8.9V6c0-1.71 1.39-3.1 3.1-3.1 1.71 0 3.1 1.39 3.1 3.1v2z" />
+                        </svg>
+                        第四步：客户端登录与一键授权（通关完成）
+                    </div>
+                    <div class="card-desc">客户端联动默认的 Chrome 浏览器快速完成安全握手。</div>
+                </div>
+                <div class="card-body">
+                    <ol>
+                        <li>在「启动台 (Launchpad)」或通过聚焦搜索打开 <strong>ChatGPT</strong> 客户端。</li>
+                        <li>首次打开若提示“从互联网下载的应用，确定要打开吗？”，点击 <strong>“打开”</strong>。</li>
+                        <li>点击客户端主界面的 <strong>“Log in”</strong> 按钮，系统自动唤起已设为默认的 Chrome 浏览器。</li>
+                        <li>在网页中点击 <strong>“Continue with Google”</strong> 秒速通过，在弹出的“要在 ChatGPT 中打开此链接吗？”中勾选允许，页面即可平滑回跳至客户端正式使用！</li>
+                    </ol>
+
+                    <div class="callout callout-warning" style="margin-top: 16px;">
+                        <svg viewBox="0 0 24 24">
+                            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z" />
+                        </svg>
+                        <div class="callout-content">
+                            <strong>异常排错：登录被要求手机短信验证码？</strong>
+                            部分新账号在授权时可能会触发 OpenAI 的二次安全核验，要求输入海外手机号接收验证码（国内大陆手机号无法使用）。若没有可用的境外手机号，可使用海外手机接码验证服务完成验证：<br>
+                            <a href="https://aiprice.in/products/chatgpt/verify-openai" target="_blank" rel="noopener noreferrer" style="display: inline-flex; align-items: center; gap: 4px; font-weight: 600; margin-top: 4px;">
+                                <span>前往获取海外接码验证服务</span>
+                                <svg viewBox="0 0 24 24" style="width: 13px; height: 13px; fill: currentColor; margin: 0;"><path d="M5 13h11.86l-5.43 5.43 1.42 1.42L21.14 12l-8.29-8.29-1.42 1.42L16.86 11H5v2z"/></svg>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 第五步：ChatGPT Plus 会员订阅与代充 -->
+            <div class="card">
+                <div class="card-header">
+                    <div class="card-title">
+                        <svg viewBox="0 0 24 24">
+                            <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+                        </svg>
+                        第五步：ChatGPT Plus 会员订阅与充值（进阶升级）
+                    </div>
+                    <div class="card-desc">解锁 GPT-4o 深度思考能力、DALL·E 绘图、高级语音及更高使用额度。</div>
+                </div>
+                <div class="card-body">
+                    <p style="margin-bottom: 12px;"><strong>会员充值门槛</strong>：OpenAI 官方订阅（Plus 会员）仅支持特定的海外信用卡，国内发行的普通银联卡、Visa 或万事达双币信用卡会被系统直接拒付拦截。</p>
+                    <p style="margin-bottom: 14px;"><strong>官方正规代充通道</strong>：若没有海外实体信用卡，可直接使用正规合规的 ChatGPT Plus 官方会员代充服务，无需提供账号密码，一键快速开通：</p>
+                    <a href="https://aiprice.in/products/chatgpt/chatgpt-plus?delivery=recharge" class="vpn-banner-action" target="_blank" rel="noopener noreferrer">
+                        <span>前往办理 ChatGPT Plus 会员代充服务</span>
+                        <svg viewBox="0 0 24 24"><path d="M5 13h11.86l-5.43 5.43 1.42 1.42L21.14 12l-8.29-8.29-1.42 1.42L16.86 11H5v2z"/></svg>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- ==================== 4. 疑难排错与避坑 ==================== -->
+        <div id="troubleshooting" class="tab-pane">
+            <header>
+                <div class="app-badge">SECURITY & TROUBLESHOOTING</div>
+                <h1>客户端排错与避坑指南</h1>
+                <div class="subtitle">高频网络连接报错、浏览器回跳失败与账号安全守则</div>
+            </header>
+
+            <div class="section-header">
+                <div class="section-title">高频报错速查字典</div>
+            </div>
+
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-title">
+                        <svg viewBox="0 0 24 24">
+                            <path
+                                d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z" />
+                        </svg>
+                        客户端提示 Unable to connect
+                    </div>
+                    <div class="feature-desc">
+                        <strong>原因</strong>：代理客户端仅代理了浏览器网页，未接管系统桌面应用的流量。<br><br>
+                        <strong>解决方式</strong>：<br>
+                        1. <strong>v2rayN</strong>：右键托盘图标确认「系统代理」是否已选为「自动配置系统代理」（图标呈红色）；<br>
+                        2. <strong>Clash</strong>：在设置中开启「TUN Mode (虚拟网卡模式)」，使全局所有软件强制走代理；<br>
+                        3. 查阅 <a href="./vnode.html" target="_blank">节点与代理客户端配置手册</a> 排查网络连通性。
+                    </div>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-title">
+                        <svg viewBox="0 0 24 24">
+                            <path
+                                d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z" />
+                        </svg>
+                        登录报错 Access Denied (1020)
+                    </div>
+                    <div class="feature-desc">
+                        <strong>原因</strong>：当前代理节点跳到了中国大陆或中国香港地区，触发了 OpenAI 严格的地区封锁拦截。<br><br>
+                        <strong>解决方式</strong>：<br>
+                        1. 打开代理软件节点列表，明确切换为<strong>美国、日本、新加坡</strong>专线节点；<br>
+                        2. 在浏览器中打开无痕隐身窗口，重新访问登录；<br>
+                        3. 如多次报错，切换至另一条低延迟的非热门海外节点。
+                    </div>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-title">
+                        <svg viewBox="0 0 24 24">
+                            <path
+                                d="M19 19H5V5h7V3H5c-1.11 0-2 .9-2 2v14c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2v-7h-2v7zM14 3v2h3.59l-9.83 9.83 1.41 1.41L19 6.41V10h2V3h-7z" />
+                        </svg>
+                        浏览器登录后未跳回客户端
+                    </div>
+                    <div class="feature-desc">
+                        <strong>原因</strong>：默认浏览器拦截了 <code>chatgpt://</code> 本地协议弹窗唤起。<br><br>
+                        <strong>解决方式</strong>：<br>
+                        1. 检查浏览器地址栏最右侧是否有“已拦截弹窗”小图标，点击选择“始终允许打开此类链接”；<br>
+                        2. 确认 ChatGPT 桌面端在后台保持开启，未被误关闭；<br>
+                        3. 关掉客户端重新点击「Log in」重试一次。
+                    </div>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-title">
+                        <svg viewBox="0 0 24 24">
+                            <path
+                                d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm-1 6h2v2h-2V7zm0 4h2v6h-2v-6z" />
+                        </svg>
+                        账号长期稳定防封法则
+                    </div>
+                    <div class="feature-desc">
+                        <strong>日常保持规范</strong>：<br>
+                        1. 初期尽量固定使用同一个国家或地区的节点，切忌短时间内在不同国家 IP 之间频繁跳跃；<br>
+                        2. 优先使用 Google 账号直登（联动 <a href="./gmail.html" target="_blank">Gmail 注册指南</a>），安全性与稳定性远高于普通弱密码注册。
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <footer>
+            ChatGPT 桌面端安装与配置指南 &bull; 单页自包含系统
+        </footer>
+    </div>
+
+    <!-- 原生极简交互脚本 -->
+    <script>
+        function switchTab(tabId) {
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.classList.toggle('active', btn.getAttribute('onclick').includes("'" + tabId + "'"));
+            });
+            document.querySelectorAll('.tab-pane').forEach(pane => {
+                pane.classList.toggle('active', pane.id === tabId);
+            });
+            if (history.replaceState) {
+                history.replaceState(null, null, '#' + tabId);
+            }
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        (function () {
+            var hash = window.location.hash.replace('#', '');
+            if (hash && document.getElementById(hash)) {
+                switchTab(hash);
+                return;
+            }
+            var ua = navigator.userAgent.toLowerCase();
+            if (/macintosh|mac os x/.test(ua)) {
+                switchTab('mac');
+            } else if (/iphone|ipad|ipod|android/.test(ua)) {
+                switchTab('mobile');
+            } else {
+                switchTab('windows');
+            }
+        })();
+    </script>
+</body>
+
+</html>
