@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -210,7 +211,8 @@
             color: var(--text-primary);
         }
 
-        .card-body ol, .card-body ul {
+        .card-body ol,
+        .card-body ul {
             padding-left: 20px;
             margin: 10px 0;
         }
@@ -277,6 +279,7 @@
                 align-items: flex-start;
                 gap: 6px;
             }
+
             .setting-desc {
                 text-align: left;
             }
@@ -412,8 +415,84 @@
             border: 1px solid var(--border);
             border-radius: 8px;
         }
+
+        /* Apple ID 前置引导卡片 */
+        .appleid-callout {
+            display: flex;
+            align-items: flex-start;
+            gap: 14px;
+            padding: 16px 18px;
+            background: var(--bg-primary);
+            border: 1px solid var(--border);
+            border-left: 4px solid var(--accent);
+            border-radius: 12px;
+            margin: 12px 0 16px;
+        }
+
+        .appleid-callout-icon {
+            width: 36px;
+            height: 36px;
+            border-radius: 9px;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            color: var(--text-primary);
+        }
+
+        .appleid-callout-icon svg {
+            width: 20px;
+            height: 20px;
+            fill: currentColor;
+        }
+
+        .appleid-callout-content {
+            flex: 1;
+        }
+
+        .appleid-callout-title {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 4px;
+        }
+
+        .appleid-callout-desc {
+            font-size: 13px;
+            color: var(--text-secondary);
+            line-height: 1.5;
+            margin-bottom: 10px;
+        }
+
+        .appleid-callout-action {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 7px 14px;
+            background: var(--accent);
+            color: #ffffff !important;
+            font-size: 12px;
+            font-weight: 600;
+            border-radius: 8px;
+            text-decoration: none !important;
+            transition: all 0.2s ease;
+        }
+
+        .appleid-callout-action:hover {
+            opacity: 0.92;
+            transform: translateY(-1px);
+        }
+
+        .appleid-callout-action svg {
+            width: 14px;
+            height: 14px;
+            fill: currentColor;
+        }
     </style>
 </head>
+
 <body>
 
     <!-- 顶部固定 Tab 栏 (带 SVG 矢量图，零 Emoji) -->
@@ -421,27 +500,42 @@
         <div class="tab-nav">
             <!-- Windows -->
             <button class="tab-btn active" onclick="switchTab('windows')">
-                <svg viewBox="0 0 24 24"><path d="M0 3.449L9.75 2.1v9.451H0m10.949-9.602L24 0v11.4H10.949M0 12.6h9.75v9.451L0 20.699M10.949 12.6H24V24l-12.9-1.801"/></svg>
+                <svg viewBox="0 0 24 24">
+                    <path
+                        d="M0 3.449L9.75 2.1v9.451H0m10.949-9.602L24 0v11.4H10.949M0 12.6h9.75v9.451L0 20.699M10.949 12.6H24V24l-12.9-1.801" />
+                </svg>
                 <span>Windows</span>
             </button>
             <!-- macOS -->
             <button class="tab-btn" onclick="switchTab('macos')">
-                <svg viewBox="0 0 24 24"><path d="M20 18c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2H4c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2H0v2h24v-2h-4zM4 6h16v10H4V6z"/></svg>
+                <svg viewBox="0 0 24 24">
+                    <path
+                        d="M20 18c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2H4c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2H0v2h24v-2h-4zM4 6h16v10H4V6z" />
+                </svg>
                 <span>macOS</span>
             </button>
             <!-- Android -->
             <button class="tab-btn" onclick="switchTab('android')">
-                <svg viewBox="0 0 24 24"><path d="M17.523 15.3414c-.5511 0-.9993-.4486-.9993-.9997s.4482-.9993.9993-.9993c.551 0 .9993.4482.9993.9993.0001.5511-.4482.9997-.9993.9997m-11.046 0c-.5511 0-.9993-.4486-.9993-.9997s.4482-.9993.9993-.9993c.5511 0 .9993.4482.9993.9993 0 .5511-.4482.9997-.9993.9997m11.4045-6.02l1.9973-3.4592a.416.416 0 00-.1521-.5676.416.416 0 00-.5676.1521l-2.0223 3.503C15.5902 8.4114 13.8533 8.1 12 8.1c-1.8533 0-3.5902.3114-5.1367.8497L4.841 5.4467a.4161.4161 0 00-.5677-.1521.4157.4157 0 00-.1521.5676l1.9973 3.4592C2.6889 11.1867.3432 14.6589 0 18.761h24c-.3432-4.1021-2.6889-7.5743-6.1185-9.4396"/></svg>
+                <svg viewBox="0 0 24 24">
+                    <path
+                        d="M17.523 15.3414c-.5511 0-.9993-.4486-.9993-.9997s.4482-.9993.9993-.9993c.551 0 .9993.4482.9993.9993.0001.5511-.4482.9997-.9993.9997m-11.046 0c-.5511 0-.9993-.4486-.9993-.9997s.4482-.9993.9993-.9993c.5511 0 .9993.4482.9993.9993 0 .5511-.4482.9997-.9993.9997m11.4045-6.02l1.9973-3.4592a.416.416 0 00-.1521-.5676.416.416 0 00-.5676.1521l-2.0223 3.503C15.5902 8.4114 13.8533 8.1 12 8.1c-1.8533 0-3.5902.3114-5.1367.8497L4.841 5.4467a.4161.4161 0 00-.5677-.1521.4157.4157 0 00-.1521.5676l1.9973 3.4592C2.6889 11.1867.3432 14.6589 0 18.761h24c-.3432-4.1021-2.6889-7.5743-6.1185-9.4396" />
+                </svg>
                 <span>Android</span>
             </button>
             <!-- iOS V2BOX -->
             <button class="tab-btn" onclick="switchTab('ios-v2box')">
-                <svg viewBox="0 0 24 24"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.81-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M15.97 4.54c.64-.78 1.08-1.86.96-2.95-1 .04-2.14.65-2.81 1.43-.58.68-1.1 1.77-.96 2.85 1.12.09 2.18-.55 2.81-1.33z"/></svg>
+                <svg viewBox="0 0 24 24">
+                    <path
+                        d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.81-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M15.97 4.54c.64-.78 1.08-1.86.96-2.95-1 .04-2.14.65-2.81 1.43-.58.68-1.1 1.77-.96 2.85 1.12.09 2.18-.55 2.81-1.33z" />
+                </svg>
                 <span>iOS</span>
             </button>
             <!-- iOS Shadowrocket -->
             <button class="tab-btn" onclick="switchTab('ios-shadowrocket')">
-                <svg viewBox="0 0 24 24"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.81-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M15.97 4.54c.64-.78 1.08-1.86.96-2.95-1 .04-2.14.65-2.81 1.43-.58.68-1.1 1.77-.96 2.85 1.12.09 2.18-.55 2.81-1.33z"/></svg>
+                <svg viewBox="0 0 24 24">
+                    <path
+                        d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.81-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M15.97 4.54c.64-.78 1.08-1.86.96-2.95-1 .04-2.14.65-2.81 1.43-.58.68-1.1 1.77-.96 2.85 1.12.09 2.18-.55 2.81-1.33z" />
+                </svg>
                 <span>iOS · Shadowrockets</span>
             </button>
 
@@ -458,7 +552,9 @@
                 <div class="subtitle">Windows 平台原生 V2Ray / Xray 核心客户端安装、配置导入与分流手册</div>
             </header>
 
-            <div class="section-header"><div class="section-title">快速配置流程</div></div>
+            <div class="section-header">
+                <div class="section-title">快速配置流程</div>
+            </div>
 
             <div class="card">
                 <div class="card-header">
@@ -467,20 +563,30 @@
                 </div>
                 <div class="card-body">
                     <div class="download-action-group">
-                        <a href="/api/download/v2rayn-windows" target="_blank" rel="noopener noreferrer" class="download-btn-primary">
-                            <svg viewBox="0 0 24 24"><path d="M19.35 10.04C18.67 6.59 15.64 4 12 4 9.11 4 6.6 5.64 5.35 8.04 2.34 8.36 0 10.91 0 14c0 3.31 2.69 6 6 6h13c2.76 0 5-2.24 5-5 0-2.64-2.05-4.78-4.65-4.96zM17 13l-5 5-5-5h3V9h4v4h3z"/></svg>
-                            <span>国内免翻高速下载（官方直链加速）</span>
+                        <a href="/api/download/v2rayn-windows" target="_blank" rel="noopener noreferrer"
+                            class="download-btn-primary">
+                            <svg viewBox="0 0 24 24">
+                                <path
+                                    d="M19.35 10.04C18.67 6.59 15.64 4 12 4 9.11 4 6.6 5.64 5.35 8.04 2.34 8.36 0 10.91 0 14c0 3.31 2.69 6 6 6h13c2.76 0 5-2.24 5-5 0-2.64-2.05-4.78-4.65-4.96zM17 13l-5 5-5-5h3V9h4v4h3z" />
+                            </svg>
+                            <span>官方高速下载</span>
                         </a>
-                        <a href="https://github.com/2dust/v2rayN/releases" target="_blank" rel="noopener noreferrer" class="download-btn-secondary">
-                            <svg viewBox="0 0 24 24"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
+                        <a href="https://github.com/2dust/v2rayN/releases" target="_blank" rel="noopener noreferrer"
+                            class="download-btn-secondary">
+                            <svg viewBox="0 0 24 24">
+                                <path
+                                    d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z" />
+                            </svg>
                             <span>GitHub Releases 官方发布页</span>
                         </a>
                     </div>
                     <div class="download-tip">
-                        官方直链包含推荐包：<code>v2rayN-windows-64-desktop.zip</code>（已内置最新 Xray 核心与桌面运行时，大小约 111MB，无需科学上网即可满速直下）。
+                        <code>v2rayN-windows-64-desktop.zip</code>（已内置最新 Xray 核心与桌面运行时，大小约
+                        111MB）。
                     </div>
                     <ul>
-                        <li><strong>解压与运行</strong>：下载完成后右键点击“全部解压缩”至独立文件夹（建议非 C 盘根目录），双击 <code>v2rayN.exe</code> 启动。</li>
+                        <li><strong>解压与运行</strong>：下载完成后右键点击“全部解压缩”至独立文件夹（建议非 C 盘根目录），双击 <code>v2rayN.exe</code> 启动。
+                        </li>
                     </ul>
                 </div>
             </div>
@@ -494,7 +600,9 @@
                     <ol>
                         <li style="margin-bottom: 16px;">
                             <strong>获取节点订阅链接（必选）</strong>：<br>
-                            前往 <a href="https://freeshop.lol/product/zhuan-xian-us" target="_blank" rel="noopener noreferrer" style="font-weight: 600; text-decoration: underline;">购买高速专线节点 ↗</a>。支付成功后即可在 <strong>邮箱</strong> 中获取 <strong>专属订阅链接</strong>，格式如下：
+                            前往 <a href="https://freeshop.lol/product/zhuan-xian-us" target="_blank"
+                                rel="noopener noreferrer" style="font-weight: 600; text-decoration: underline;">购买高速专线节点
+                                ↗</a>。支付成功后即可在 <strong>邮箱</strong> 中获取 <strong>专属订阅链接</strong>，格式如下：
                             <div class="code-box">https://sub.freeshop.lol/sub/xxxxxxxxxx</div>
                         </li>
                         <li>
@@ -508,7 +616,9 @@
                                     </ul>
                                 </li>
                                 <li>点击右下角 <strong>“确定”</strong> 保存设置。</li>
-                                <li>回到主界面，点击顶部菜单 <strong>“订阅分组”</strong> ➔ <strong>“更新全部订阅(不通过代理)”</strong>，节点列表将自动呈现在窗口中。</li>
+                                <li>回到主界面，点击顶部菜单 <strong>“订阅分组”</strong> ➔
+                                    <strong>“更新全部订阅(不通过代理)”</strong>，节点列表将自动呈现在窗口中。
+                                </li>
                             </ul>
                         </li>
                     </ol>
@@ -522,15 +632,18 @@
                 </div>
                 <div class="settings-list">
                     <div class="setting-item">
-                        <div class="setting-label"><kbd>系统代理</kbd><span class="setting-arrow">➔</span><kbd style="color: var(--accent);">自动配置系统代理</kbd></div>
+                        <div class="setting-label"><kbd>系统代理</kbd><span class="setting-arrow">➔</span><kbd
+                                style="color: var(--accent);">自动配置系统代理</kbd></div>
                         <div class="setting-desc">图标变红，浏览器及绝大多数日常应用自动接入代理</div>
                     </div>
                     <div class="setting-item">
-                        <div class="setting-label"><kbd>路由规则</kbd><span class="setting-arrow">➔</span><kbd style="color: var(--accent);">绕过大陆 (Whitelist)</kbd></div>
+                        <div class="setting-label"><kbd>路由规则</kbd><span class="setting-arrow">➔</span><kbd
+                                style="color: var(--accent);">绕过大陆 (Whitelist)</kbd></div>
                         <div class="setting-desc">国内常用网站直连，海外网站走专线（最推荐）</div>
                     </div>
                     <div class="setting-item">
-                        <div class="setting-label"><kbd>开机自动启动</kbd><span class="setting-arrow">➔</span><kbd>勾选开启</kbd></div>
+                        <div class="setting-label"><kbd>开机自动启动</kbd><span class="setting-arrow">➔</span><kbd>勾选开启</kbd>
+                        </div>
                         <div class="setting-desc">登录 Windows 系统后自动在后台托盘静默运行</div>
                     </div>
                 </div>
@@ -553,12 +666,26 @@
                 </div>
             </div>
 
-            <div class="section-header"><div class="section-title">常见问题与排错指引</div></div>
+            <div class="section-header">
+                <div class="section-title">常见问题与排错指引</div>
+            </div>
             <div class="features-grid">
-                <div class="feature-card"><div class="feature-title">网页无法加载</div><div class="feature-desc">右键托盘图标确认“系统代理”是否已选为“自动配置系统代理”；检查节点延迟是否为正数。</div></div>
-                <div class="feature-card"><div class="feature-title">国内网站访问变慢</div><div class="feature-desc">检查托盘菜单“路由”是否被误设为全局。请务必选择“绕过大陆”以保证国内流量直连。</div></div>
-                <div class="feature-card"><div class="feature-title">订阅更新失败</div><div class="feature-desc">检查网络是否通畅；部分网络环境更新订阅时可尝试右键选中代理先开启后再更新。</div></div>
-                <div class="feature-card"><div class="feature-title">系统时间不同步</div><div class="feature-desc">现代加密传输要求本地系统时间误差不得超过 90 秒，若提示握手错误请在 Windows 设置中同步时间。</div></div>
+                <div class="feature-card">
+                    <div class="feature-title">网页无法加载</div>
+                    <div class="feature-desc">右键托盘图标确认“系统代理”是否已选为“自动配置系统代理”；检查节点延迟是否为正数。</div>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-title">国内网站访问变慢</div>
+                    <div class="feature-desc">检查托盘菜单“路由”是否被误设为全局。请务必选择“绕过大陆”以保证国内流量直连。</div>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-title">订阅更新失败</div>
+                    <div class="feature-desc">检查网络是否通畅；部分网络环境更新订阅时可尝试右键选中代理先开启后再更新。</div>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-title">系统时间不同步</div>
+                    <div class="feature-desc">现代加密传输要求本地系统时间误差不得超过 90 秒，若提示握手错误请在 Windows 设置中同步时间。</div>
+                </div>
             </div>
         </div>
 
@@ -570,7 +697,9 @@
                 <div class="subtitle">安卓平台轻量级 V2Ray / Xray 原生客户端安装、订阅拉取与分应用分流手册</div>
             </header>
 
-            <div class="section-header"><div class="section-title">快速配置流程</div></div>
+            <div class="section-header">
+                <div class="section-title">快速配置流程</div>
+            </div>
 
             <div class="card">
                 <div class="card-header">
@@ -579,21 +708,30 @@
                 </div>
                 <div class="card-body">
                     <div class="download-action-group">
-                        <a href="/api/download/v2rayng-universal" target="_blank" rel="noopener noreferrer" class="download-btn-primary">
-                            <svg viewBox="0 0 24 24"><path d="M19.35 10.04C18.67 6.59 15.64 4 12 4 9.11 4 6.6 5.64 5.35 8.04 2.34 8.36 0 10.91 0 14c0 3.31 2.69 6 6 6h13c2.76 0 5-2.24 5-5 0-2.64-2.05-4.78-4.65-4.96zM17 13l-5 5-5-5h3V9h4v4h3z"/></svg>
-                            <span>国内免翻下载：通用完整版 APK (70.6MB)</span>
+                        <a href="/api/download/v2rayng-universal" target="_blank" rel="noopener noreferrer"
+                            class="download-btn-primary">
+                            <svg viewBox="0 0 24 24">
+                                <path
+                                    d="M19.35 10.04C18.67 6.59 15.64 4 12 4 9.11 4 6.6 5.64 5.35 8.04 2.34 8.36 0 10.91 0 14c0 3.31 2.69 6 6 6h13c2.76 0 5-2.24 5-5 0-2.64-2.05-4.78-4.65-4.96zM17 13l-5 5-5-5h3V9h4v4h3z" />
+                            </svg>
+                            <span>通用版 v2rayNG.APK (70.6MB)</span>
                         </a>
-                        <a href="/api/download/v2rayng-arm64" target="_blank" rel="noopener noreferrer" class="download-btn-secondary">
-                            <svg viewBox="0 0 24 24"><path d="M19.35 10.04C18.67 6.59 15.64 4 12 4 9.11 4 6.6 5.64 5.35 8.04 2.34 8.36 0 10.91 0 14c0 3.31 2.69 6 6 6h13c2.76 0 5-2.24 5-5 0-2.64-2.05-4.78-4.65-4.96zM17 13l-5 5-5-5h3V9h4v4h3z"/></svg>
-                            <span>主流 64 位芯片精简版 APK (31.4MB)</span>
+                        <a href="/api/download/v2rayng-arm64" target="_blank" rel="noopener noreferrer"
+                            class="download-btn-secondary">
+                            <svg viewBox="0 0 24 24">
+                                <path
+                                    d="M19.35 10.04C18.67 6.59 15.64 4 12 4 9.11 4 6.6 5.64 5.35 8.04 2.34 8.36 0 10.91 0 14c0 3.31 2.69 6 6 6h13c2.76 0 5-2.24 5-5 0-2.64-2.05-4.78-4.65-4.96zM17 13l-5 5-5-5h3V9h4v4h3z" />
+                            </svg>
+                            <span>64 位芯片精简版 v2rayNG.APK (31.4MB)</span>
                         </a>
-                        <a href="https://github.com/2dust/v2rayNG/releases" target="_blank" rel="noopener noreferrer" class="download-btn-secondary">
-                            <svg viewBox="0 0 24 24"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
+                        <a href="https://github.com/2dust/v2rayNG/releases" target="_blank" rel="noopener noreferrer"
+                            class="download-btn-secondary">
+                            <svg viewBox="0 0 24 24">
+                                <path
+                                    d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z" />
+                            </svg>
                             <span>GitHub Releases 官方发布页</span>
                         </a>
-                    </div>
-                    <div class="download-tip">
-                        官方直链加速：国内用户点击即可直接下载对应版本的 <code>.apk</code> 安装包，无需科学上网。
                     </div>
                     <ul>
                         <li>下载后在手机系统文件管理中打开，允许“从未知来源安装”并完成安装。</li>
@@ -610,7 +748,9 @@
                     <ol>
                         <li style="margin-bottom: 16px;">
                             <strong>获取节点订阅链接（必选）</strong>：<br>
-                            前往 <a href="https://freeshop.lol/product/zhuan-xian-us" target="_blank" rel="noopener noreferrer" style="font-weight: 600; text-decoration: underline;">购买高速专线节点 ↗</a>。支付成功后即可在 <strong>邮箱</strong> 中获取 <strong>专属订阅链接</strong>，格式如下：
+                            前往 <a href="https://freeshop.lol/product/zhuan-xian-us" target="_blank"
+                                rel="noopener noreferrer" style="font-weight: 600; text-decoration: underline;">购买高速专线节点
+                                ↗</a>。支付成功后即可在 <strong>邮箱</strong> 中获取 <strong>专属订阅链接</strong>，格式如下：
                             <div class="code-box">https://sub.freeshop.lol/sub/xxxxxxxxxx</div>
                         </li>
                         <li>
@@ -638,15 +778,18 @@
                 </div>
                 <div class="settings-list">
                     <div class="setting-item">
-                        <div class="setting-label"><kbd>路由模式</kbd><span class="setting-arrow">➔</span><kbd style="color: var(--accent);">绕过局域网及大陆地址</kbd></div>
+                        <div class="setting-label"><kbd>路由模式</kbd><span class="setting-arrow">➔</span><kbd
+                                style="color: var(--accent);">绕过局域网及大陆地址</kbd></div>
                         <div class="setting-desc">微信、淘宝等国内流量直连，海外流量走代理（最推荐）</div>
                     </div>
                     <div class="setting-item">
-                        <div class="setting-label"><kbd>分应用代理</kbd><span class="setting-arrow">➔</span><kbd>按需开启</kbd></div>
+                        <div class="setting-label"><kbd>分应用代理</kbd><span class="setting-arrow">➔</span><kbd>按需开启</kbd>
+                        </div>
                         <div class="setting-desc">可自由勾选仅允许特定海外 App 走代理通道</div>
                     </div>
                     <div class="setting-item">
-                        <div class="setting-label"><kbd>开机自启</kbd><span class="setting-arrow">➔</span><kbd>建议开启</kbd></div>
+                        <div class="setting-label"><kbd>开机自启</kbd><span class="setting-arrow">➔</span><kbd>建议开启</kbd>
+                        </div>
                         <div class="setting-desc">手机重启后在后台自动恢复连接，省去重复手动点击</div>
                     </div>
                 </div>
@@ -667,12 +810,26 @@
                 </div>
             </div>
 
-            <div class="section-header"><div class="section-title">常见问题与排错指引</div></div>
+            <div class="section-header">
+                <div class="section-title">常见问题与排错指引</div>
+            </div>
             <div class="features-grid">
-                <div class="feature-card"><div class="feature-title">后台经常断连</div><div class="feature-desc">各大厂商系统（如小米澎湃、华为、OPPO）容易杀后台，请在系统设置中为 v2rayNG 关闭“电池优化”，并加入自启动白名单。</div></div>
-                <div class="feature-card"><div class="feature-title">国内应用加载慢</div><div class="feature-desc">请确认“设置”中的路由模式选为了<strong>绕过局域网及大陆地址</strong>，切勿设置为全局代理。</div></div>
-                <div class="feature-card"><div class="feature-title">测速全部显示 -1</div><div class="feature-desc">负数代表握手超时，可尝试切换 Wi-Fi / 数据网络，或检查订阅链接是否已过期。</div></div>
-                <div class="feature-card"><div class="feature-title">节点订阅导入报错</div><div class="feature-desc">粘贴订阅链接时请勿包含多余的前后空格或特殊转义字符，确认链接以 <code>https://</code> 开头。</div></div>
+                <div class="feature-card">
+                    <div class="feature-title">后台经常断连</div>
+                    <div class="feature-desc">各大厂商系统（如小米澎湃、华为、OPPO）容易杀后台，请在系统设置中为 v2rayNG 关闭“电池优化”，并加入自启动白名单。</div>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-title">国内应用加载慢</div>
+                    <div class="feature-desc">请确认“设置”中的路由模式选为了<strong>绕过局域网及大陆地址</strong>，切勿设置为全局代理。</div>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-title">测速全部显示 -1</div>
+                    <div class="feature-desc">负数代表握手超时，可尝试切换 Wi-Fi / 数据网络，或检查订阅链接是否已过期。</div>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-title">节点订阅导入报错</div>
+                    <div class="feature-desc">粘贴订阅链接时请勿包含多余的前后空格或特殊转义字符，确认链接以 <code>https://</code> 开头。</div>
+                </div>
             </div>
         </div>
 
@@ -684,7 +841,9 @@
                 <div class="subtitle">iPhone 与 iPad 平台原生轻量 V2Ray 客户端安装、订阅拉取与连接手册</div>
             </header>
 
-            <div class="section-header"><div class="section-title">快速配置流程</div></div>
+            <div class="section-header">
+                <div class="section-title">快速配置流程</div>
+            </div>
 
             <div class="card">
                 <div class="card-header">
@@ -692,9 +851,22 @@
                     <div class="card-desc">V2BOX 是专为 V2Ray / Xray 生态打造的 iOS 原生网络工具，界面简洁现代化。</div>
                 </div>
                 <div class="card-body">
+                    <div class="appleid-callout">
+                        <div class="appleid-callout-icon">
+                            <svg viewBox="0 0 24 24"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.81-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M15.97 4.54c.64-.78 1.08-1.86.96-2.95-1 .04-2.14.65-2.81 1.43-.58.68-1.1 1.77-.96 2.85 1.12.09 2.18-.55 2.81-1.33z"/></svg>
+                        </div>
+                        <div class="appleid-callout-content">
+                            <div class="appleid-callout-title">下载前置要求：需使用美区 Apple ID</div>
+                            <div class="appleid-callout-desc">由于应用商店区域政策，V2Box 仅在海外 App Store（推荐美区）上架，国区无法搜索下载。如果您还没有美区账号，请先按指引免费注册一个（支持国内手机号验证）。</div>
+                            <a href="./appleid.html" target="_blank" rel="noopener noreferrer" class="appleid-callout-action">
+                                <span>前往美区 Apple ID 极速注册指南</span>
+                                <svg viewBox="0 0 24 24"><path d="M5 13h11.86l-5.43 5.43 1.42 1.42L21.14 12l-8.29-8.29-1.42 1.42L16.86 11H5v2z"/></svg>
+                            </a>
+                        </div>
+                    </div>
                     <ul>
-                        <li><strong>应用商店</strong>：在非国区（如美区、日区、港区等）App Store 登录海外 Apple ID。</li>
-                        <li><strong>搜索下载</strong>：在 App Store 搜索 <strong>V2BOX - V2ray Client</strong> 直接获取下载。</li>
+                        <li><strong>应用商店</strong>：在 App Store 登录海外（推荐美区）Apple ID。</li>
+                        <li><strong>搜索下载</strong>：在 App Store 搜索 <strong>V2BOX - V2ray Client</strong> 免费获取下载。</li>
                         <li>安装完成后即可切回个人常用国区账号，不影响已安装应用的使用与本地配置。</li>
                     </ul>
                 </div>
@@ -709,7 +881,9 @@
                     <ol>
                         <li style="margin-bottom: 16px;">
                             <strong>获取节点订阅链接（必选）</strong>：<br>
-                            前往 <a href="https://freeshop.lol/product/zhuan-xian-us" target="_blank" rel="noopener noreferrer" style="font-weight: 600; text-decoration: underline;">购买高速专线节点 ↗</a>。支付成功后即可在 <strong>邮箱</strong> 中获取 <strong>专属订阅链接</strong>，格式如下：
+                            前往 <a href="https://freeshop.lol/product/zhuan-xian-us" target="_blank"
+                                rel="noopener noreferrer" style="font-weight: 600; text-decoration: underline;">购买高速专线节点
+                                ↗</a>。支付成功后即可在 <strong>邮箱</strong> 中获取 <strong>专属订阅链接</strong>，格式如下：
                             <div class="code-box">https://sub.freeshop.lol/sub/xxxxxxxxxx</div>
                         </li>
                         <li>
@@ -738,15 +912,18 @@
                 </div>
                 <div class="settings-list">
                     <div class="setting-item">
-                        <div class="setting-label"><kbd>Routing 路由规则</kbd><span class="setting-arrow">➔</span><kbd style="color: var(--accent);">Bypass Mainland</kbd></div>
+                        <div class="setting-label"><kbd>Routing 路由规则</kbd><span class="setting-arrow">➔</span><kbd
+                                style="color: var(--accent);">Bypass Mainland</kbd></div>
                         <div class="setting-desc">绕过大陆域名及 IP，国内直连不耗流量（最推荐）</div>
                     </div>
                     <div class="setting-item">
-                        <div class="setting-label"><kbd>Auto Update Subscriptions</kbd><span class="setting-arrow">➔</span><kbd>开启 (ON)</kbd></div>
+                        <div class="setting-label"><kbd>Auto Update Subscriptions</kbd><span
+                                class="setting-arrow">➔</span><kbd>开启 (ON)</kbd></div>
                         <div class="setting-desc">开启后每次启动应用自动拉取最新节点与可用列表</div>
                     </div>
                     <div class="setting-item">
-                        <div class="setting-label"><kbd>Sniffing 流量探测</kbd><span class="setting-arrow">➔</span><kbd>开启 (ON)</kbd></div>
+                        <div class="setting-label"><kbd>Sniffing 流量探测</kbd><span class="setting-arrow">➔</span><kbd>开启
+                                (ON)</kbd></div>
                         <div class="setting-desc">精准识别真实访问域名，防止本地 DNS 劫持与污染</div>
                     </div>
                 </div>
@@ -768,12 +945,27 @@
                 </div>
             </div>
 
-            <div class="section-header"><div class="section-title">常见问题与排错指引</div></div>
+            <div class="section-header">
+                <div class="section-title">常见问题与排错指引</div>
+            </div>
             <div class="features-grid">
-                <div class="feature-card"><div class="feature-title">网络连接授权</div><div class="feature-desc">首次打开若弹出“是否允许使用无线局域网与蜂窝网络”，必须点击允许，否则客户端无法联网拉取订阅。</div></div>
-                <div class="feature-card"><div class="feature-title">连上后国内软件打不开</div><div class="feature-desc">请进入 Settings 确认 Routing 规则选为了 <strong>Bypass Mainland</strong>，避免国内服务走海外代理。</div></div>
-                <div class="feature-card"><div class="feature-title">Ping 测速全部超时</div><div class="feature-desc">可能是本地网络连接受阻，尝试关闭 Wi-Fi 使用 4G/5G 移动蜂窝数据测试，或刷新订阅。</div></div>
-                <div class="feature-card"><div class="feature-title">系统时间准确性</div><div class="feature-desc">iOS 设备通常自动对时，如曾手动调快时间可能导致连接失败，请在 iPhone 设置中开启“自动设置时间”。</div></div>
+                <div class="feature-card">
+                    <div class="feature-title">网络连接授权</div>
+                    <div class="feature-desc">首次打开若弹出“是否允许使用无线局域网与蜂窝网络”，必须点击允许，否则客户端无法联网拉取订阅。</div>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-title">连上后国内软件打不开</div>
+                    <div class="feature-desc">请进入 Settings 确认 Routing 规则选为了 <strong>Bypass
+                            Mainland</strong>，避免国内服务走海外代理。</div>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-title">Ping 测速全部超时</div>
+                    <div class="feature-desc">可能是本地网络连接受阻，尝试关闭 Wi-Fi 使用 4G/5G 移动蜂窝数据测试，或刷新订阅。</div>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-title">系统时间准确性</div>
+                    <div class="feature-desc">iOS 设备通常自动对时，如曾手动调快时间可能导致连接失败，请在 iPhone 设置中开启“自动设置时间”。</div>
+                </div>
             </div>
         </div>
 
@@ -785,7 +977,9 @@
                 <div class="subtitle">iPhone 与 iPad 平台老牌多协议代理客户端安装、订阅拉取与分流手册</div>
             </header>
 
-            <div class="section-header"><div class="section-title">快速配置流程</div></div>
+            <div class="section-header">
+                <div class="section-title">快速配置流程</div>
+            </div>
 
             <div class="card">
                 <div class="card-header">
@@ -793,8 +987,21 @@
                     <div class="card-desc">Shadowrocket 是 iOS 平台最广为人知的专业代理工具，协议兼容性极佳。</div>
                 </div>
                 <div class="card-body">
+                    <div class="appleid-callout">
+                        <div class="appleid-callout-icon">
+                            <svg viewBox="0 0 24 24"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.81-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M15.97 4.54c.64-.78 1.08-1.86.96-2.95-1 .04-2.14.65-2.81 1.43-.58.68-1.1 1.77-.96 2.85 1.12.09 2.18-.55 2.81-1.33z"/></svg>
+                        </div>
+                        <div class="appleid-callout-content">
+                            <div class="appleid-callout-title">下载前置要求：需使用美区 Apple ID</div>
+                            <div class="appleid-callout-desc">Shadowrocket（小火箭）在国区 App Store 已下架，必须登录美区 Apple ID 进行购买与下载。如需注册美区账号或购买苹果礼品卡，请参考完整指南。</div>
+                            <a href="./appleid.html" target="_blank" rel="noopener noreferrer" class="appleid-callout-action">
+                                <span>前往美区 Apple ID 极速注册指南</span>
+                                <svg viewBox="0 0 24 24"><path d="M5 13h11.86l-5.43 5.43 1.42 1.42L21.14 12l-8.29-8.29-1.42 1.42L16.86 11H5v2z"/></svg>
+                            </a>
+                        </div>
+                    </div>
                     <ul>
-                        <li>在 App Store 中退出当前账号，登录非国区（美区/港区等）Apple ID。</li>
+                        <li>在 App Store 中退出当前账号，登录美区 Apple ID。</li>
                         <li>在 App Store 搜索 <strong>Shadowrocket</strong>（认准白底蓝色小火箭图标）。</li>
                         <li>完成下载安装后，可退出并换回个人主力国区账号。</li>
                     </ul>
@@ -810,7 +1017,9 @@
                     <ol>
                         <li style="margin-bottom: 16px;">
                             <strong>获取节点订阅链接（必选）</strong>：<br>
-                            前往 <a href="https://freeshop.lol/product/zhuan-xian-us" target="_blank" rel="noopener noreferrer" style="font-weight: 600; text-decoration: underline;">购买高速专线节点 ↗</a>。支付成功后即可在 <strong>邮箱</strong> 中获取 <strong>专属订阅链接</strong>，格式如下：
+                            前往 <a href="https://freeshop.lol/product/zhuan-xian-us" target="_blank"
+                                rel="noopener noreferrer" style="font-weight: 600; text-decoration: underline;">购买高速专线节点
+                                ↗</a>。支付成功后即可在 <strong>邮箱</strong> 中获取 <strong>专属订阅链接</strong>，格式如下：
                             <div class="code-box">https://sub.freeshop.lol/sub/xxxxxxxxxx</div>
                         </li>
                         <li>
@@ -833,15 +1042,18 @@
                 </div>
                 <div class="settings-list">
                     <div class="setting-item">
-                        <div class="setting-label"><kbd>全局路由</kbd><span class="setting-arrow">➔</span><kbd style="color: var(--accent);">配置模式 (Config)</kbd></div>
+                        <div class="setting-label"><kbd>全局路由</kbd><span class="setting-arrow">➔</span><kbd
+                                style="color: var(--accent);">配置模式 (Config)</kbd></div>
                         <div class="setting-desc">国内网站直连，海外流量智能分流走专线（最推荐）</div>
                     </div>
                     <div class="setting-item">
-                        <div class="setting-label"><kbd>代理模式 (Proxy)</kbd><span class="setting-arrow">➔</span><kbd>仅排错时启用</kbd></div>
+                        <div class="setting-label"><kbd>代理模式 (Proxy)</kbd><span
+                                class="setting-arrow">➔</span><kbd>仅排错时启用</kbd></div>
                         <div class="setting-desc">强制所有应用流量走海外节点，日常无需开启</div>
                     </div>
                     <div class="setting-item">
-                        <div class="setting-label"><kbd>打开时更新订阅</kbd><span class="setting-arrow">➔</span><kbd>开启 (ON)</kbd></div>
+                        <div class="setting-label"><kbd>打开时更新订阅</kbd><span class="setting-arrow">➔</span><kbd>开启
+                                (ON)</kbd></div>
                         <div class="setting-desc">在下方“设置” ➔ “订阅”中开启，自动拉取最新节点</div>
                     </div>
                 </div>
@@ -862,12 +1074,26 @@
                 </div>
             </div>
 
-            <div class="section-header"><div class="section-title">常见问题与排错指引</div></div>
+            <div class="section-header">
+                <div class="section-title">常见问题与排错指引</div>
+            </div>
             <div class="features-grid">
-                <div class="feature-card"><div class="feature-title">首次启动网络受限</div><div class="feature-desc">首次打开提示“网络权限”时若误点了不允许，请前往 iOS“设置” -> “Shadowrocket”中重新开启“无线局域网与蜂窝数据”。</div></div>
-                <div class="feature-card"><div class="feature-title">微信/网银无法连接</div><div class="feature-desc">确认全局路由是否被误设为了“代理”。只有保持为“配置”模式，国内流量才会被安全分流直连。</div></div>
-                <div class="feature-card"><div class="feature-title">订阅更新超时</div><div class="feature-desc">可在节点上向左滑动选择“更新”，或长按订阅分组名称选择“更新”。</div></div>
-                <div class="feature-card"><div class="feature-title">证书或时间报错</div><div class="feature-desc">V2Ray 协议对时间敏感，若遇握手超时请在 iOS“设置” -> “通用” -> “日期与时间”中开启“自动设置”。</div></div>
+                <div class="feature-card">
+                    <div class="feature-title">首次启动网络受限</div>
+                    <div class="feature-desc">首次打开提示“网络权限”时若误点了不允许，请前往 iOS“设置” -> “Shadowrocket”中重新开启“无线局域网与蜂窝数据”。</div>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-title">微信/网银无法连接</div>
+                    <div class="feature-desc">确认全局路由是否被误设为了“代理”。只有保持为“配置”模式，国内流量才会被安全分流直连。</div>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-title">订阅更新超时</div>
+                    <div class="feature-desc">可在节点上向左滑动选择“更新”，或长按订阅分组名称选择“更新”。</div>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-title">证书或时间报错</div>
+                    <div class="feature-desc">V2Ray 协议对时间敏感，若遇握手超时请在 iOS“设置” -> “通用” -> “日期与时间”中开启“自动设置”。</div>
+                </div>
             </div>
         </div>
 
@@ -879,7 +1105,9 @@
                 <div class="subtitle">macOS 平台原生 V2Box 客户端安装、订阅同步与智能分流配置手册</div>
             </header>
 
-            <div class="section-header"><div class="section-title">快速配置流程</div></div>
+            <div class="section-header">
+                <div class="section-title">快速配置流程</div>
+            </div>
 
             <div class="card">
                 <div class="card-header">
@@ -887,9 +1115,25 @@
                     <div class="card-desc">V2Box 完美适配 macOS 系统，界面现代，支持原生网络代理扩展。</div>
                 </div>
                 <div class="card-body">
+                    <div class="appleid-callout">
+                        <div class="appleid-callout-icon">
+                            <svg viewBox="0 0 24 24"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.81-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M15.97 4.54c.64-.78 1.08-1.86.96-2.95-1 .04-2.14.65-2.81 1.43-.58.68-1.1 1.77-.96 2.85 1.12.09 2.18-.55 2.81-1.33z"/></svg>
+                        </div>
+                        <div class="appleid-callout-content">
+                            <div class="appleid-callout-title">下载前置要求：需使用美区 Apple ID</div>
+                            <div class="appleid-callout-desc">Mac App Store 国区同样未上架 V2Box，请先在 Mac App Store 登录海外（推荐美区）Apple ID 后再进行搜索下载。</div>
+                            <a href="./appleid.html" target="_blank" rel="noopener noreferrer" class="appleid-callout-action">
+                                <span>前往美区 Apple ID 极速注册指南</span>
+                                <svg viewBox="0 0 24 24"><path d="M5 13h11.86l-5.43 5.43 1.42 1.42L21.14 12l-8.29-8.29-1.42 1.42L16.86 11H5v2z"/></svg>
+                            </a>
+                        </div>
+                    </div>
                     <ul>
-                        <li><strong>Mac App Store 官方下载（推荐）</strong>：在 Mac 上打开 <strong>App Store</strong>，在搜索框搜索 <code>V2Box - V2ray Client</code> 并获取安装。</li>
-                        <li><strong>系统与架构支持</strong>：全面支持 Apple Silicon（M1/M2/M3/M4 系列芯片）及 Intel 架构机型，系统要求 macOS 12.0 及更高版本。</li>
+                        <li><strong>Mac App Store 官方下载（推荐）</strong>：在 Mac 上打开 <strong>App Store</strong>，登录美区账号后搜索
+                            <code>V2Box - V2ray Client</code> 并获取安装。
+                        </li>
+                        <li><strong>系统与架构支持</strong>：全面支持 Apple Silicon（M1/M2/M3/M4 系列芯片）及 Intel 架构机型，系统要求 macOS 12.0
+                            及更高版本。</li>
                         <li>安装完成后在“启动台”或“应用程序”文件夹中打开 <strong>V2Box</strong>。</li>
                     </ul>
                 </div>
@@ -904,7 +1148,9 @@
                     <ol>
                         <li style="margin-bottom: 16px;">
                             <strong>获取节点订阅链接（必选）</strong>：<br>
-                            前往 <a href="https://freeshop.lol/product/zhuan-xian-us" target="_blank" rel="noopener noreferrer" style="font-weight: 600; text-decoration: underline;">购买高速专线节点 ↗</a>。支付成功后即可在 <strong>邮箱</strong> 中获取 <strong>专属订阅链接</strong>，格式如下：
+                            前往 <a href="https://freeshop.lol/product/zhuan-xian-us" target="_blank"
+                                rel="noopener noreferrer" style="font-weight: 600; text-decoration: underline;">购买高速专线节点
+                                ↗</a>。支付成功后即可在 <strong>邮箱</strong> 中获取 <strong>专属订阅链接</strong>，格式如下：
                             <div class="code-box">https://sub.freeshop.lol/sub/xxxxxxxxxx</div>
                         </li>
                         <li>
@@ -933,15 +1179,18 @@
                 </div>
                 <div class="settings-list">
                     <div class="setting-item">
-                        <div class="setting-label"><kbd>Routing Mode (路由模式)</kbd><span class="setting-arrow">➔</span><kbd style="color: var(--accent);">Rule (规则模式)</kbd></div>
+                        <div class="setting-label"><kbd>Routing Mode (路由模式)</kbd><span
+                                class="setting-arrow">➔</span><kbd style="color: var(--accent);">Rule (规则模式)</kbd></div>
                         <div class="setting-desc">进入 Settings 确认模式为 Rule，国内网站直连，海外流量自动走专线（最推荐）</div>
                     </div>
                     <div class="setting-item">
-                        <div class="setting-label"><kbd>Auto Update Subscription</kbd><span class="setting-arrow">➔</span><kbd>开启 (ON)</kbd></div>
+                        <div class="setting-label"><kbd>Auto Update Subscription</kbd><span
+                                class="setting-arrow">➔</span><kbd>开启 (ON)</kbd></div>
                         <div class="setting-desc">开启订阅定时自动刷新，及时同步新增或调整的专线节点</div>
                     </div>
                     <div class="setting-item">
-                        <div class="setting-label"><kbd>Sniffing (流量嗅探)</kbd><span class="setting-arrow">➔</span><kbd>开启 (ON)</kbd></div>
+                        <div class="setting-label"><kbd>Sniffing (流量嗅探)</kbd><span class="setting-arrow">➔</span><kbd>开启
+                                (ON)</kbd></div>
                         <div class="setting-desc">精确识别 TLS 域名，提升分流准确率与域名防污染能力</div>
                     </div>
                 </div>
@@ -958,18 +1207,34 @@
                         <li>节点名称右侧将显示毫秒延迟（ms），点击选中延迟最低、显示为绿色的优质节点。</li>
                         <li>切换回到 <strong>“Home”</strong>（主界面）。</li>
                         <li>向右滑动 <strong>“Slide to Connect”</strong>（滑动连接）滑块启动服务。</li>
-                        <li><strong>重要提示（首次连接）</strong>：macOS 系统会弹出系统授权确认框 <strong>“V2Box 想要添加 VPN 配置”</strong>，请点击 <strong>“允许”</strong> 并输入 Mac 锁屏开机密码授权放行。</li>
+                        <li><strong>重要提示（首次连接）</strong>：macOS 系统会弹出系统授权确认框 <strong>“V2Box 想要添加 VPN 配置”</strong>，请点击
+                            <strong>“允许”</strong> 并输入 Mac 锁屏开机密码授权放行。
+                        </li>
                         <li>连接成功后，主界面滑块变为绿色并显示 <strong>“Connected”</strong>，打开 Safari 即可流畅访问。</li>
                     </ul>
                 </div>
             </div>
 
-            <div class="section-header"><div class="section-title">常见问题与排错指引</div></div>
+            <div class="section-header">
+                <div class="section-title">常见问题与排错指引</div>
+            </div>
             <div class="features-grid">
-                <div class="feature-card"><div class="feature-title">首次连接弹窗误点击了拒绝</div><div class="feature-desc">请前往 Mac“系统设置” -> “VPN”，找到 V2Box 项并开启连接，系统会重新提示输入密码进行授权。</div></div>
-                <div class="feature-card"><div class="feature-title">微信/网银无法连接或变慢</div><div class="feature-desc">请进入 V2Box 的“Settings”，确认路由模式为 Rule（规则模式），切勿开启 Global（全局代理）。</div></div>
-                <div class="feature-card"><div class="feature-title">节点更新与失效排查</div><div class="feature-desc">在 Configs 列表页，点击订阅名称旁的刷新图标即可重新拉取最新节点。若依然不通，请检查订阅是否到期。</div></div>
-                <div class="feature-card"><div class="feature-title">证书或握手超时</div><div class="feature-desc">专线传输对时间精度要求极高，请进入 Mac“系统设置” -> “通用” -> “日期与时间”，确保勾选“自动设置时间与日期”。</div></div>
+                <div class="feature-card">
+                    <div class="feature-title">首次连接弹窗误点击了拒绝</div>
+                    <div class="feature-desc">请前往 Mac“系统设置” -> “VPN”，找到 V2Box 项并开启连接，系统会重新提示输入密码进行授权。</div>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-title">微信/网银无法连接或变慢</div>
+                    <div class="feature-desc">请进入 V2Box 的“Settings”，确认路由模式为 Rule（规则模式），切勿开启 Global（全局代理）。</div>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-title">节点更新与失效排查</div>
+                    <div class="feature-desc">在 Configs 列表页，点击订阅名称旁的刷新图标即可重新拉取最新节点。若依然不通，请检查订阅是否到期。</div>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-title">证书或握手超时</div>
+                    <div class="feature-desc">专线传输对时间精度要求极高，请进入 Mac“系统设置” -> “通用” -> “日期与时间”，确保勾选“自动设置时间与日期”。</div>
+                </div>
             </div>
         </div>
 
@@ -988,14 +1253,16 @@
                 </div>
                 <div class="card-body">
                     <ol>
-                        <li>访问商城首页：<a href="https://freeshop.lol" target="_blank" rel="noopener noreferrer">https://freeshop.lol ↗</a></li>
+                        <li>访问商城首页：<a href="https://freeshop.lol" target="_blank"
+                                rel="noopener noreferrer">https://freeshop.lol ↗</a></li>
                         <li>点击商城顶部或底部的 <strong>“订单查询”</strong> 菜单。</li>
                         <li>输入您下单时填写的<strong>邮箱或手机号</strong>（以及下单时设置的查询密码）。</li>
                         <li>点击“立即查询”，系统将立即列出您的历史订单与专属<strong>订阅链接</strong>。</li>
                     </ol>
 
                     <div style="margin-top: 20px; text-align: center;">
-                        <a href="https://freeshop.lol" target="_blank" rel="noopener noreferrer" style="display: inline-block; padding: 10px 24px; background: var(--accent); color: #fff !important; border-radius: 20px; font-weight: 600; text-decoration: none !important;">
+                        <a href="https://freeshop.lol" target="_blank" rel="noopener noreferrer"
+                            style="display: inline-block; padding: 10px 24px; background: var(--accent); color: #fff !important; border-radius: 20px; font-weight: 600; text-decoration: none !important;">
                             前往商城订单查询 ↗
                         </a>
                     </div>
@@ -1024,7 +1291,7 @@
         }
 
         // 页面初始化：根据 Hash 或 User-Agent 智能推荐默认 Tab
-        (function() {
+        (function () {
             var hash = window.location.hash.replace('#', '');
             if (hash && document.getElementById(hash)) {
                 switchTab(hash);
@@ -1043,4 +1310,5 @@
         })();
     </script>
 </body>
+
 </html>
